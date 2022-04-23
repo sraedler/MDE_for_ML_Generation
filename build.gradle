@@ -1,0 +1,76 @@
+plugins {
+    id 'java'
+}
+
+group 'at.vres.asid.master'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+    maven {
+        url = uri("https://oss.sonatype.org/content/repositories/snapshots/")
+    }
+    maven {
+        url = uri("https://dist.wso2.org/maven2/")
+    }
+}
+
+dependencies {
+    // test dependencies
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
+
+    // UML dependencies
+    // implementation("org.eclipse.uml2.uml:resources:5.0.0-v20140602-0749")
+    //implementation("org.eclipse.uml2:uml:5.0.0-v20140602-0749")
+
+    // Ecore dependencies
+    implementation("org.eclipse.emf:org.eclipse.emf.ecore:2.26.0")
+    implementation("org.eclipse.emf:org.eclipse.emf.ecore.xmi:2.16.0")
+
+
+    // Custom metamodel jar dependencies
+    implementation(files("libs/at.vres.asid.profiles-0.8.0-SNAPSHOT.jar"))
+    implementation(files("libs/at.vres.asit.bommodel-0.8.0-SNAPSHOT.jar"))
+    implementation(files("libs/at.vres.asid.profile.optimization-0.8.0-SNAPSHOT.jar"))
+    implementation(files("libs/org.eclipse.papyrus.sysml16_2.0.0.202106100115.jar"))
+    implementation(files("libs/org.eclipse.uml2.uml_5.5.0.v20210228-1829.jar"))
+    implementation(files("libs/org.eclipse.uml2.uml.resources_5.5.0.v20210228-1829.jar"))
+    implementation(files("libs/org.eclipse.uml2.common_2.5.0.v20210228-1829.jar"))
+    implementation(files("libs/org.eclipse.uml2.types_2.5.0.v20210228-1829.jar"))
+    implementation(files("libs/org.eclipse.uml2.uml.profile.standard_1.5.0.v20210228-1829.jar"))
+    //implementation(files("libs/org.eclipse.emf.transaction_1.9.1.201805140824.jar"))
+    //implementation(files("libs/org.eclipse.gmf.runtime.diagram.ui_1.9.0.202004160913.jar"))
+    //implementation(files("libs/org.eclipse.gef_3.11.0.201606061308.jar"))
+    //implementation(files("libs/org.eclipse.ui.workbench_3.122.200.v20210506-1640.jar"))
+    //implementation(files("libs/org.eclipse.jface_3.22.200.v20210401-0958.jar"))
+    implementation(files("libs/at.vres.asid.master.metamodel.ml-0.8.0-SNAPSHOT.jar"))
+
+
+
+    //implementation("org.eclipse.ui:workbench:3.3.0-I20070608-1100")
+    // https://mvnrepository.com/artifact/org.eclipse.emf/org.eclipse.emf.mapping.ecore2xml
+    implementation("org.eclipse.emf:org.eclipse.emf.mapping.ecore2xml:2.11.0")
+    // https://mvnrepository.com/artifact/org.eclipse.emf/org.eclipse.emf.edit
+    implementation("org.eclipse.emf:org.eclipse.emf.edit:2.17.0")
+    // https://mvnrepository.com/artifact/org.apache.velocity/velocity-engine-core
+    implementation("org.apache.velocity:velocity-engine-core:2.3")
+
+    // https://mvnrepository.com/artifact/org.eclipse.core/runtime
+    //implementation("org.eclipse.core:runtime:3.10.0-v20140318-2214")
+    // https://mvnrepository.com/artifact/org.eclipse.emf/org.eclipse.emf.ecore.change
+    //implementation("org.eclipse.emf:org.eclipse.emf.ecore.change:2.14.0")
+    // https://mvnrepository.com/artifact/org.eclipse/org.eclipse.emf.validation
+    //implementation("org.eclipse:org.eclipse.emf.validation:1.8.0.201405281429")
+    // https://mvnrepository.com/artifact/org.eclipse.core/org.eclipse.core.expressions
+    //implementation("org.eclipse.core:org.eclipse.core.expressions:3.4.300")
+
+
+
+
+
+}
+
+test {
+    useJUnitPlatform()
+}
