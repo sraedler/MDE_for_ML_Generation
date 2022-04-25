@@ -12,14 +12,15 @@ import java.util.Map;
 import java.util.Properties;
 
 public class VelocityTest {
+    private static final String VELOCITY_TEMPLATE_PATH_KEY = "file.resource.loader.path";
 
     private static Properties getDefaultProperties() {
         Properties p = new Properties();
-        p.setProperty("file.resource.loader.path", "C:\\Users\\rup\\IdeaProjects\\MasterModelDrivenML\\templates");
+        p.setProperty(VELOCITY_TEMPLATE_PATH_KEY, "C:\\Users\\rup\\IdeaProjects\\MasterModelDrivenML\\templates");
         return p;
     }
 
-    public static void generateFromExtractedInformation(Map<String, MLInformationHolder> map, String templateName) {
+    public static String generateFromExtractedInformation(Map<String, MLInformationHolder> map, String templateName) {
         VelocityEngine ve = new VelocityEngine();
         ve.init(getDefaultProperties());
         VelocityContext context = new VelocityContext();
@@ -28,33 +29,38 @@ public class VelocityTest {
             value.getProperties().forEach(context::put);
             value.getStereotypes().forEach((stKey, stVal) -> stVal.forEach(context::put));
         });
+        String result = "";
         try (StringWriter sw = new StringWriter()) {
             ve.mergeTemplate(templateName, "UTF-8", context, sw);
             System.out.println("TEST: \n" + sw);
+            result = sw.toString();
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return result;
     }
 
-    public static void generateFromJSON(String jsonPath) {
+    public static String generateFromJSON(String jsonPath) {
         JSONInformationHolder jih = MappingHandler.readJSON(jsonPath);
-        if(jih != null) {
-            generateFromObject(jih.getTemplate(), jih.getParameters());
-        }
+        Properties properties = new Properties();
+        properties.put(VELOCITY_TEMPLATE_PATH_KEY, jih.getTemplateFolder());
+        return generateFromObject(jih.getTemplate(), jih.getParameters(), properties);
     }
 
-    public static void generateFromObject(String templateName, Map<String, Object> parameters) {
+    public static String generateFromObject(String templateName, Map<String, Object> parameters, Properties properties) {
         VelocityEngine ve = new VelocityEngine();
-        ve.init(getDefaultProperties());
+        ve.init(properties);
         VelocityContext context = new VelocityContext();
         parameters.forEach(context::put);
-
+        String result = "";
         try (StringWriter sw = new StringWriter()) {
             ve.mergeTemplate(templateName, "UTF-8", context, sw);
             System.out.println("TEST: \n" + sw);
+            result = sw.toString();
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return result;
     }
 
     public static void velTestRun(String templateName) {

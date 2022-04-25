@@ -1,4 +1,5 @@
 {
+  "templateFolder": "C:\\Users\\rup\\IdeaProjects\\MasterModelDrivenML\\templates",
   "template": "external_test.vm",
   "parameters": {
     "var_name": "Block::DataStorage::CSV_Test3::name",
