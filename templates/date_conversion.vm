@@ -1,0 +1,3 @@
+import datetime
+
+${df_one}["{$date}"] = ${df_one}["{$date}"].apply(lambda old_date, old_format, new_format: datetime.datetime.strptime(old_date, old_format).strftime(new_format), args=("{$old_format}", "${new_format}"))
