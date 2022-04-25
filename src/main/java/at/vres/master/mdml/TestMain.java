@@ -10,10 +10,11 @@ import org.apache.velocity.VelocityContext;
 import java.util.Map;
 
 public class TestMain {
+    private static final String TEST_MODEL = "src/main/resources/UC1_Weather/UC1_Weather.uml";
 
 
     public static void main(String[] args) {
-        Map<String, MLInformationHolder> stringMLInformationHolderMap = ModelDecompositionHandler.doExtraction();
+        Map<String, MLInformationHolder> stringMLInformationHolderMap = ModelDecompositionHandler.doExtraction(TEST_MODEL);
         VelocityTest.generateFromExtractedInformation(stringMLInformationHolderMap, "test.vm");
     }
 
