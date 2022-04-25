@@ -1,5 +1,6 @@
 package at.vres.master.mdml.tbcg;
 
+import at.vres.master.mdml.decomposition.MLInformationHolder;
 import at.vres.master.mdml.mapping.JSONInformationHolder;
 import at.vres.master.mdml.mapping.MappingHandler;
 import org.apache.velocity.VelocityContext;
@@ -7,6 +8,7 @@ import org.apache.velocity.app.VelocityEngine;
 
 import java.io.IOException;
 import java.io.StringWriter;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -16,6 +18,25 @@ public class VelocityTest {
         Properties p = new Properties();
         p.setProperty("file.resource.loader.path", "C:\\Users\\rup\\IdeaProjects\\MasterModelDrivenML\\templates");
         return p;
+    }
+
+    public static void generateFromExtractedInformation(Map<String, MLInformationHolder> map, String templateName) {
+        VelocityEngine ve = new VelocityEngine();
+        ve.init(getDefaultProperties());
+        VelocityContext context = new VelocityContext();
+        map.forEach((key, value) -> {
+            value.getParts().forEach(context::put);
+            value.getProperties().forEach(context::put);
+            value.getStereotypes().forEach((stKey, stVal) -> {
+                stVal.forEach(context::put);
+            });
+        });
+        try (StringWriter sw = new StringWriter()) {
+            ve.mergeTemplate(templateName, "UTF-8", context, sw);
+            System.out.println("TEST: \n" + sw);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void generateFromJSON(String jsonPath) {

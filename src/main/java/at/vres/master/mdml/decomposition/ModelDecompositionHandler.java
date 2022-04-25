@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 
 import MLModel.ML;
-import at.vres.master.mdml.tbcg.VelocityTest;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.uml2.uml.Association;
 import org.eclipse.uml2.uml.Class;
@@ -22,8 +21,8 @@ public class ModelDecompositionHandler {
 	private static final Map<String, MLInformationHolder> ml = new LinkedHashMap<>();
 	private static final List<MLInformationHolder> orderedML = new LinkedList<>();
 
-	private static HashMap<String, Object> addStereotypeAttributesToHashMap(HashMap<String, Object> attMap,
-			ML connectedBlock) {
+	private static void addStereotypeAttributesToHashMap(HashMap<String, Object> attMap,
+														 ML connectedBlock) {
 		Class base_Class = connectedBlock.getBase_Class();
 		if (base_Class != null) {
 			MLInformationHolder mlih = new MLInformationHolder(base_Class.getQualifiedName(), base_Class.getName());
@@ -136,10 +135,9 @@ public class ModelDecompositionHandler {
 				ml.putIfAbsent(base_Property.getQualifiedName(), mlih);
 			}
 		}
-		return attMap;
 	}
 
-	public static void doExtraction() {
+	public static Map<String, MLInformationHolder> doExtraction() {
 		TestModelExtractor ex = new TestModelExtractor();
 		ResourceSet res = ex.defaultLoad();
 		res.getAllContents().forEachRemaining(con -> {
@@ -164,6 +162,7 @@ public class ModelDecompositionHandler {
 		});
 		prettyPrintMLInformationHolderList(orderedML);
 		prettyPrintMLInformationHolderMap(ml);
+		return ml;
 	}
 
 	private static void prettyPrintMLInformationHolderMap(Map<String, MLInformationHolder> mapToPrint) {
