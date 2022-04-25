@@ -1,0 +1,3 @@
+import pandas as pd
+
+$var_name = pd.read_csv("$path", sep="$delimiter", encoding="$encoding", skiprows="$nr_skip_lines")

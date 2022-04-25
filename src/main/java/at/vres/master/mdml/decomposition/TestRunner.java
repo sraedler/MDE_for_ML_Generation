@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 import MLModel.ML;
+import at.vres.master.mdml.tbcg.VelocityTest;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.uml2.types.TypesFactory;
 import org.eclipse.uml2.types.TypesPackage;
@@ -149,7 +150,7 @@ public class TestRunner {
 		return attMap;
 	}
 
-	public static void main(String[] args) {
+	public static void doExtraction() {
 		TestModelExtractor ex = new TestModelExtractor();
 		ResourceSet res = ex.defaultLoad();
 		res.getAllContents().forEachRemaining(con -> {
@@ -172,8 +173,13 @@ public class TestRunner {
 				});
 			}
 		});
-		//prettyPrintMLInformationHolderList(orderedML);
+		prettyPrintMLInformationHolderList(orderedML);
 		prettyPrintMLInformationHolderMap(ml);
+	}
+
+	public static void main(String[] args) {
+		//doExtraction();
+		VelocityTest.velTestRun("test.vm");
 	}
 
 
