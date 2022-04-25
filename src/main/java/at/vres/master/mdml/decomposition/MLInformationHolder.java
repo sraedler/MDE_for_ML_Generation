@@ -10,10 +10,6 @@ public class MLInformationHolder {
 	private Map<String, Object> properties = new HashMap<>();
 	private Map<String, Object> parts = new HashMap<>();
 
-	public MLInformationHolder() {
-		super();
-	}
-
 	public MLInformationHolder(String qualifiedName, String name) {
 		super();
 		this.qualifiedName = qualifiedName;

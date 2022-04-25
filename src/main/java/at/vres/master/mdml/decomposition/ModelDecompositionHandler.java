@@ -76,22 +76,14 @@ public class ModelDecompositionHandler {
                 attMap.put(key, p.getDefault());
             });
 
-            base_Class.getAssociations().forEach(assoc -> {
-                // System.out.println("ASSOCIATION: " + assoc);
-                // System.out.println("OWNER ASSOCIATION: " + assoc.getOwner());
-                assoc.getMembers().forEach(mem -> {
-                    Element owner = mem.getOwner();
-                    // System.out.println("MEMBER END: " + mem.getName());
-                    // System.out.println("OWNER OF MEMBER END: " + owner);
-                    if (owner != base_Class) {
-                        if (owner instanceof Class) {
-                            mlih.getParts().put(mem.getName(), ((Class) owner).getQualifiedName());
-                        }
-                        // String key = base_Class.getName() + "&&MERGE";
-                        // attMap.put(key, owner);
+            base_Class.getAssociations().forEach(assoc -> assoc.getMembers().forEach(mem -> {
+                Element owner = mem.getOwner();
+                if (owner != base_Class) {
+                    if (owner instanceof Class) {
+                        mlih.getParts().put(mem.getName(), ((Class) owner).getQualifiedName());
                     }
-                });
-            });
+                }
+            }));
             ml.putIfAbsent(base_Class.getQualifiedName(), mlih);
         } else {
             System.out.println("BASE CLASS IS NULL FOR: " + connectedBlock);
@@ -122,14 +114,10 @@ public class ModelDecompositionHandler {
                 if (association != null) {
                     association.getMemberEnds().forEach(memEnd -> {
                         Element owner = memEnd.getOwner();
-                        // System.out.println("MEMBER END: " + mem.getName());
-                        // System.out.println("OWNER OF MEMBER END: " + owner);
                         if (owner != base_Property) {
                             if (owner instanceof Class) {
                                 mlih.getParts().put(memEnd.getName(), ((Class) owner).getQualifiedName());
                             }
-                            // String key = base_Class.getName() + "&&MERGE";
-                            // attMap.put(key, owner);
                         }
                     });
                 }
@@ -154,9 +142,8 @@ public class ModelDecompositionHandler {
                 ps.getOutgoings().forEach(out -> {
                     Vertex target = out.getTarget();
 
-                    HashMap<String, Object> followVertex = followVertex(target, 0, attMap);
-                    // followVertex.forEach((key, value) -> System.out.println("{ Key " + key + ": "
-                    // + value + " }"));
+                    followVertex(target, 0, attMap);
+
                 });
             }
         });
@@ -175,18 +162,12 @@ public class ModelDecompositionHandler {
             System.out.println("\t\tStereotypes: ");
             value.getStereotypes().forEach((skey, svalue) -> {
                 System.out.println("\t\t\t" + skey + ": ");
-                svalue.forEach((akey, avalue) -> {
-                    System.out.println("\t\t\t\t" + akey + ": " + avalue);
-                });
+                svalue.forEach((akey, avalue) -> System.out.println("\t\t\t\t" + akey + ": " + avalue));
             });
             System.out.println("\t\tProperties: ");
-            value.getProperties().forEach((pkey, pvalue) -> {
-                System.out.println("\t\t\t" + pkey + ": " + pvalue);
-            });
+            value.getProperties().forEach((pkey, pvalue) -> System.out.println("\t\t\t" + pkey + ": " + pvalue));
             System.out.println("\t\tParts: ");
-            value.getParts().forEach((partKey, partValue) -> {
-                System.out.println("\t\t\t" + partKey + ": " + partValue);
-            });
+            value.getParts().forEach((partKey, partValue) -> System.out.println("\t\t\t" + partKey + ": " + partValue));
             System.out.println("}");
             System.out.println(
                     "------------------------------------------------------------------------------------------------------------------------------------");
@@ -203,28 +184,20 @@ public class ModelDecompositionHandler {
             System.out.println("\tStereotypes: ");
             value.getStereotypes().forEach((skey, svalue) -> {
                 System.out.println("\t\t" + skey + ": ");
-                svalue.forEach((akey, avalue) -> {
-                    System.out.println("\t\t\t" + akey + ": " + avalue);
-                });
+                svalue.forEach((akey, avalue) -> System.out.println("\t\t\t" + akey + ": " + avalue));
             });
             System.out.println("\tProperties: ");
-            value.getProperties().forEach((pkey, pvalue) -> {
-                System.out.println("\t\t" + pkey + ": " + pvalue);
-            });
+            value.getProperties().forEach((pkey, pvalue) -> System.out.println("\t\t" + pkey + ": " + pvalue));
             System.out.println("\tParts: ");
-            value.getParts().forEach((partKey, partValue) -> {
-                System.out.println("\t\t" + partKey + ": " + partValue);
-            });
+            value.getParts().forEach((partKey, partValue) -> System.out.println("\t\t" + partKey + ": " + partValue));
             System.out.println("}");
             System.out.println(
                     "------------------------------------------------------------------------------------------------------------------------------------");
         });
     }
 
-    public static HashMap<String, Object> followVertex(Vertex state, int depth, HashMap<String, Object> attMap) {
-        // System.out.println("VERTEX: " + state + ", depth: " + depth);
+    public static void followVertex(Vertex state, int depth, HashMap<String, Object> attMap) {
         state.getAppliedStereotypes().forEach(st -> {
-            // System.out.println(st.getName());
             Object value = state.getValue(st, "ML_Block");
             if (value instanceof ML) {
                 String mlKey = ((ML) value).getBase_Class().getQualifiedName();
@@ -236,6 +209,5 @@ public class ModelDecompositionHandler {
             }
         });
         state.getOutgoings().forEach(out -> followVertex(out.getTarget(), depth + 1, attMap));
-        return attMap;
     }
 }

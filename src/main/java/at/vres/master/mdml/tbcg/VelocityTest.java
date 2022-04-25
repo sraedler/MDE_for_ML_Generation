@@ -8,7 +8,6 @@ import org.apache.velocity.app.VelocityEngine;
 
 import java.io.IOException;
 import java.io.StringWriter;
-import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -27,9 +26,7 @@ public class VelocityTest {
         map.forEach((key, value) -> {
             value.getParts().forEach(context::put);
             value.getProperties().forEach(context::put);
-            value.getStereotypes().forEach((stKey, stVal) -> {
-                stVal.forEach(context::put);
-            });
+            value.getStereotypes().forEach((stKey, stVal) -> stVal.forEach(context::put));
         });
         try (StringWriter sw = new StringWriter()) {
             ve.mergeTemplate(templateName, "UTF-8", context, sw);

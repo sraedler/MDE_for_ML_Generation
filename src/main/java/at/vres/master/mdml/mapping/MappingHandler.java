@@ -1,6 +1,5 @@
 package at.vres.master.mdml.mapping;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.uml2.uml.Model;
