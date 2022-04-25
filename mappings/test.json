@@ -1,0 +1,10 @@
+{
+  "template": "external_test.vm",
+  "parameters": {
+    "var_name": "Block::DataStorage::CSV_Test3::name",
+    "path": "Block::DataStorage::CSV_Test3::path",
+    "delimiter": ",",
+    "encoding": "Block::DataStorage::CSV_Test3::encoding",
+    "skip_nr_of_lines":0
+  }
+}

@@ -1,8 +1,5 @@
 package at.vres.master.mdml.decomposition;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -12,24 +9,16 @@ import java.util.Map;
 import MLModel.ML;
 import at.vres.master.mdml.tbcg.VelocityTest;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.uml2.types.TypesFactory;
-import org.eclipse.uml2.types.TypesPackage;
 import org.eclipse.uml2.uml.Association;
 import org.eclipse.uml2.uml.Class;
 import org.eclipse.uml2.uml.Element;
-import org.eclipse.uml2.uml.Model;
-import org.eclipse.uml2.uml.NamedElement;
 import org.eclipse.uml2.uml.Property;
 import org.eclipse.uml2.uml.Pseudostate;
-import org.eclipse.uml2.uml.UMLPackage;
 import org.eclipse.uml2.uml.Vertex;
-import org.eclipse.uml2.uml.resource.UML212UMLExtendedMetaData;
-import org.eclipse.uml2.uml.resource.UMLResource;
 
 import MLModel.Attributes.ML_Attribute_Input;
-import MLModel.DataStorage.CSV;
 
-public class TestRunner {
+public class ModelDecompositionHandler {
 	private static final Map<String, MLInformationHolder> ml = new LinkedHashMap<>();
 	private static final List<MLInformationHolder> orderedML = new LinkedList<>();
 
@@ -176,12 +165,6 @@ public class TestRunner {
 		prettyPrintMLInformationHolderList(orderedML);
 		prettyPrintMLInformationHolderMap(ml);
 	}
-
-	public static void main(String[] args) {
-		//doExtraction();
-		VelocityTest.velTestRun("test.vm");
-	}
-
 
 	private static void prettyPrintMLInformationHolderMap(Map<String, MLInformationHolder> mapToPrint) {
 		mapToPrint.forEach((key, value) -> {
