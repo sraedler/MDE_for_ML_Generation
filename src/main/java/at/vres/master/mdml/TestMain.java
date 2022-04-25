@@ -12,7 +12,8 @@ public class TestMain {
 
     public static void main(String[] args) {
         Map<String, MLInformationHolder> stringMLInformationHolderMap = ModelDecompositionHandler.doExtraction(TEST_MODEL);
-        VelocityTest.generateFromExtractedInformation(stringMLInformationHolderMap, "test.vm");
+        //VelocityTest.generateFromExtractedInformation(stringMLInformationHolderMap, "test.vm");
+        //VelocityTest.velTestRun("test.vm");
     }
 
 

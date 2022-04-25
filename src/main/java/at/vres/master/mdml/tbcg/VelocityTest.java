@@ -63,16 +63,11 @@ public class VelocityTest {
         VelocityEngine ve = new VelocityEngine();
         ve.init(p);
 
-        //Template t = ve.getTemplate(templateName)
-        // import pandas as pd
-        //
-        //$var_name = pd.read_csv($path, sep=$delimiter, encoding=$encoding, skiprows=$nr_skip_lines
         VelocityContext context = new VelocityContext();
-        context.put("var_name", "df_one");
-        context.put("path", "here/test.csv");
-        context.put("delimiter", ",");
-        context.put("encoding", "UTF-8");
-        context.put("nr_skip_lines", 0);
+        context.put("df", "df");
+        context.put("y", "weather");
+        context.put("train_size", 0.7);
+        context.put("features", new String[]{"\"precipitation\", \"temp_max\", \"temp_min\", \"wind\""});
 
         try (StringWriter sw = new StringWriter()) {
             ve.mergeTemplate(templateName, "UTF-8", context, sw);
