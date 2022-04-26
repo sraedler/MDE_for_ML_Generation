@@ -49,7 +49,7 @@ dependencies {
     implementation("com.fasterxml.jackson.core:jackson-databind:2.13.2.2")
     // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core
     implementation("com.fasterxml.jackson.core:jackson-core:2.13.2")
-
+    //implementation("com.github.waikato:ipynb-creator:0.0.1-SNAPSHOT")
 
 }
 

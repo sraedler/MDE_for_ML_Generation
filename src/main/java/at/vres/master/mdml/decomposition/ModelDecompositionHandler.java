@@ -69,7 +69,8 @@ public class ModelDecompositionHandler {
                 String key = base_Class.getName() + "&&" + p.getName();
                 System.out.println("PROP TYPE: " + p.getType());
                 if (p.getType() instanceof Class) {
-                    mlih.getProperties().put(p.getName(), p.getType().getQualifiedName());
+                    // Will be handled when dealing with Associations
+                    //mlih.getProperties().put(p.getName(), p.getType().getQualifiedName());
                 } else {
                     mlih.getProperties().put(p.getName(), p.getDefault());
                 }

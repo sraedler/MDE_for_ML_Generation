@@ -21,6 +21,20 @@ public class DocOnceHandler {
 
     }
 
+    public static void ipynbGenerate(String pyCode, String aipynbPath) {
+        writeAipynbFile(pyCode, aipynbPath);
+        String testString = "python ipynb_gen/ipynb_generator.py " + aipynbPath;// + " NAME=\"Core Dump\" ADDRESS=\"Seg. Fault Ltd and Univ. of C. Space\" IC=2";
+        Runtime rt = Runtime.getRuntime();
+        try {
+            System.out.println("com = " + testString);
+            Process pr = rt.exec(testString);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
     public static void callDocOnce(String dotFileName) {
         Runtime rt = Runtime.getRuntime();
         try {
@@ -39,6 +53,20 @@ public class DocOnceHandler {
     public static void writeDotFile(String pyCode, String dotFilePath) {
         String py = wrapPythonCode(pyCode);
         try(BufferedWriter writer = new BufferedWriter(new FileWriter(dotFilePath))) {
+            writer.write(py);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static String wrapPythonCodeAipnyb(String pyCode) {
+        String startCell = "-----py\n";
+        return startCell + pyCode;
+    }
+
+    public static void writeAipynbFile(String pyCode, String aipynbFilePath) {
+        String py = wrapPythonCodeAipnyb(pyCode);
+        try(BufferedWriter writer = new BufferedWriter(new FileWriter(aipynbFilePath))) {
             writer.write(py);
         } catch (IOException e) {
             e.printStackTrace();
