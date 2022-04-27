@@ -146,26 +146,6 @@ public class VelocityTemplateHandler {
         return result;
     }
 
-    public static void velTestRun(String templateName) {
-        Properties p = new Properties();
-        p.setProperty("file.resource.loader.path", "C:\\Users\\rup\\IdeaProjects\\MasterModelDrivenML\\templates");
-        VelocityEngine ve = new VelocityEngine();
-        ve.init(p);
-
-        VelocityContext context = new VelocityContext();
-        context.put("df", "df");
-        context.put("y", "weather");
-        context.put("train_size", 0.7);
-        context.put("features", new String[]{"\"precipitation\", \"temp_max\", \"temp_min\", \"wind\""});
-
-        try (StringWriter sw = new StringWriter()) {
-            ve.mergeTemplate(templateName, "UTF-8", context, sw);
-            System.out.println("TEST: \n" + sw);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     public VelocityEngine getInternalEngine() {
         return internalEngine;
     }

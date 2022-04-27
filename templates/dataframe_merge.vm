@@ -1,3 +1,3 @@
 import pandas as pd
 
-${df} = pd.merge(left=${df_one}, right=${df_two}, left_on="${date}", right_on="${date_date}")
+${NewDFName} = pd.merge(left=${df_one}, right=${df_two}, left_on="${date}", right_on="${date_date}")

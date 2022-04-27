@@ -1,15 +1,16 @@
 package at.vres.master.mdml.utils;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.uml2.uml.Class;
 import org.eclipse.uml2.uml.Property;
+import org.eclipse.uml2.uml.Stereotype;
 
-import java.util.LinkedList;
 import java.util.List;
 
 public class ContextResolver {
 
     public static void appendListElementsAsString(StringBuilder sb, Object variable) {
-        if(!sb.isEmpty()) sb.append(",");
+        if (!sb.isEmpty()) sb.append(",");
         else sb.append("[");
         sb.append("\"").append(resolveVariableFromObject(variable)).append("\"");
     }
@@ -19,19 +20,35 @@ public class ContextResolver {
         if (variable != null) {
             result = variable.toString();
             if (variable instanceof List<?>) {
-                if(!((List<?>) variable).isEmpty()) {
+                if (!((List<?>) variable).isEmpty()) {
                     final StringBuilder sb = new StringBuilder();
-                    final List<String> vars = new LinkedList<>();
                     ((List<?>) variable).forEach(s -> appendListElementsAsString(sb, s));
                     result = sb.append("]").toString();
                 }
             } else if (variable instanceof Property) {
                 result = ((Property) variable).getName();
             } else if (variable instanceof Class) {
-                // TODO: will probably have to do more complex resolve here
-                result = ((Class) variable).getName();
+                result = resolveClassVariable((Class) variable);
             }
         }
         return result;
+    }
+
+    public static Boolean isStereotypeApplied(Class clazz, String stereoName) {
+        return clazz.getAppliedStereotypes().stream().anyMatch(s -> s.getName().equals(stereoName));
+    }
+
+    public static String resolveClassVariable(Class clazz) {
+        String result = "";
+        if (clazz != null) {
+            System.out.println("clazz = " + clazz.getName() + " -> Stereo CSV applied: " + isStereotypeApplied(clazz, "CSV"));
+            if (isStereotypeApplied(clazz, "CSV")) {
+                Stereotype stereo = clazz.getAppliedStereotypes().stream().filter(st -> st.getName().equals("CSV")).findFirst().orElse(null);
+                Object value = clazz.getValue(stereo, "VariableName");
+                result = value.toString();
+            }
+        }
+        return result;
+
     }
 }
