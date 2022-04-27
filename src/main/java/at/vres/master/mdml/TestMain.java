@@ -26,10 +26,9 @@ public class TestMain {
                 "train_test_split.vm"
         ));
         final StringBuilder sb = new StringBuilder();
-        vmList.forEach(template -> {
-            sb.append(VelocityTest.generateFromExtractedInformation(stringMLInformationHolderMap, template));
-        });
-        System.out.println("sb = " + sb.toString());
+        vmList.forEach(template -> sb.append(VelocityTest.generateFromExtractedInformation(stringMLInformationHolderMap, template)));
+        System.out.println("sb = " + sb);
+        ModelDecompositionHandler.prettyPrintMLInformationHolderMap(stringMLInformationHolderMap);
         //String s = VelocityTest.generateFromExtractedInformation(stringMLInformationHolderMap, "test.vm");
         /*
         if(!s.isBlank()) {
