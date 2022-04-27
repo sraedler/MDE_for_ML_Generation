@@ -1,5 +1,7 @@
 package at.vres.master.mdml.decomposition;
 
+import MLModel.ML;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,6 +11,10 @@ public class MLInformationHolder {
 	private Map<String, Map<String, Object>> stereotypes = new HashMap<>();
 	private Map<String, Object> properties = new HashMap<>();
 	private Map<String, Object> parts = new HashMap<>();
+	private ML connectedElement;
+
+	public MLInformationHolder() {
+	}
 
 	public MLInformationHolder(String qualifiedName, String name) {
 		super();
@@ -56,4 +62,11 @@ public class MLInformationHolder {
 		this.parts = parts;
 	}
 
+	public ML getConnectedElement() {
+		return connectedElement;
+	}
+
+	public void setConnectedElement(ML connectedElement) {
+		this.connectedElement = connectedElement;
+	}
 }

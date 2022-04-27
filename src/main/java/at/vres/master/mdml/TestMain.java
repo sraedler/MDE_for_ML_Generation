@@ -5,6 +5,8 @@ import at.vres.master.mdml.decomposition.ModelDecompositionHandler;
 import at.vres.master.mdml.tbcg.DocOnceHandler;
 import at.vres.master.mdml.tbcg.VelocityTest;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 public class TestMain {
@@ -13,6 +15,21 @@ public class TestMain {
 
     public static void main(String[] args) {
         Map<String, MLInformationHolder> stringMLInformationHolderMap = ModelDecompositionHandler.doExtraction(TEST_MODEL);
+        List<MLInformationHolder> list = ModelDecompositionHandler.getOrderedList();
+        List<String> vmList = new LinkedList<>(List.of(
+                "csv_load.vm",
+                "dataframe_merge.vm",
+                "date_conversion.vm",
+                "mae.vm",
+                "predict.vm",
+                "regression.vm",
+                "train_test_split.vm"
+        ));
+        final StringBuilder sb = new StringBuilder();
+        vmList.forEach(template -> {
+            sb.append(VelocityTest.generateFromExtractedInformation(stringMLInformationHolderMap, template));
+        });
+        System.out.println("sb = " + sb.toString());
         //String s = VelocityTest.generateFromExtractedInformation(stringMLInformationHolderMap, "test.vm");
         /*
         if(!s.isBlank()) {

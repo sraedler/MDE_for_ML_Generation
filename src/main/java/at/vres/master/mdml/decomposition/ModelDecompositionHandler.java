@@ -9,18 +9,61 @@ import java.util.Map;
 import MLModel.ML;
 import at.vres.master.mdml.utils.EMFResourceLoader;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.uml2.uml.Association;
-import org.eclipse.uml2.uml.Class;
-import org.eclipse.uml2.uml.Element;
-import org.eclipse.uml2.uml.Property;
-import org.eclipse.uml2.uml.Pseudostate;
-import org.eclipse.uml2.uml.Vertex;
+import org.eclipse.uml2.uml.*;
 
 import MLModel.Attributes.ML_Attribute_Input;
+import org.eclipse.uml2.uml.Class;
 
 public class ModelDecompositionHandler {
     private static final Map<String, MLInformationHolder> ml = new LinkedHashMap<>();
     private static final List<MLInformationHolder> orderedML = new LinkedList<>();
+
+    public static List<MLInformationHolder> getOrderedList() {
+        return orderedML;
+    }
+
+    private static MLInformationHolder getBaseElementFromMLElement(ML mlElement) {
+        MLInformationHolder mlih = new MLInformationHolder();
+        if(mlElement.getBase_Class() != null) {
+            Class base_class = mlElement.getBase_Class();
+            mlih.setQualifiedName(base_class.getQualifiedName());
+            mlih.setName(base_class.getName());
+        } else if(mlElement instanceof ML_Attribute_Input) {
+            if(((ML_Attribute_Input) mlElement).getBase_Property() != null) {
+                Property base_property = ((ML_Attribute_Input) mlElement).getBase_Property();
+                mlih.setQualifiedName(base_property.getQualifiedName());
+                mlih.setName(base_property.getName());
+
+            } else {
+                System.out.println("Is ML_Attribute_Input, but base_Property is null.");
+            }
+        } else {
+            System.out.println("Has neither base class nor property!");
+        }
+        return mlih;
+    }
+
+    private static void handleStereotype(List<String> stereosToIgnore,List<String> stereoAttributesToIgnore, MLInformationHolder toAddInfoTo, Stereotype stereo, NamedElement baseElement) {
+        if(!stereosToIgnore.contains(stereo.getName())) {
+            final Map<String, Object> attributes = new HashMap<>();
+            stereo.getAllAttributes().forEach(att -> {
+                handleStereotypeAttribute(att, stereoAttributesToIgnore, baseElement, stereo);
+            });
+        }
+    }
+
+    private static void handleStereotypeAttribute(Property attribute, List<String> stereoAttributesToIgnore, NamedElement baseElement, Stereotype stereo) {
+        if(!stereoAttributesToIgnore.contains(attribute.getName())) {
+            String name = baseElement.getName();
+            Object value = baseElement.getValue(stereo, attribute.getName());
+
+        }
+    }
+
+    private static void handleStereotypeAttributeValue(Object value) {
+        if(value instanceof ML_Attribute_Input) {
+        }
+    }
 
     private static void addStereotypeAttributesToHashMap(HashMap<String, Object> attMap,
                                                          ML connectedBlock) {
@@ -37,17 +80,17 @@ public class ModelDecompositionHandler {
                             Object value = base_Class.getValue(s, a.getName());
                             if (value instanceof ML_Attribute_Input) {
                                 attributes.put(a.getName(),
-                                        ((ML_Attribute_Input) value).getBase_Property().getQualifiedName());
+                                        ((ML_Attribute_Input) value).getBase_Property());
                             } else if (value instanceof List<?>) {
                                 List<?> vl = (List<?>) value;
                                 if (!vl.isEmpty()) {
                                     if (vl.get(0) instanceof ML_Attribute_Input) {
-                                        List<String> quali = new LinkedList<>();
+                                        List<Property> props = new LinkedList<>();
                                         vl.forEach(mla -> {
                                             ML_Attribute_Input attIn = (ML_Attribute_Input) mla;
-                                            quali.add(attIn.getBase_Property().getQualifiedName());
+                                            props.add(attIn.getBase_Property());
                                         });
-                                        attributes.put(a.getName(), quali);
+                                        attributes.put(a.getName(), props);
                                     } else {
                                         attributes.put(a.getName(), value);
                                     }
@@ -63,6 +106,7 @@ public class ModelDecompositionHandler {
                         // System.out.println("TEST VALUE " + a.getName() + ": " + value);
                     });
                     mlih.getStereotypes().put(s.getName(), attributes);
+                    mlih.setConnectedElement(connectedBlock);
                 }
             });
             base_Class.getOwnedAttributes().forEach(p -> {
@@ -79,9 +123,15 @@ public class ModelDecompositionHandler {
 
             base_Class.getAssociations().forEach(assoc -> assoc.getMembers().forEach(mem -> {
                 Element owner = mem.getOwner();
+                assoc.getNavigableOwnedEnds().forEach( nav -> {
+                    Property opposite = nav.getOpposite();
+                    Property otherEnd = nav.getOtherEnd();
+                    System.out.println("otherEnd = " + otherEnd);
+                    System.out.println("opposite = " + opposite);
+                });
                 if (owner != base_Class) {
                     if (owner instanceof Class) {
-                        mlih.getParts().put(mem.getName(), ((Class) owner).getQualifiedName());
+                        mlih.getParts().put(mem.getName(), owner);
                     }
                 }
             }));
@@ -113,11 +163,17 @@ public class ModelDecompositionHandler {
                 mlih.getProperties().putIfAbsent(base_Property.getName(), base_Property.getDefault());
                 Association association = base_Property.getAssociation();
                 if (association != null) {
+                    association.getNavigableOwnedEnds().forEach( nav -> {
+                        Property opposite = nav.getOpposite();
+                        Property otherEnd = nav.getOtherEnd();
+                        System.out.println("otherEnd = " + otherEnd);
+                        System.out.println("opposite = " + opposite);
+                    });
                     association.getMemberEnds().forEach(memEnd -> {
                         Element owner = memEnd.getOwner();
                         if (owner != base_Property) {
                             if (owner instanceof Class) {
-                                mlih.getParts().put(memEnd.getName(), ((Class) owner).getQualifiedName());
+                                mlih.getParts().put(memEnd.getName(), owner);
                             }
                         }
                     });
@@ -169,6 +225,7 @@ public class ModelDecompositionHandler {
             value.getProperties().forEach((pkey, pvalue) -> System.out.println("\t\t\t" + pkey + ": " + pvalue));
             System.out.println("\t\tParts: ");
             value.getParts().forEach((partKey, partValue) -> System.out.println("\t\t\t" + partKey + ": " + partValue));
+            System.out.println("\t\tConnected ML Element: " + value.getConnectedElement());
             System.out.println("}");
             System.out.println(
                     "------------------------------------------------------------------------------------------------------------------------------------");
