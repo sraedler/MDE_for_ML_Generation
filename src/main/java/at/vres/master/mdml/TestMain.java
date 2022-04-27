@@ -2,8 +2,7 @@ package at.vres.master.mdml;
 
 import at.vres.master.mdml.decomposition.MLInformationHolder;
 import at.vres.master.mdml.decomposition.ModelDecompositionHandler;
-import at.vres.master.mdml.tbcg.DocOnceHandler;
-import at.vres.master.mdml.tbcg.VelocityTest;
+import at.vres.master.mdml.tbcg.VelocityTemplateHandler;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -26,7 +25,7 @@ public class TestMain {
                 "train_test_split.vm"
         ));
         final StringBuilder sb = new StringBuilder();
-        vmList.forEach(template -> sb.append(VelocityTest.generateFromExtractedInformation(stringMLInformationHolderMap, template)));
+        vmList.forEach(template -> sb.append(VelocityTemplateHandler.generateFromExtractedInformation(stringMLInformationHolderMap, template)));
         System.out.println("sb = " + sb);
         ModelDecompositionHandler.prettyPrintMLInformationHolderMap(stringMLInformationHolderMap);
         //String s = VelocityTest.generateFromExtractedInformation(stringMLInformationHolderMap, "test.vm");

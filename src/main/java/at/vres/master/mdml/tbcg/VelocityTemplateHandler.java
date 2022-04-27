@@ -13,16 +13,27 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-public class VelocityTest {
+public class VelocityTemplateHandler {
     private static final String VELOCITY_TEMPLATE_PATH_KEY = "file.resource.loader.path";
+    private final List<String> templateNames = new LinkedList<>();
 
     private static Properties getDefaultProperties() {
         Properties p = new Properties();
         p.setProperty(VELOCITY_TEMPLATE_PATH_KEY, "C:\\Users\\rup\\IdeaProjects\\MasterModelDrivenML\\templates");
         return p;
+    }
+
+    public List<String> getTemplateNames() {
+        return templateNames;
+    }
+
+    public void addTemplate(String templateName) {
+        templateNames.add(templateName);
     }
 
     public static String generateFromExtractedInformation(Map<String, MLInformationHolder> map, String templateName) {
