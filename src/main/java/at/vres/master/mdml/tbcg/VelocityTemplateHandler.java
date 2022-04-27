@@ -3,12 +3,14 @@ package at.vres.master.mdml.tbcg;
 import at.vres.master.mdml.decomposition.MLInformationHolder;
 import at.vres.master.mdml.mapping.JSONInformationHolder;
 import at.vres.master.mdml.mapping.MappingHandler;
+import at.vres.master.mdml.utils.ContextResolver;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.context.Context;
 import org.apache.velocity.runtime.RuntimeInstance;
 import org.apache.velocity.runtime.parser.ParseException;
 import org.apache.velocity.runtime.parser.node.SimpleNode;
+import org.eclipse.uml2.uml.Property;
 
 import java.io.*;
 import java.security.KeyException;
@@ -32,11 +34,11 @@ public class VelocityTemplateHandler {
     public String createContextInternalAndMerge(MLInformationHolder data, String templateName, String encoding) {
         Writer writer = new StringWriter();
         VelocityContext context = new VelocityContext();
-        data.getParts().forEach(context::put);
-        data.getProperties().forEach(context::put);
-        data.getStereotypes().forEach((stKey, stVal) -> stVal.forEach(context::put));
+        data.getParts().forEach((key, value) -> context.put(key, ContextResolver.resolveVariableFromObject(value)));
+        data.getProperties().forEach((key, value) -> context.put(key, ContextResolver.resolveVariableFromObject(value)));
+        data.getStereotypes().forEach((stKey, stVal) -> stVal.forEach((valKey, Valvalue) -> context.put(valKey, ContextResolver.resolveVariableFromObject(Valvalue))));
         contexts.put(context, templateName);
-        if(internalEngine != null) internalEngine.mergeTemplate(templateName, encoding, context, writer);
+        if (internalEngine != null) internalEngine.mergeTemplate(templateName, encoding, context, writer);
         else throw new NullPointerException("The internal engine has not been initialized!");
         return writer.toString();
     }
@@ -45,7 +47,8 @@ public class VelocityTemplateHandler {
         VelocityContext context = new VelocityContext();
         data.forEach(context::put);
         contexts.put(context, templateName);
-        if(externalEngines.containsKey(templateFolder)) externalEngines.get(templateFolder).mergeTemplate(templateName, encoding, context, writer);
+        if (externalEngines.containsKey(templateFolder))
+            externalEngines.get(templateFolder).mergeTemplate(templateName, encoding, context, writer);
         else throw new KeyException("No VelocityEngine initialized for the given template folder path!");
         return writer;
     }

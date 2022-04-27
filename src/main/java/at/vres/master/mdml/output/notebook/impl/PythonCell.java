@@ -1,7 +1,7 @@
-package at.vres.master.mdml.model.impl;
+package at.vres.master.mdml.output.notebook.impl;
 
-import at.vres.master.mdml.model.CellCategory;
-import at.vres.master.mdml.model.ICell;
+import at.vres.master.mdml.output.notebook.CellCategory;
+import at.vres.master.mdml.output.notebook.ICell;
 
 import java.util.LinkedList;
 import java.util.List;

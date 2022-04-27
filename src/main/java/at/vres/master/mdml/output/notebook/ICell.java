@@ -1,4 +1,4 @@
-package at.vres.master.mdml.model;
+package at.vres.master.mdml.output.notebook;
 
 import java.util.List;
 
