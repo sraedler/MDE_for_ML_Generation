@@ -5,7 +5,12 @@ import at.vres.master.mdml.mapping.JSONInformationHolder;
 import at.vres.master.mdml.mapping.MappingHandler;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
+import org.apache.velocity.runtime.RuntimeInstance;
+import org.apache.velocity.runtime.parser.ParseException;
+import org.apache.velocity.runtime.parser.node.SimpleNode;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.Map;
@@ -29,10 +34,20 @@ public class VelocityTest {
             value.getProperties().forEach(context::put);
             value.getStereotypes().forEach((stKey, stVal) -> stVal.forEach(context::put));
         });
+
         String result = "";
         try (StringWriter sw = new StringWriter()) {
             ve.mergeTemplate(templateName, "UTF-8", context, sw);
-            System.out.println("TEST: \n" + sw);
+            RuntimeInstance ri = new RuntimeInstance();
+            final String absPath = "C:\\Users\\rup\\IdeaProjects\\MasterModelDrivenML\\templates\\" + templateName;
+            try {
+                SimpleNode node = ri.parse( new FileReader(absPath), ve.getTemplate(templateName) );
+                TemplateVisitor tv = new TemplateVisitor();
+                Object visit = tv.visit(node, null);
+                System.out.println("visit = " + visit);
+            } catch (ParseException | FileNotFoundException e) {
+                e.printStackTrace();
+            }
             result = sw.toString();
         } catch (IOException e) {
             e.printStackTrace();
