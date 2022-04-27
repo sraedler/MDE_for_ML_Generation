@@ -1,0 +1,3 @@
+from sklearn.tree import DecisionTreeClassifier
+classifier = DecisionTreeClassifier(criterion = ${criterion}, random_state = ${random_state})
+classifier.fit(${X_train}, ${y_train})

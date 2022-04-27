@@ -1,0 +1,14 @@
+{
+  "templateFolder": "C:\\Users\\rup\\IdeaProjects\\MasterModelDrivenML\\external_templates",
+  "mappings": [
+    {
+      "template": "decision_tree.vm",
+      "parameters": {
+        "criterion": "entropy",
+        "random_state": 0,
+        "X_train": "UC1_Weather::03-DataDescription,InterfacesAndBlackBoxML::04_ML_Algorithm::TrainSplit",
+        "y_train": ""
+      }
+    }
+  ]
+}
