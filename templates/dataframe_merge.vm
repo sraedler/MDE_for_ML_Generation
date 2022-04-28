@@ -1,3 +1,4 @@
 import pandas as pd
 
-${NewDFName} = pd.merge(left=${df_one}, right=${df_two}, left_on="${date}", right_on="${date_date}")
+merge_list = ${MergeOn}
+${NewDFName} = pd.merge(left=${df_one}, right=${df_two}, left_on=merge_list[0], right_on=merge_list[1], how="${How}")

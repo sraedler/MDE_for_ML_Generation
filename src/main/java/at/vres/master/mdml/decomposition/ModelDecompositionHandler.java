@@ -59,6 +59,16 @@ public class ModelDecompositionHandler {
         }
     }
 
+    public static void test(String modelPath) {
+        ResourceSet res = EMFResourceLoader.fullLoadWithModel(modelPath);
+        res.getAllContents().forEachRemaining(con -> {
+            if(con instanceof Element) {
+                Element el = (Element)con;
+                el.getAppliedStereotypes().stream().filter(s -> s.getName().equals("ML")).findFirst().orElse(null);
+            }
+        });
+    }
+
     private static void addStereotypeAttributesToHashMap(HashMap<String, Object> attMap,
                                                          ML connectedBlock) {
         Class base_Class = connectedBlock.getBase_Class();
@@ -256,8 +266,10 @@ public class ModelDecompositionHandler {
 
     public static void followVertex(Vertex state, int depth, HashMap<String, Object> attMap) {
         state.getAppliedStereotypes().forEach(st -> {
+            System.out.println("state = " + state.getName());
             Object value = state.getValue(st, "ML_Block");
             if (value instanceof ML) {
+                System.out.println("ML INSTANCE");
                 String mlKey = ((ML) value).getBase_Class().getQualifiedName();
                 if (ml.containsKey(mlKey)) {
                     orderedML.add(ml.get(mlKey));

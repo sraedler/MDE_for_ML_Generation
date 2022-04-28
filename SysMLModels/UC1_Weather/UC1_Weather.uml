@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xmi:XMI xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Blocks="http://www.eclipse.org/papyrus/sysml/1.6/SysML/Blocks" xmlns:MLModel.AlgorithmWorkflow="http:///MLModel/AlgorithmWorkflow.ecore" xmlns:MLModel.Algorithms="http:///MLModel/Algorithms.ecore" xmlns:MLModel.Attributes="http:///MLModel/Attributes.ecore" xmlns:MLModel.DataStorage="http:///MLModel/DataStorage.ecore" xmlns:MLModel.NotebookOutput="http:///MLModel/NotebookOutput.ecore" xmlns:MLModel.PreProcessing="http:///MLModel/PreProcessing.ecore" xmlns:PortsAndFlows="http://www.eclipse.org/papyrus/sysml/1.6/SysML/PortsAndFlows" xmlns:Requirements="http://www.eclipse.org/papyrus/sysml/1.6/SysML/Requirements" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xsi:schemaLocation="http://www.eclipse.org/papyrus/sysml/1.6/SysML/Blocks http://www.eclipse.org/papyrus/sysml/1.6/SysML#//blocks http:///MLModel/AlgorithmWorkflow.ecore http:///MLModel.ecore#//AlgorithmWorkflow http:///MLModel/Algorithms.ecore http:///MLModel.ecore#//Algorithms http:///MLModel/Attributes.ecore http:///MLModel.ecore#//Attributes http:///MLModel/DataStorage.ecore http:///MLModel.ecore#//DataStorage http:///MLModel/NotebookOutput.ecore http:///MLModel.ecore#//NotebookOutput http:///MLModel/PreProcessing.ecore http:///MLModel.ecore#//PreProcessing http://www.eclipse.org/papyrus/sysml/1.6/SysML/PortsAndFlows http://www.eclipse.org/papyrus/sysml/1.6/SysML#//portsandflows http://www.eclipse.org/papyrus/sysml/1.6/SysML/Requirements http://www.eclipse.org/papyrus/sysml/1.6/SysML#//requirements">
+<xmi:XMI xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Blocks="http://www.eclipse.org/papyrus/sysml/1.6/SysML/Blocks" xmlns:MLModel.AlgorithmWorkflow="http:///MLModel/AlgorithmWorkflow.ecore" xmlns:MLModel.Algorithms="http:///MLModel/Algorithms.ecore" xmlns:MLModel.Attributes="http:///MLModel/Attributes.ecore" xmlns:MLModel.DataStorage="http:///MLModel/DataStorage.ecore" xmlns:MLModel.NotebookOutput="http:///MLModel/NotebookOutput.ecore" xmlns:MLModel.PreProcessing="http:///MLModel/PreProcessing.ecore" xmlns:PortsAndFlows="http://www.eclipse.org/papyrus/sysml/1.6/SysML/PortsAndFlows" xmlns:Requirements="http://www.eclipse.org/papyrus/sysml/1.6/SysML/Requirements" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xsi:schemaLocation="http://www.eclipse.org/papyrus/sysml/1.6/SysML/Blocks http://www.eclipse.org/papyrus/sysml/1.6/SysML#//blocks http:///MLModel/AlgorithmWorkflow.ecore pathmap://ML_METAMODEL/ML.profile.uml#_ozLSB7sFEeyYkbcllcRhZQ http:///MLModel/Algorithms.ecore http:///MLModel.ecore#//Algorithms http:///MLModel/Attributes.ecore http:///MLModel.ecore#//Attributes http:///MLModel/DataStorage.ecore http:///MLModel.ecore#//DataStorage http:///MLModel/NotebookOutput.ecore http:///MLModel.ecore#//NotebookOutput http:///MLModel/PreProcessing.ecore http:///MLModel.ecore#//PreProcessing http://www.eclipse.org/papyrus/sysml/1.6/SysML/PortsAndFlows http://www.eclipse.org/papyrus/sysml/1.6/SysML#//portsandflows http://www.eclipse.org/papyrus/sysml/1.6/SysML/Requirements http://www.eclipse.org/papyrus/sysml/1.6/SysML#//requirements">
   <uml:Model xmi:id="_xXes8K8oEeyY5NKIBFQ1SA" name="UC1_Weather">
     <packageImport xmi:type="uml:PackageImport" xmi:id="_xaYP8q8oEeyY5NKIBFQ1SA">
       <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#_0"/>
@@ -265,6 +265,16 @@
           </eAnnotations>
           <ownedEnd xmi:type="uml:Property" xmi:id="_Xs5jUa9jEeyMp6YloUW0pA" name="format_date" type="_VfqPsK9jEeyMp6YloUW0pA" association="_Xs4VMK9jEeyMp6YloUW0pA"/>
         </packagedElement>
+        <packagedElement xmi:type="uml:Class" xmi:id="_ketSsMbtEeyb9OtnLsQAbA" name="ConfBlock">
+          <ownedAttribute xmi:type="uml:Property" xmi:id="_n-BSMMbtEeyb9OtnLsQAbA" name="skip">
+            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Integer"/>
+            <defaultValue xmi:type="uml:LiteralInteger" xmi:id="_r6STcMbtEeyb9OtnLsQAbA" value="1"/>
+          </ownedAttribute>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="_0AwrUMbtEeyb9OtnLsQAbA" name="pathCSV">
+            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+            <defaultValue xmi:type="uml:LiteralString" xmi:id="_6IKucMbtEeyb9OtnLsQAbA" value="C:\Users\rup\IdeaProjects\MasterModelDrivenML\storage\tempData.csv"/>
+          </ownedAttribute>
+        </packagedElement>
       </packagedElement>
       <packagedElement xmi:type="uml:Package" xmi:id="_kPjvcK9fEeyMp6YloUW0pA" name="04_ML_Algorithm">
         <packagedElement xmi:type="uml:Dependency" xmi:id="_udBB8K9fEeyMp6YloUW0pA" client="_kPjvcK9fEeyMp6YloUW0pA" supplier="_iNZqcK9fEeyMp6YloUW0pA"/>
@@ -367,7 +377,6 @@
           <transition xmi:type="uml:Transition" xmi:id="_z8dNQK_7Eey1R5-2CjLPMg" source="_jK7JwK_7Eey1R5-2CjLPMg" target="_xC3GwK_3EeyP_5ArodVN4A"/>
           <transition xmi:type="uml:Transition" xmi:id="_1bpIEK_7Eey1R5-2CjLPMg" source="_xC3GwK_3EeyP_5ArodVN4A" target="_uvq_UK_7Eey1R5-2CjLPMg"/>
           <transition xmi:type="uml:Transition" xmi:id="_B5zR4K_8Eey1R5-2CjLPMg" source="_uvq_UK_7Eey1R5-2CjLPMg" target="_76ZUMK_7Eey1R5-2CjLPMg"/>
-          <transition xmi:type="uml:Transition" xmi:id="_d8ymEK_9Eey1R5-2CjLPMg" source="_76ZUMK_7Eey1R5-2CjLPMg" target="_bg4kUK_9Eey1R5-2CjLPMg"/>
           <transition xmi:type="uml:Transition" xmi:id="_fu0kYK_9Eey1R5-2CjLPMg" source="_bg4kUK_9Eey1R5-2CjLPMg" target="_euJKgK_9Eey1R5-2CjLPMg"/>
           <transition xmi:type="uml:Transition" xmi:id="_vzWX8K_9Eey1R5-2CjLPMg" source="_euJKgK_9Eey1R5-2CjLPMg" target="_e_gAQK_9Eey1R5-2CjLPMg"/>
           <transition xmi:type="uml:Transition" xmi:id="_wOgp8K_9Eey1R5-2CjLPMg" source="_e_gAQK_9Eey1R5-2CjLPMg" target="_fNKo0K_9Eey1R5-2CjLPMg"/>
@@ -375,6 +384,8 @@
           <transition xmi:type="uml:Transition" xmi:id="_Wp5x0K_-Eey1R5-2CjLPMg" source="_8n4aYK_9Eey1R5-2CjLPMg" target="_IwX2MK_-Eey1R5-2CjLPMg"/>
           <transition xmi:type="uml:Transition" xmi:id="_XHzOwK_-Eey1R5-2CjLPMg" source="_IwX2MK_-Eey1R5-2CjLPMg" target="_9HYZ0K_9Eey1R5-2CjLPMg"/>
           <transition xmi:type="uml:Transition" xmi:id="_YNV6gK_-Eey1R5-2CjLPMg" source="_9HYZ0K_9Eey1R5-2CjLPMg" target="_XzDyQK_-Eey1R5-2CjLPMg"/>
+          <transition xmi:type="uml:Transition" xmi:id="_D4qYIMbuEeyb9OtnLsQAbA" source="_76ZUMK_7Eey1R5-2CjLPMg" target="_BEau4MbuEeyb9OtnLsQAbA"/>
+          <transition xmi:type="uml:Transition" xmi:id="_ETcPoMbuEeyb9OtnLsQAbA" source="_BEau4MbuEeyb9OtnLsQAbA" target="_bg4kUK_9Eey1R5-2CjLPMg"/>
           <subvertex xmi:type="uml:State" xmi:id="_xC3GwK_3EeyP_5ArodVN4A" name="Load_CSV1"/>
           <subvertex xmi:type="uml:State" xmi:id="_uvq_UK_7Eey1R5-2CjLPMg" name="Load_CSV2"/>
           <subvertex xmi:type="uml:State" xmi:id="_76ZUMK_7Eey1R5-2CjLPMg" name="Convert_Date"/>
@@ -385,6 +396,7 @@
           <subvertex xmi:type="uml:State" xmi:id="_8n4aYK_9Eey1R5-2CjLPMg" name="Predict_DecisionTree"/>
           <subvertex xmi:type="uml:State" xmi:id="_9HYZ0K_9Eey1R5-2CjLPMg" name="MAE"/>
           <subvertex xmi:type="uml:State" xmi:id="_IwX2MK_-Eey1R5-2CjLPMg" name="Predict_RandomForest"/>
+          <subvertex xmi:type="uml:State" xmi:id="_BEau4MbuEeyb9OtnLsQAbA" name="MyState"/>
         </region>
       </packagedElement>
     </packagedElement>
@@ -551,4 +563,7 @@
   <MLModel.AlgorithmWorkflow:ML_Block_Connection xmi:id="_3NWrYK_9Eey1R5-2CjLPMg" base_State="_fNKo0K_9Eey1R5-2CjLPMg" ML_Block="_PaxMELmKEeyIM-HDIDpVnQ"/>
   <MLModel.AlgorithmWorkflow:ML_Block_Connection xmi:id="_-pS4gK_9Eey1R5-2CjLPMg" base_State="_9HYZ0K_9Eey1R5-2CjLPMg" ML_Block="_iEXyYK_wEeyP_5ArodVN4A"/>
   <MLModel.AlgorithmWorkflow:ML_Block_Connection xmi:id="_DK8ewK_-Eey1R5-2CjLPMg" base_State="_8n4aYK_9Eey1R5-2CjLPMg" ML_Block="_K__vcK_-Eey1R5-2CjLPMg"/>
+  <Blocks:Block xmi:id="_ke_mkMbtEeyb9OtnLsQAbA" base_Class="_ketSsMbtEeyb9OtnLsQAbA"/>
+  <MLModel.DataStorage:BlackBox_Storage xmi:id="_kvw0MMbyEeyxNJS_XMMTpQ" base_Class="_ketSsMbtEeyb9OtnLsQAbA"/>
+  <MLModel.AlgorithmWorkflow:ML_Block_Connection xmi:id="_nFIwIMbyEeyxNJS_XMMTpQ" base_State="_BEau4MbuEeyb9OtnLsQAbA" ML_Block="_kvw0MMbyEeyxNJS_XMMTpQ"/>
 </xmi:XMI>

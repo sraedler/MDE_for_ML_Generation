@@ -10,7 +10,9 @@ import org.apache.velocity.context.Context;
 import org.apache.velocity.runtime.RuntimeInstance;
 import org.apache.velocity.runtime.parser.ParseException;
 import org.apache.velocity.runtime.parser.node.SimpleNode;
+import org.eclipse.uml2.uml.Class;
 import org.eclipse.uml2.uml.Property;
+import org.eclipse.uml2.uml.Stereotype;
 
 import java.io.*;
 import java.security.KeyException;
@@ -22,6 +24,7 @@ public class VelocityTemplateHandler {
     private VelocityEngine internalEngine;
     private final Map<String, VelocityEngine> externalEngines = new HashMap<>();
     private final Map<Context, String> contexts = new HashMap<>();
+    private Map<String, MLInformationHolder> modelInformation = new HashMap<>();
 
     public void initInternalEngine(String internalTemplateFolderPath) {
         VelocityEngine ve = new VelocityEngine();
@@ -31,12 +34,37 @@ public class VelocityTemplateHandler {
         internalEngine = ve;
     }
 
+    public void addMLInformationToContext(MLInformationHolder data, Context context) {
+        data.getParts().forEach((key, value) -> {
+            context.put(key, ContextResolver.resolveVariableFromObject(value));
+            String qualifiedName = ((Class) value).getQualifiedName();
+            if (modelInformation.containsKey(qualifiedName)) {
+                MLInformationHolder mlInformationHolder = modelInformation.get(qualifiedName);
+                addMLInformationToContext(mlInformationHolder, context);
+            }
+        });
+        data.getProperties().forEach((key, value) -> {
+            context.put(key, ContextResolver.resolveVariableFromObject(value));
+            System.out.println("PROP ADDING FOR: " + key + " WITH VALUE: " + value);
+            if (value instanceof Property) {
+                if(((Property)value).getAppliedStereotypes().stream().anyMatch(s -> s.getName().equals("ML_Attribute_Input"))) {
+                    String qualifiedName = ((Property) value).getQualifiedName();
+                    System.out.println("\tSTEREO MATCH: " + qualifiedName);
+                    MLInformationHolder mlInformationHolder = modelInformation.get(qualifiedName);
+                    if(mlInformationHolder != null) {
+                        System.out.println("AAAAA" + key + ": " + mlInformationHolder.getQualifiedName());
+                        addMLInformationToContext(mlInformationHolder, context);
+                    }
+                }
+            }
+        });
+        data.getStereotypes().forEach((stKey, stVal) -> stVal.forEach((valKey, Valvalue) -> context.put(valKey, ContextResolver.resolveVariableFromObject(Valvalue))));
+    }
+
     public String createContextInternalAndMerge(MLInformationHolder data, String templateName, String encoding) {
         Writer writer = new StringWriter();
         VelocityContext context = new VelocityContext();
-        data.getParts().forEach((key, value) -> context.put(key, ContextResolver.resolveVariableFromObject(value)));
-        data.getProperties().forEach((key, value) -> context.put(key, ContextResolver.resolveVariableFromObject(value)));
-        data.getStereotypes().forEach((stKey, stVal) -> stVal.forEach((valKey, Valvalue) -> context.put(valKey, ContextResolver.resolveVariableFromObject(Valvalue))));
+        addMLInformationToContext(data, context);
         contexts.put(context, templateName);
         if (internalEngine != null) internalEngine.mergeTemplate(templateName, encoding, context, writer);
         else throw new NullPointerException("The internal engine has not been initialized!");
@@ -156,5 +184,13 @@ public class VelocityTemplateHandler {
 
     public Map<Context, String> getContexts() {
         return contexts;
+    }
+
+    public Map<String, MLInformationHolder> getModelInformation() {
+        return modelInformation;
+    }
+
+    public void setModelInformation(Map<String, MLInformationHolder> modelInformation) {
+        this.modelInformation = modelInformation;
     }
 }

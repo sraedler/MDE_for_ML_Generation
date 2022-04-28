@@ -1,0 +1,17 @@
+{
+  "templateFolder": "C:\\Users\\rup\\IdeaProjects\\MasterModelDrivenML\\external_templates",
+  "mappings": [
+    {
+      "template": "external_csv.vm",
+      "mlConnection": "MyState",
+      "parameters": {
+        "FrameName":"myFrame",
+        "delim":"#",
+        "enc":"CSV_2&&&CSV&&Encoding",
+        "skip": "ConfBlock&&skip",
+        "path": "ConfBlock&&pathCSV"
+      }
+    }
+  ]
+
+}
