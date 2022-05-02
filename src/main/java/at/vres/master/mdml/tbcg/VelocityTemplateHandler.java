@@ -71,7 +71,7 @@ public class VelocityTemplateHandler {
         return writer.toString();
     }
 
-    public Writer createContextExternalAndMerge(Map<String, Object> data, String templateName, String encoding, String templateFolder, Writer writer) throws KeyException {
+    public Writer createContextExternalAndMerge(Map<String, String> data, String templateName, String encoding, String templateFolder, Writer writer) throws KeyException {
         VelocityContext context = new VelocityContext();
         data.forEach(context::put);
         contexts.put(context, templateName);

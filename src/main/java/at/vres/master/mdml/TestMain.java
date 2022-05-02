@@ -2,10 +2,13 @@ package at.vres.master.mdml;
 
 import at.vres.master.mdml.decomposition.MLInformationHolder;
 import at.vres.master.mdml.decomposition.ModelDecompositionHandler;
+import at.vres.master.mdml.mapping.MappingHandler;
+import at.vres.master.mdml.mapping.SimpleJSONInfoHolder;
 import at.vres.master.mdml.tbcg.VelocityTemplateHandler;
 
 import java.io.StringWriter;
 import java.io.Writer;
+import java.security.KeyException;
 import java.util.*;
 
 public class TestMain {
@@ -30,7 +33,7 @@ public class TestMain {
     public static String testInternalEngineLoad() {
         Map<String, MLInformationHolder> stringMLInformationHolderMap = ModelDecompositionHandler.doExtraction(TEST_MODEL);
         //ModelDecompositionHandler.prettyPrintMLInformationHolderMap(stringMLInformationHolderMap);
-        ModelDecompositionHandler.prettyPrintMLInformationHolderList(ModelDecompositionHandler.getOrderedList());
+        //ModelDecompositionHandler.prettyPrintMLInformationHolderList(ModelDecompositionHandler.getOrderedList());
         VelocityTemplateHandler vth = new VelocityTemplateHandler();
         vth.setModelInformation(stringMLInformationHolderMap);
         vth.initInternalEngine(TEST_TEMPLATE_PATH);
@@ -41,8 +44,26 @@ public class TestMain {
                 sb.append(vth.createContextInternalAndMerge(state, template, ENCODING)).append("\n");
             }
         }));
-        vth.getContexts().forEach((context, s) -> {
-            System.out.println(s + ": " + Arrays.toString(context.getKeys()));
+        vth.getContexts().forEach((context, s) -> System.out.println(s + ": " + Arrays.toString(context.getKeys())));
+        SimpleJSONInfoHolder simpleJSONInfoHolder = MappingHandler.readJSONSimple("mappings\\json_v2.json");
+        String templateFolder = simpleJSONInfoHolder.getTemplateFolder();
+        System.out.println("templateFolder = " + templateFolder);
+        simpleJSONInfoHolder.getMappings().forEach(m -> {
+            System.out.println("\t" + m.getTemplate());
+            System.out.println("\t" + m.getMlConnection());
+            m.getParameters().forEach((key, value) -> System.out.println("\t\t" + key + ": " + value));
+        });
+        final String templateFolder1 = simpleJSONInfoHolder.getTemplateFolder();
+        vth.initExternalEngine(templateFolder1);
+        simpleJSONInfoHolder.getMappings().forEach(m -> {
+            Map<String, String> stringStringMap = MappingHandler.resolveMappingFromModel(simpleJSONInfoHolder, stringMLInformationHolderMap);
+            stringStringMap.forEach((key, value) -> System.out.println("key = " + key + ", value = " + value));
+            try {
+                Writer contextExternalAndMerge = vth.createContextExternalAndMerge(stringStringMap, m.getTemplate(), ENCODING, templateFolder1, new StringWriter());
+                sb.append((contextExternalAndMerge.toString()));
+            } catch (KeyException e) {
+                e.printStackTrace();
+            }
         });
         return sb.toString();
     }

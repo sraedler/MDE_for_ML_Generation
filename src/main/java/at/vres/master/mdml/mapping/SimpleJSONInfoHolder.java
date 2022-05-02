@@ -13,4 +13,12 @@ public class SimpleJSONInfoHolder {
     public void setTemplateFolder(String templateFolder) {
         this.templateFolder = templateFolder;
     }
+
+    public List<JSONSimpleMapping> getMappings() {
+        return mappings;
+    }
+
+    public void setMappings(List<JSONSimpleMapping> mappings) {
+        this.mappings = mappings;
+    }
 }

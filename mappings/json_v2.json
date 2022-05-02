@@ -7,7 +7,7 @@
       "parameters": {
         "FrameName":"myFrame",
         "delim":"#",
-        "enc":"CSV_2&&&CSV&&Encoding",
+        "enc":"CSV_2&&CSV&&Encoding",
         "skip": "ConfBlock&&skip",
         "path": "ConfBlock&&pathCSV"
       }
