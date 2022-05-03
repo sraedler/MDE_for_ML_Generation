@@ -205,6 +205,8 @@ public class ModelDecompositionHandler {
         res.getAllContents().forEachRemaining(con -> {
             if (con instanceof Pseudostate) {
                 Pseudostate ps = (Pseudostate) con;
+                String literal = ps.getKind().getLiteral();
+                System.out.println("literal = " + literal);
                 // System.out.println("PSEUDOSTATE: " + ps);
                 ps.getOutgoings().forEach(out -> {
                     Vertex target = out.getTarget();

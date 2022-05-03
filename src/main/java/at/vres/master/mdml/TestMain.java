@@ -1,10 +1,13 @@
 package at.vres.master.mdml;
 
+import at.vres.master.mdml.decomposition.InformationExtractor;
 import at.vres.master.mdml.decomposition.MLInformationHolder;
 import at.vres.master.mdml.decomposition.ModelDecompositionHandler;
 import at.vres.master.mdml.mapping.MappingHandler;
 import at.vres.master.mdml.mapping.SimpleJSONInfoHolder;
 import at.vres.master.mdml.tbcg.VelocityTemplateHandler;
+import org.eclipse.uml2.uml.Class;
+import org.eclipse.uml2.uml.Model;
 
 import java.io.StringWriter;
 import java.io.Writer;
@@ -15,6 +18,7 @@ public class TestMain {
     private static final String TEST_MODEL = "SysMLModels/UC1_Weather/UC1_Weather.uml";
     private static final String TEST_TEMPLATE_PATH = "C:\\Users\\rup\\IdeaProjects\\MasterModelDrivenML\\templates";
     private static final String ENCODING = "UTF-8";
+    private static final String STATE_MACHINE_NAME = "StateMachine1";
     private static final Map<String, String> stereoTemplateMapping = new HashMap<>(Map.of(
             "CSV", "csv_load.vm",
             "Regression","regression.vm",
@@ -27,7 +31,8 @@ public class TestMain {
 
 
     public static void main(String[] args) {
-        System.out.println(testInternalEngineLoad());
+        //System.out.println(testInternalEngineLoad());
+        testV2(TEST_MODEL);
     }
 
     public static String testInternalEngineLoad() {
@@ -66,6 +71,17 @@ public class TestMain {
             }
         });
         return sb.toString();
+    }
+
+    public static void testV2(String modelPath) {
+        Model model = InformationExtractor.getModel(modelPath, true);
+        Map<Class, Map<String, String>> classMapMap = InformationExtractor.doExtraction(model, STATE_MACHINE_NAME);
+        classMapMap.forEach((key, value) -> {
+            System.out.println(key.getName());
+            value.forEach((akey, avalue) -> {
+                System.out.println("\t" + akey + " -> " + avalue);
+            });
+        });
     }
 
 
