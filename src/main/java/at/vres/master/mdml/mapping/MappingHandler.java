@@ -33,6 +33,17 @@ public class MappingHandler {
         return result;
     }
 
+    public static MappingWrapper readJSONV2(String jsonPath) {
+        ObjectMapper mapper = new ObjectMapper();
+        MappingWrapper result = null;
+        try {
+            result = mapper.readValue(new File(jsonPath), MappingWrapper.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
     public static SimpleJSONInfoHolder readJSONSimple(String jsonPath) {
         ObjectMapper mapper = new ObjectMapper();
         SimpleJSONInfoHolder result = null;

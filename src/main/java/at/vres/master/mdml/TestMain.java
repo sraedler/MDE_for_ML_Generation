@@ -4,6 +4,7 @@ import at.vres.master.mdml.decomposition.InformationExtractor;
 import at.vres.master.mdml.decomposition.MLInformationHolder;
 import at.vres.master.mdml.decomposition.ModelDecompositionHandler;
 import at.vres.master.mdml.mapping.MappingHandler;
+import at.vres.master.mdml.mapping.MappingWrapper;
 import at.vres.master.mdml.mapping.SimpleJSONInfoHolder;
 import at.vres.master.mdml.tbcg.VelocityTemplateHandler;
 import org.eclipse.uml2.uml.Class;
@@ -19,21 +20,35 @@ public class TestMain {
     private static final String WORKSPACE_PROFILE_TEST_MODEL = "C:\\Users\\rup\\Documents\\MASTER\\MLModels\\NewVer_04_05_2022\\ML_Modelling\\UC1_Weather\\UC1_Weather.uml";
     private static final String TEST_TEMPLATE_PATH = "C:\\Users\\rup\\IdeaProjects\\MasterModelDrivenML\\templates";
     private static final String ENCODING = "UTF-8";
+    private static final String JSON_CONFIG_PATH = "mappings\\config.json";
     private static final String STATE_MACHINE_NAME = "StateMachine1";
     private static final Map<String, String> stereoTemplateMapping = new HashMap<>(Map.of(
             "CSV", "csv_load.vm",
-            "Regression","regression.vm",
+            "Regression", "regression.vm",
             "DataFrame_Merge", "dataframe_merge.vm",
             "DateConversion", "date_conversion.vm",
-            "MeanAbsoluteError","mae.vm",
-            "Train_Test_Split","train_test_split.vm",
-            "Predict","predict.vm"
+            "MeanAbsoluteError", "mae.vm",
+            "Train_Test_Split", "train_test_split.vm",
+            "Predict", "predict.vm"
     ));
 
 
     public static void main(String[] args) {
-        System.out.println(testInternalEngineLoad());
+        //System.out.println(testInternalEngineLoad());
         //testV2(TEST_MODEL);
+        testJSONV2(JSON_CONFIG_PATH);
+    }
+
+    public static void testJSONV2(String jsonPath) {
+        MappingWrapper mappingWrapper = MappingHandler.readJSONV2(jsonPath);
+        mappingWrapper.getStereotypeMappings().forEach((key, value) -> {
+            System.out.println("STEREOTYPE MAPPING " + key + ": \n\tTemplate: " + value.getTemplate());
+            value.getProperties().forEach((s, s2) -> System.out.println("\t\tPROPERTY " + s + ", " + s2));
+        });
+        mappingWrapper.getNameMappings().forEach((key, value) -> {
+            System.out.println("NAME MAPPING " + key + ": \n\tTemplate: " + value.getTemplate());
+            value.getProperties().forEach((s, s2) -> System.out.println("\t\tPROPERTY " + s + ", " + s2));
+        });
     }
 
     public static String testInternalEngineLoad() {
@@ -49,7 +64,7 @@ public class TestMain {
         final StringBuilder sb = new StringBuilder();
         List<MLInformationHolder> orderedList = ModelDecompositionHandler.getOrderedList();
         orderedList.forEach(state -> stereoTemplateMapping.forEach((stereo, template) -> {
-            if(state.getStereotypes().containsKey(stereo)) {
+            if (state.getStereotypes().containsKey(stereo)) {
                 sb.append(vth.createContextInternalAndMerge(state, template, ENCODING)).append("\n");
             }
         }));
@@ -82,9 +97,7 @@ public class TestMain {
         Map<Class, Map<String, String>> classMapMap = InformationExtractor.doExtraction(model, STATE_MACHINE_NAME);
         classMapMap.forEach((key, value) -> {
             System.out.println(key.getName());
-            value.forEach((akey, avalue) -> {
-                System.out.println("\t" + akey + " -> " + avalue);
-            });
+            value.forEach((akey, avalue) -> System.out.println("\t" + akey + " -> " + avalue));
         });
     }
 

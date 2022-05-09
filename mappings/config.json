@@ -1,5 +1,5 @@
 {
-  "StereotypeMappings": {
+  "stereotypeMappings": {
     "CSV": {
       "template": "csv_load_v2.vm",
       "properties": {
@@ -51,6 +51,5 @@
         "TrainTestSplitSize": "split"
       }
     }
-
   }
 }

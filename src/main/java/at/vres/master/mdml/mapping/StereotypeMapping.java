@@ -2,9 +2,9 @@ package at.vres.master.mdml.mapping;
 
 import java.util.Map;
 
-public class MappingV2 {
+public class StereotypeMapping {
     private String stereotypeName;
-    private String templateName;
+    private String template;
     private Map<String, String> properties;
 
     public String getStereotypeName() {
@@ -15,12 +15,12 @@ public class MappingV2 {
         this.stereotypeName = stereotypeName;
     }
 
-    public String getTemplateName() {
-        return templateName;
+    public String getTemplate() {
+        return template;
     }
 
-    public void setTemplateName(String templateName) {
-        this.templateName = templateName;
+    public void setTemplate(String template) {
+        this.template = template;
     }
 
     public Map<String, String> getProperties() {
