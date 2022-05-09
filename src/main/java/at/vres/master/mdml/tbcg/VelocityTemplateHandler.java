@@ -3,6 +3,8 @@ package at.vres.master.mdml.tbcg;
 import at.vres.master.mdml.decomposition.MLInformationHolder;
 import at.vres.master.mdml.mapping.JSONInformationHolder;
 import at.vres.master.mdml.mapping.MappingHandler;
+import at.vres.master.mdml.mapping.MappingWrapper;
+import at.vres.master.mdml.mapping.StereotypeMapping;
 import at.vres.master.mdml.utils.ContextResolver;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
@@ -48,11 +50,11 @@ public class VelocityTemplateHandler {
             context.put(key, ContextResolver.resolveVariableFromObject(value));
             System.out.println("PROP ADDING FOR: " + key + " WITH VALUE: " + value);
             if (value instanceof Property) {
-                if(((Property)value).getAppliedStereotypes().stream().anyMatch(s -> s.getName().equals("ML_Attribute_Input"))) {
+                if (((Property) value).getAppliedStereotypes().stream().anyMatch(s -> s.getName().equals("ML_Attribute_Input"))) {
                     String qualifiedName = ((Property) value).getQualifiedName();
                     System.out.println("\tSTEREO MATCH: " + qualifiedName);
                     MLInformationHolder mlInformationHolder = modelInformation.get(qualifiedName);
-                    if(mlInformationHolder != null) {
+                    if (mlInformationHolder != null) {
                         System.out.println("AAAAA" + key + ": " + mlInformationHolder.getQualifiedName());
                         addMLInformationToContext(mlInformationHolder, context);
                     }
@@ -122,6 +124,43 @@ public class VelocityTemplateHandler {
         });
     }
 
+    public static String extractAndGenerate(Map<String, MLInformationHolder> map, MappingWrapper mapWrap) {
+        VelocityEngine ve = new VelocityEngine();
+        ve.init(getDefaultProperties());
+        VelocityContext context = new VelocityContext();
+
+        final List<String> templateNameList = new LinkedList<>();
+        map.forEach((key, value) -> {
+            value.getParts().forEach(context::put);
+            value.getProperties().forEach(context::put);
+            value.getStereotypes().forEach((name, props) -> {
+                StereotypeMapping stereotypeMapping = mapWrap.getStereotypeMappings().get(name);
+                if (stereotypeMapping != null) {
+                    templateNameList.add(stereotypeMapping.getTemplate());
+                    Map<String, String> properties = stereotypeMapping.getProperties();
+                    properties.forEach((stereoName, templateName) -> {
+                        Object o = props.get(stereoName);
+                       // if (o != null) {
+                            context.put(templateName, o);
+                        //}
+                    });
+                }
+            });
+        });
+        final StringBuilder sb = new StringBuilder();
+        templateNameList.forEach(template -> {
+            System.out.println("MERGING TEMPLATE " + template);
+            try (StringWriter sw = new StringWriter()) {
+                ve.mergeTemplate(template, "UTF-8", context, sw);
+                final String absPath = "C:\\Users\\rup\\IdeaProjects\\MasterModelDrivenML\\templates\\" + template;
+                sb.append(sw).append("\n");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+        return sb.toString();
+    }
+
     public static String generateFromExtractedInformation(Map<String, MLInformationHolder> map, String templateName) {
         VelocityEngine ve = new VelocityEngine();
         ve.init(getDefaultProperties());
@@ -138,7 +177,7 @@ public class VelocityTemplateHandler {
             final String absPath = "C:\\Users\\rup\\IdeaProjects\\MasterModelDrivenML\\templates\\" + templateName;
             try {
                 RuntimeInstance ri = new RuntimeInstance();
-                SimpleNode node =  ri.parse(new FileReader(absPath), ve.getTemplate(templateName));
+                SimpleNode node = ri.parse(new FileReader(absPath), ve.getTemplate(templateName));
                 TemplateVisitor tv = new TemplateVisitor();
                 Object visit = tv.visit(node, null);
                 System.out.println("visit = " + visit);

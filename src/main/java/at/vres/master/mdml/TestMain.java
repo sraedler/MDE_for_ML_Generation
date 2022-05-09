@@ -36,7 +36,8 @@ public class TestMain {
     public static void main(String[] args) {
         //System.out.println(testInternalEngineLoad());
         //testV2(TEST_MODEL);
-        testJSONV2(JSON_CONFIG_PATH);
+        //testJSONV2(JSON_CONFIG_PATH);
+        testV2withJSONConfig(WORKSPACE_PROFILE_TEST_MODEL, JSON_CONFIG_PATH);
     }
 
     public static void testJSONV2(String jsonPath) {
@@ -49,6 +50,13 @@ public class TestMain {
             System.out.println("NAME MAPPING " + key + ": \n\tTemplate: " + value.getTemplate());
             value.getProperties().forEach((s, s2) -> System.out.println("\t\tPROPERTY " + s + ", " + s2));
         });
+    }
+
+    public static void testV2withJSONConfig(String modelPath, String jsonPath) {
+        Map<String, MLInformationHolder> stringMLInformationHolderMap = ModelDecompositionHandler.doExtraction(WORKSPACE_PROFILE_TEST_MODEL);
+        MappingWrapper mappingWrapper = MappingHandler.readJSONV2(jsonPath);
+        String s = VelocityTemplateHandler.extractAndGenerate(stringMLInformationHolderMap, mappingWrapper);
+        System.out.println(s);
     }
 
     public static String testInternalEngineLoad() {
