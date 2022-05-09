@@ -62,8 +62,8 @@ public class ModelDecompositionHandler {
     public static void test(String modelPath) {
         ResourceSet res = EMFResourceLoader.fullLoadWithModel(modelPath);
         res.getAllContents().forEachRemaining(con -> {
-            if(con instanceof Element) {
-                Element el = (Element)con;
+            if (con instanceof Element) {
+                Element el = (Element) con;
                 el.getAppliedStereotypes().stream().filter(s -> s.getName().equals("ML")).findFirst().orElse(null);
             }
         });
@@ -80,7 +80,7 @@ public class ModelDecompositionHandler {
                     final Map<String, Object> attributes = new HashMap<>();
                     s.getAllAttributes().forEach(a -> {
                         if (!(a.getName().equals("base_Class"))) {
-                            String key = base_Class.getName() + "&&" + s.getName() + "&&" + a.getName();
+                            //String key = base_Class.getName() + "&&" + s.getName() + "&&" + a.getName();
                             Object value = base_Class.getValue(s, a.getName());
                             if (value instanceof ML_Attribute_Input) {
                                 attributes.put(a.getName(),
@@ -105,7 +105,7 @@ public class ModelDecompositionHandler {
                                 attributes.put(a.getName(), value);
                             }
 
-                            attMap.put(key, value);
+                            //attMap.put(key, value);
                         }
                         // System.out.println("TEST VALUE " + a.getName() + ": " + value);
                     });
@@ -117,10 +117,18 @@ public class ModelDecompositionHandler {
                 String key = base_Class.getName() + "&&" + p.getName();
                 System.out.println("PROP TYPE: " + p.getType());
                 if (!(p.getType() instanceof Class)) {
-                    mlih.getProperties().put(p.getName(), p.getDefault());
+                    Stereotype ml_attribute_input = p.getAppliedStereotypes().stream().filter(s -> s.getName().equals("ML_Attribute_Input")).findAny().orElse(null);
+                    if (ml_attribute_input != null) {
+                        ml_attribute_input.getAllAttributes().forEach(mlAtt -> {
+                            Object value = p.getValue(ml_attribute_input, mlAtt.getName());
+                            mlih.getProperties().put(mlAtt.getName(), value);
+                        });
+                    } else {
+                        mlih.getProperties().put(p.getName(), p.getDefault());
+                    }
                 }
                 // instances where p is Class are parts and are handled further down with the associations
-                attMap.put(key, p.getDefault());
+                //attMap.put(key, p.getDefault());
             });
 
             base_Class.getAssociations().forEach(assoc -> assoc.getMembers().forEach(mem -> {
@@ -153,7 +161,7 @@ public class ModelDecompositionHandler {
 
                                 attributes.put(a.getName(), value);
 
-                                attMap.put(key, value);
+                                //attMap.put(key, value);
                             }
                             // System.out.println("TEST VALUE " + a.getName() + ": " + value);
                         });
@@ -216,6 +224,7 @@ public class ModelDecompositionHandler {
                 });
             }
         });
+        //ml.forEach((key, value) -> flattenPartsOneLevel(value));
         //prettyPrintMLInformationHolderList(orderedML);
         //prettyPrintMLInformationHolderMap(ml);
         return ml;
@@ -263,6 +272,21 @@ public class ModelDecompositionHandler {
             System.out.println("}");
             System.out.println(
                     "------------------------------------------------------------------------------------------------------------------------------------");
+        });
+    }
+
+    public static void flattenPartsOneLevel(MLInformationHolder data) {
+        data.getParts().forEach((key, part) -> {
+            if(part instanceof NamedElement) {
+                String qualifiedName = ((NamedElement) part).getQualifiedName();
+                MLInformationHolder mlInformationHolder = ml.get(qualifiedName);
+                if(mlInformationHolder != null) {
+                    data.getStereotypes().putAll(mlInformationHolder.getStereotypes());
+                    data.getProperties().putAll(mlInformationHolder.getProperties());
+                    //mlInformationHolder.getParts().putAll(data.getParts());
+                }
+
+            }
         });
     }
 

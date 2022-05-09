@@ -9,6 +9,7 @@ import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.context.Context;
 import org.apache.velocity.runtime.RuntimeInstance;
 import org.apache.velocity.runtime.parser.ParseException;
+import org.apache.velocity.runtime.parser.node.ASTReference;
 import org.apache.velocity.runtime.parser.node.SimpleNode;
 import org.eclipse.uml2.uml.Class;
 import org.eclipse.uml2.uml.Property;
@@ -134,10 +135,10 @@ public class VelocityTemplateHandler {
         String result = "";
         try (StringWriter sw = new StringWriter()) {
             ve.mergeTemplate(templateName, "UTF-8", context, sw);
-            RuntimeInstance ri = new RuntimeInstance();
             final String absPath = "C:\\Users\\rup\\IdeaProjects\\MasterModelDrivenML\\templates\\" + templateName;
             try {
-                SimpleNode node = ri.parse(new FileReader(absPath), ve.getTemplate(templateName));
+                RuntimeInstance ri = new RuntimeInstance();
+                SimpleNode node =  ri.parse(new FileReader(absPath), ve.getTemplate(templateName));
                 TemplateVisitor tv = new TemplateVisitor();
                 Object visit = tv.visit(node, null);
                 System.out.println("visit = " + visit);

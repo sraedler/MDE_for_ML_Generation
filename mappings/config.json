@@ -1,0 +1,56 @@
+{
+  "StereotypeMappings": {
+    "CSV": {
+      "template": "csv_load_v2.vm",
+      "properties": {
+        "VariableName": "varname",
+        "Path": "path",
+        "Delimiter": "delim",
+        "Encoding": "enc",
+        "SkipNrOfLines": "skip",
+        "GenerateTimestamp": "GenerateTimestamp"
+      }
+    },
+    "DataFrame_Merge": {
+      "template": "dataframe_merge_v2.vm",
+      "properties": {
+        "NewDFName": "new_name",
+        "MergeOn[1]": "left",
+        "MergeOn[2]": "right",
+        "How": "how"
+      }
+    },
+    "DateConversion": {
+      "template": "date_conversion_v2.vm",
+      "properties": {
+        "Output_Format": "new_format"
+      }
+    },
+    "MeanAbsoluteError": {
+      "template": "mae_v2.vm",
+      "properties": {
+        "Text": "txt"
+      }
+    },
+    "Predict": {
+      "template": "predict_v2.vm",
+      "properties": {
+      }
+    },
+    "Regression": {
+      "template": "regression_v2.vm",
+      "properties": {
+        "Algorithm": "algo"
+      }
+    },
+    "Train_Test_Split": {
+      "template": "train_test_split_v2.vm",
+      "properties": {
+        "Features_X": "feat_x",
+        "Prediction_Y": "pred_y",
+        "TrainTestSplitSize": "split"
+      }
+    }
+
+  }
+}

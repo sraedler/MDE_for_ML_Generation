@@ -1,0 +1,3 @@
+import pandas as pd
+
+${new_name} = pd.merge(left=${one}, right=${two}, left_on=${left}, right_on=${right}, how="${how}")

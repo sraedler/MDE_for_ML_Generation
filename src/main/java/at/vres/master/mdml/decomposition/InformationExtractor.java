@@ -1,9 +1,9 @@
 package at.vres.master.mdml.decomposition;
 
 import MLModel.ML;
+import at.vres.master.mdml.utils.ContextResolver;
 import at.vres.master.mdml.utils.EMFResourceLoader;
 import org.eclipse.emf.common.notify.Notifier;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.uml2.uml.*;
 import org.eclipse.uml2.uml.Class;
@@ -16,7 +16,6 @@ public class InformationExtractor {
     private static final String ENTRY_POINT = "entryPoint";
     private static final String CONNECTION_STEREOTYPE_NAME = "ML_Block_Connection";
     private static final List<String> stereotypesToIgnore = new LinkedList<>(List.of("Block"));
-
 
     public static Model getModel(final String modelPath, final Boolean initBaseResources) {
         if (initBaseResources) EMFResourceLoader.initBaseResources();
@@ -57,8 +56,10 @@ public class InformationExtractor {
             Object ml_block = state.getValue(stereotype, "ML_Block");
             if (ml_block instanceof ML) {
                 Class clazz = ((ML) ml_block).getBase_Class();
-                Map<String, String> stringStringMap = startInformationExtraction(clazz);
-                contextMap.put(clazz, stringStringMap);
+                List<String> alreadyVisited = new LinkedList<>();
+                evaluateBlock(clazz, alreadyVisited);
+                //Map<String, String> stringStringMap = startInformationExtraction(clazz);
+                //contextMap.put(clazz, stringStringMap);
             }
         }
         state.getOutgoings().forEach(out -> followVertex(out.getTarget(), depth + 1, contextMap));
@@ -75,27 +76,76 @@ public class InformationExtractor {
             stereo.getAllAttributes().forEach(satt -> {
                 Object value = clazz.getValue(stereo, satt.getName());
                 if (value != null) {
-                    if (value instanceof Class) {
-                        System.out.println("CLASS!");
+                    if (checkForPrimitiveValueClass(value.getClass().getSimpleName())) {
+                        paramToInfoMap.put(satt.getName(), value.toString());
+                    } else if (value instanceof Class) {
+                        Map<String, String> stringStringMap = startInformationExtraction((Class) value);
+                        paramToInfoMap.putAll(stringStringMap);
                     } else if (value instanceof List<?>) {
                         if (!((List<?>) value).isEmpty()) {
                             Object o = ((List<?>) value).get(0);
                             if (o != null) {
-                                if (o instanceof Class) {
-                                    // TODO handle class in list
-                                    System.out.println("CLASS IN LIST");
+                                if (checkForPrimitiveValueClass(o.getClass().getSimpleName())) {
+                                    final StringBuilder sb = new StringBuilder("[");
+                                    ((List<?>) value).forEach(v -> sb.append("\"").append(v).append("\"").append(","));
+                                    paramToInfoMap.put(satt.getName(), sb.toString());
                                 }
                             }
                         }
                     } else {
-                        java.lang.Class<?> aClass = value.getClass();
-                        System.out.println("aClass = " + aClass.getName());
-                        paramToInfoMap.put(satt.getName(), value.toString());
+                        System.out.println("Could not handle Object: " + value);
                     }
                 }
             });
         });
         return paramToInfoMap;
+    }
+
+    public static Boolean checkForPrimitiveValueClass(String simpleClassName) {
+        final List<String> primitiveClassNames = new LinkedList<>(List.of("String", "Integer", "Boolean", "Double", "UnlimitedNatural"));
+        return primitiveClassNames.contains(simpleClassName);
+    }
+
+    public static void evaluateBlock(Class clazz, List<String> alreadyVisited) {
+        alreadyVisited.add(clazz.getQualifiedName());
+        clazz.getAppliedStereotypes().forEach(s -> evaluateStereotype(s, clazz, alreadyVisited));
+        clazz.getOwnedAttributes().forEach(att -> {
+            att.getAppliedStereotypes().forEach(st -> evaluateStereotype(st, att, alreadyVisited));
+            Type type = att.getType();
+            if (type instanceof PrimitiveType) {
+                System.out.println("PrimitiveType = " + att.getName());
+            } else if (type instanceof Class) {
+                System.out.println("Class = " + att.getClass_());
+                if (!alreadyVisited.contains(att.getClass_().getQualifiedName()))
+                    evaluateBlock(att.getClass_(), alreadyVisited);
+            } else if (type instanceof Property) {
+                evaluateProperty(att);
+            }
+            //System.out.println("type = " + type);
+        });
+    }
+
+    public static void evaluateProperty(Property property) {
+        String aDefault = property.getDefault();
+        System.out.println("aDefault = " + aDefault);
+    }
+
+    public static void evaluateStereotype(Stereotype stereo, Element el, List<String> alreadyVisited) {
+        if (!stereotypesToIgnore.contains(stereo.getName())) {
+            stereo.getAllAttributes().forEach(att -> {
+                Object value = el.getValue(stereo, att.getName());
+                if (value instanceof Property) {
+                    evaluateProperty((Property) value);
+                } else if (value instanceof Class) {
+                    // TODO fix stack overflow due to circular function calls
+                    if (!alreadyVisited.contains(((Class) value).getQualifiedName()))
+                    evaluateBlock((Class) value, alreadyVisited);
+                } else {
+                    System.out.println("Stereotype Attribute: " + att.getName() + " = " + value);
+                }
+
+            });
+        }
     }
 
 

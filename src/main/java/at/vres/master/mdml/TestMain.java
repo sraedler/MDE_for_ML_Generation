@@ -16,6 +16,7 @@ import java.util.*;
 
 public class TestMain {
     private static final String TEST_MODEL = "SysMLModels/UC1_Weather/UC1_Weather.uml";
+    private static final String WORKSPACE_PROFILE_TEST_MODEL = "C:\\Users\\rup\\Documents\\MASTER\\MLModels\\NewVer_04_05_2022\\ML_Modelling\\UC1_Weather\\UC1_Weather.uml";
     private static final String TEST_TEMPLATE_PATH = "C:\\Users\\rup\\IdeaProjects\\MasterModelDrivenML\\templates";
     private static final String ENCODING = "UTF-8";
     private static final String STATE_MACHINE_NAME = "StateMachine1";
@@ -31,16 +32,19 @@ public class TestMain {
 
 
     public static void main(String[] args) {
-        //System.out.println(testInternalEngineLoad());
-        testV2(TEST_MODEL);
+        System.out.println(testInternalEngineLoad());
+        //testV2(TEST_MODEL);
     }
 
     public static String testInternalEngineLoad() {
-        Map<String, MLInformationHolder> stringMLInformationHolderMap = ModelDecompositionHandler.doExtraction(TEST_MODEL);
-        //ModelDecompositionHandler.prettyPrintMLInformationHolderMap(stringMLInformationHolderMap);
+        Map<String, MLInformationHolder> stringMLInformationHolderMap = ModelDecompositionHandler.doExtraction(WORKSPACE_PROFILE_TEST_MODEL);
+
+        ModelDecompositionHandler.prettyPrintMLInformationHolderMap(stringMLInformationHolderMap);
         //ModelDecompositionHandler.prettyPrintMLInformationHolderList(ModelDecompositionHandler.getOrderedList());
         VelocityTemplateHandler vth = new VelocityTemplateHandler();
         vth.setModelInformation(stringMLInformationHolderMap);
+        String s1 = VelocityTemplateHandler.generateFromExtractedInformation(stringMLInformationHolderMap, "dataframe_merge.vm");
+        System.out.println("s1 = " + s1);
         vth.initInternalEngine(TEST_TEMPLATE_PATH);
         final StringBuilder sb = new StringBuilder();
         List<MLInformationHolder> orderedList = ModelDecompositionHandler.getOrderedList();

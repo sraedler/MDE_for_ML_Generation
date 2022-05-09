@@ -1,0 +1,5 @@
+from sklearn.model_selection import train_test_split
+
+X=${df}${feat_x}
+y=${df}.${pred_y}
+train_X, test_X, train_y, test_y = train_test_split(X, y,random_state = 0, train_size=${split})
