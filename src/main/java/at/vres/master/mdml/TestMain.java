@@ -6,6 +6,7 @@ import at.vres.master.mdml.decomposition.ModelDecompositionHandler;
 import at.vres.master.mdml.mapping.MappingHandler;
 import at.vres.master.mdml.mapping.MappingWrapper;
 import at.vres.master.mdml.mapping.SimpleJSONInfoHolder;
+import at.vres.master.mdml.model.BlockContext;
 import at.vres.master.mdml.tbcg.VelocityTemplateHandler;
 import org.eclipse.uml2.uml.Class;
 import org.eclipse.uml2.uml.Model;
@@ -37,7 +38,8 @@ public class TestMain {
         //System.out.println(testInternalEngineLoad());
         //testV2(TEST_MODEL);
         //testJSONV2(JSON_CONFIG_PATH);
-        testV2withJSONConfig(WORKSPACE_PROFILE_TEST_MODEL, JSON_CONFIG_PATH);
+        //testV2withJSONConfig(TEST_MODEL, JSON_CONFIG_PATH);
+        testContextVariant(TEST_MODEL, STATE_MACHINE_NAME);
     }
 
     public static void testJSONV2(String jsonPath) {
@@ -53,14 +55,14 @@ public class TestMain {
     }
 
     public static void testV2withJSONConfig(String modelPath, String jsonPath) {
-        Map<String, MLInformationHolder> stringMLInformationHolderMap = ModelDecompositionHandler.doExtraction(WORKSPACE_PROFILE_TEST_MODEL);
+        Map<String, MLInformationHolder> stringMLInformationHolderMap = ModelDecompositionHandler.doExtraction(TEST_MODEL);
         MappingWrapper mappingWrapper = MappingHandler.readJSONV2(jsonPath);
         String s = VelocityTemplateHandler.extractAndGenerate(stringMLInformationHolderMap, mappingWrapper);
         System.out.println(s);
     }
 
     public static String testInternalEngineLoad() {
-        Map<String, MLInformationHolder> stringMLInformationHolderMap = ModelDecompositionHandler.doExtraction(WORKSPACE_PROFILE_TEST_MODEL);
+        Map<String, MLInformationHolder> stringMLInformationHolderMap = ModelDecompositionHandler.doExtraction(TEST_MODEL);
 
         ModelDecompositionHandler.prettyPrintMLInformationHolderMap(stringMLInformationHolderMap);
         //ModelDecompositionHandler.prettyPrintMLInformationHolderList(ModelDecompositionHandler.getOrderedList());
@@ -109,5 +111,20 @@ public class TestMain {
         });
     }
 
+    public static void testMainForMoreFunctionalApproach(String modelPath, String jsonPath) {
+        Model model = InformationExtractor.getModel(modelPath, true);
+        MappingWrapper mappingWrapper = MappingHandler.readJSONV2(jsonPath);
+        List<Class> orderedBlocks = InformationExtractor.getOrderedBlocksFromModelAndStateMachineDiagram(model, STATE_MACHINE_NAME);
+
+
+    }
+
+    public static void testContextVariant(String modelPath, String stateMachineName) {
+        InformationExtractor ie = new InformationExtractor(modelPath);
+        ie.init();
+        Map<Class, BlockContext> contextsForStateMachine = ie.getContextsForStateMachine(stateMachineName);
+        contextsForStateMachine.forEach((key, val) -> System.out.println(val.toString()));
+
+    }
 
 }
