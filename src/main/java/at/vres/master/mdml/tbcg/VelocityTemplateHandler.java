@@ -140,8 +140,8 @@ public class VelocityTemplateHandler {
                     Map<String, String> properties = stereotypeMapping.getProperties();
                     properties.forEach((stereoName, templateName) -> {
                         Object o = props.get(stereoName);
-                       // if (o != null) {
-                            context.put(templateName, o);
+                        // if (o != null) {
+                        context.put(templateName, o);
                         //}
                     });
                 }

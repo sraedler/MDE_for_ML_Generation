@@ -7,6 +7,7 @@ import at.vres.master.mdml.mapping.MappingHandler;
 import at.vres.master.mdml.mapping.MappingWrapper;
 import at.vres.master.mdml.mapping.SimpleJSONInfoHolder;
 import at.vres.master.mdml.model.BlockContext;
+import at.vres.master.mdml.tbcg.TemplateHandler;
 import at.vres.master.mdml.tbcg.VelocityTemplateHandler;
 import org.eclipse.uml2.uml.Class;
 import org.eclipse.uml2.uml.Model;
@@ -39,7 +40,7 @@ public class TestMain {
         //testV2(TEST_MODEL);
         //testJSONV2(JSON_CONFIG_PATH);
         //testV2withJSONConfig(TEST_MODEL, JSON_CONFIG_PATH);
-        testContextVariant(TEST_MODEL, STATE_MACHINE_NAME);
+        testContextVariant(TEST_MODEL, STATE_MACHINE_NAME, JSON_CONFIG_PATH);
     }
 
     public static void testJSONV2(String jsonPath) {
@@ -115,16 +116,17 @@ public class TestMain {
         Model model = InformationExtractor.getModel(modelPath, true);
         MappingWrapper mappingWrapper = MappingHandler.readJSONV2(jsonPath);
         List<Class> orderedBlocks = InformationExtractor.getOrderedBlocksFromModelAndStateMachineDiagram(model, STATE_MACHINE_NAME);
-
-
     }
 
-    public static void testContextVariant(String modelPath, String stateMachineName) {
+    public static void testContextVariant(String modelPath, String stateMachineName, String jsonPath) {
         InformationExtractor ie = new InformationExtractor(modelPath);
         ie.init();
         Map<Class, BlockContext> contextsForStateMachine = ie.getContextsForStateMachine(stateMachineName);
         contextsForStateMachine.forEach((key, val) -> System.out.println(val.toString()));
-
+        MappingWrapper mappingWrapper = MappingHandler.readJSONV2(jsonPath);
+        TemplateHandler th = new TemplateHandler(contextsForStateMachine, mappingWrapper, TEST_TEMPLATE_PATH);
+        String execute = th.execute();
+        System.out.println("\nexecute = \n" + execute);
     }
 
 }
