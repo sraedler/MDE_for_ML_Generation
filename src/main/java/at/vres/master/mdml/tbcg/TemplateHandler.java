@@ -59,18 +59,39 @@ public class TemplateHandler {
         return sb.toString();
     }
 
-    public VelocityContext handleBlockContext(BlockContext blockContext) {
+    private VelocityContext handleBlockContext(BlockContext blockContext) {
         VelocityContext velocityContext = new VelocityContext();
         blockContext.getPropertyMap().forEach((propName, propVal) -> {
             StereotypeNamePair stereotypeNamePairFromQualifiedName = getStereotypeNamePairFromQualifiedName(propName);
             if (stereotypeNamePairFromQualifiedName != null) {
                 StereotypeMapping stereotypeMapping = mappingWrapper.getStereotypeMappings().get(stereotypeNamePairFromQualifiedName.getStereoName());
                 if (stereotypeMapping != null) {
-                    String remappedName = stereotypeMapping.getProperties().get(stereotypeNamePairFromQualifiedName.getAttributeName());
-                    velocityContext.put(remappedName, propVal);
+                    stereotypeMapping.getProperties().forEach((originalName, remappedName) -> {
+                        if (originalName.contains("[") && originalName.contains("]")) {
+                            String listName = originalName.substring(0, originalName.indexOf("["));
+                            String listIndex = originalName.substring(originalName.indexOf("[") + 1, originalName.indexOf("]"));
+                            if (listName.equals(stereotypeNamePairFromQualifiedName.getAttributeName())) {
+                                if (propVal instanceof List<?>) {
+                                    Object o = ((List<?>) propVal).get(Integer.parseInt(listIndex));
+                                    velocityContext.put(remappedName, o);
+                                }
+                            }
+                        } else if (propVal instanceof List<?>) {
+                            velocityContext.put(remappedName, handleValueLists((List<?>) propVal));
+                        } else {
+                            if (originalName.equals(stereotypeNamePairFromQualifiedName.getAttributeName())) {
+                                velocityContext.put(remappedName, propVal);
+                            }
+                        }
+                    });
+                    //String remName = stereotypeMapping.getProperties().get(stereotypeNamePairFromQualifiedName.getAttributeName());
                 }
             } else {
-                velocityContext.put(propName, propVal);
+                if (propVal instanceof List<?>) {
+                    velocityContext.put(propName, handleValueLists((List<?>) propVal));
+                } else {
+                    velocityContext.put(propName, propVal);
+                }
             }
         });
         blockContext.getLinkedPartContexts().forEach((propName, bcList) -> bcList.forEach(bc -> {
@@ -80,7 +101,18 @@ public class TemplateHandler {
         return velocityContext;
     }
 
-    public static String getNameFromQualifiedName(String qualifiedName) {
+    private static String handleValueLists(List<?> list) {
+        final StringBuilder sb = new StringBuilder();
+        sb.append("[");
+        list.forEach(el -> {
+            String nameFromQualifiedName = getNameFromQualifiedName(el.toString());
+            sb.append("\"").append(nameFromQualifiedName).append("\"").append(", ");
+        });
+        sb.replace(sb.lastIndexOf(","), sb.length(), "").append("]");
+        return sb.toString();
+    }
+
+    private static String getNameFromQualifiedName(String qualifiedName) {
         if (qualifiedName != null) {
             if (!qualifiedName.isEmpty()) {
                 return qualifiedName.substring(qualifiedName.lastIndexOf("::") + 2);
@@ -92,7 +124,7 @@ public class TemplateHandler {
         }
     }
 
-    public static StereotypeNamePair getStereotypeNamePairFromQualifiedName(String qualifiedName) {
+    private static StereotypeNamePair getStereotypeNamePairFromQualifiedName(String qualifiedName) {
         StereotypeNamePair pair = null;
         if (qualifiedName != null) {
             if (!qualifiedName.isEmpty()) {
@@ -105,7 +137,7 @@ public class TemplateHandler {
         return pair;
     }
 
-    public static void mergeContexts(VelocityContext superContext, final VelocityContext contextToMerge) {
+    private static void mergeContexts(VelocityContext superContext, final VelocityContext contextToMerge) {
         for (String key : contextToMerge.getKeys()) {
             Object o = contextToMerge.get(key);
             if (!superContext.containsKey(key)) {

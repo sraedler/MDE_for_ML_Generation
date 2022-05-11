@@ -120,7 +120,6 @@ public class TestMain {
 
     public static void testContextVariant(String modelPath, String stateMachineName, String jsonPath) {
         InformationExtractor ie = new InformationExtractor(modelPath);
-        ie.init();
         Map<Class, BlockContext> contextsForStateMachine = ie.getContextsForStateMachine(stateMachineName);
         contextsForStateMachine.forEach((key, val) -> System.out.println(val.toString()));
         MappingWrapper mappingWrapper = MappingHandler.readJSONV2(jsonPath);

@@ -15,8 +15,8 @@
       "template": "dataframe_merge_v2.vm",
       "properties": {
         "NewDFName": "new_name",
-        "MergeOn[1]": "left",
-        "MergeOn[2]": "right",
+        "MergeOn[0]": "left",
+        "MergeOn[1]": "right",
         "How": "how"
       }
     },
@@ -49,6 +49,13 @@
         "Features_X": "feat_x",
         "Prediction_Y": "pred_y",
         "TrainTestSplitSize": "split"
+      }
+    },
+    "Datetime": {
+      "template": "date_conversion_v2.vm",
+      "properties": {
+        "DatetimeFormat": "old_format",
+        "MappedToName": "MappedToName"
       }
     }
   }

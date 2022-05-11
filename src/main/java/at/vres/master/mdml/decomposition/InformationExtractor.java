@@ -3,11 +3,9 @@ package at.vres.master.mdml.decomposition;
 import MLModel.Attributes.ML_Attribute_Input;
 import MLModel.ML;
 import at.vres.master.mdml.model.BlockContext;
-import at.vres.master.mdml.utils.ContextResolver;
 import at.vres.master.mdml.utils.EMFResourceLoader;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.papyrus.sysml16.blocks.Block;
 import org.eclipse.uml2.uml.*;
 import org.eclipse.uml2.uml.Class;
 
@@ -21,7 +19,6 @@ public class InformationExtractor {
     private static final String CONNECTION_STEREOTYPE_NAME = "ML_Block_Connection";
     private static final String ATTRIBUTE_STEREOTYPE_NAME = "ML_Attribute_Input";
     private static final List<String> stereotypesToIgnore = new LinkedList<>(List.of("Block"));
-    private static final List<String> stereotypeAttributesToIgnore = new LinkedList<>(List.of("base_Class", "isEncapsulated"));
     private final Map<Class, BlockContext> existingContexts;
     private final String loadedModelPath;
     private Model loadedModel;
@@ -38,6 +35,7 @@ public class InformationExtractor {
         this.existingContexts = existingContexts;
         loadedModelPath = modelPath;
         init();
+        executionCounter = 0;
     }
 
     public void init() {
@@ -254,29 +252,29 @@ public class InformationExtractor {
         clazz.getAppliedStereotypes().stream()
                 .filter(s -> !stereotypesToIgnore.contains(s.getName()))
                 .forEach(stereo -> stereo.getAllAttributes().forEach(satt -> {
-            Object value = clazz.getValue(stereo, satt.getName());
-            if (value != null) {
-                if (checkForPrimitiveValueClass(value.getClass().getSimpleName())) {
-                    paramToInfoMap.put(satt.getName(), value.toString());
-                } else if (value instanceof Class) {
-                    Map<String, String> stringStringMap = startInformationExtraction((Class) value);
-                    paramToInfoMap.putAll(stringStringMap);
-                } else if (value instanceof List<?>) {
-                    if (!((List<?>) value).isEmpty()) {
-                        Object o = ((List<?>) value).get(0);
-                        if (o != null) {
-                            if (checkForPrimitiveValueClass(o.getClass().getSimpleName())) {
-                                final StringBuilder sb = new StringBuilder("[");
-                                ((List<?>) value).forEach(v -> sb.append("\"").append(v).append("\"").append(","));
-                                paramToInfoMap.put(satt.getName(), sb.toString());
+                    Object value = clazz.getValue(stereo, satt.getName());
+                    if (value != null) {
+                        if (checkForPrimitiveValueClass(value.getClass().getSimpleName())) {
+                            paramToInfoMap.put(satt.getName(), value.toString());
+                        } else if (value instanceof Class) {
+                            Map<String, String> stringStringMap = startInformationExtraction((Class) value);
+                            paramToInfoMap.putAll(stringStringMap);
+                        } else if (value instanceof List<?>) {
+                            if (!((List<?>) value).isEmpty()) {
+                                Object o = ((List<?>) value).get(0);
+                                if (o != null) {
+                                    if (checkForPrimitiveValueClass(o.getClass().getSimpleName())) {
+                                        final StringBuilder sb = new StringBuilder("[");
+                                        ((List<?>) value).forEach(v -> sb.append("\"").append(v).append("\"").append(","));
+                                        paramToInfoMap.put(satt.getName(), sb.toString());
+                                    }
+                                }
                             }
+                        } else {
+                            System.out.println("Could not handle Object: " + value);
                         }
                     }
-                } else {
-                    System.out.println("Could not handle Object: " + value);
-                }
-            }
-        }));
+                }));
         return paramToInfoMap;
     }
 
