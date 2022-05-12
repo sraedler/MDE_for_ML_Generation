@@ -115,13 +115,32 @@ public class InformationExtractor {
                             });
                             bc.getPropertyMap().put(prefix + att.getQualifiedName(), qualNames);
                             bc.addStereotypeAttributeMapping(stereo.getQualifiedName(), att.getQualifiedName());
-
                         } else {
-
                             System.out.println("ZZZ" + o + " class: " + o.getClass());
                         }
                     }
+                } else if (value instanceof Property) {
+                    contextPropertyHandling((Property) value, bc);
+                    bc.addStereotypeAttributeMapping(stereo.getQualifiedName(), att.getQualifiedName());
+                } else if (value instanceof Class) {
+                    createContextForBlock((Class) value);
+                    bc.addLinkedBlockContext(prefix + att.getQualifiedName(), existingContexts.get(value));
+                } else if (value instanceof Element) {
+                    ((Element) value).getAppliedStereotypes().stream()
+                            .filter(st -> st.getName().equals(ATTRIBUTE_STEREOTYPE_NAME))
+                            .findAny()
+                            .ifPresent(stereotype ->
+                                    contextStereotypeHandling(stereo, bc, (Element) value, prefix + att.getName() + "__")
+                            );
+                } else if (value instanceof ML_Attribute_Input) {
+                    contextPropertyHandling(((ML_Attribute_Input) value).getBase_Property(), bc);
+                    bc.getPropertyMap().put(prefix + att.getQualifiedName(), ((ML_Attribute_Input) value).getBase_Property().getQualifiedName());
+                    bc.addStereotypeAttributeMapping(stereo.getQualifiedName(), att.getQualifiedName());
+                } else {
+                    System.out.println(att.getQualifiedName() + " is currently not handled!");
                 }
+            } else {
+                System.out.println("VALUE IS NULL FOR" + att.getQualifiedName());
             }
         });
     }
@@ -137,7 +156,12 @@ public class InformationExtractor {
             clazz.getAppliedStereotypes()
                     .stream()
                     .filter(st -> !stereotypesToIgnore.contains(st.getName()))
-                    .forEach(stereo -> contextStereotypeHandling(stereo, bc, clazz, ""));
+                    .forEach(stereo -> {
+                        if (stereo.getName().equals("Train_Test_Split")) {
+                            System.out.println("Maybe now?");
+                        }
+                        contextStereotypeHandling(stereo, bc, clazz, "");
+                    });
         }
     }
 

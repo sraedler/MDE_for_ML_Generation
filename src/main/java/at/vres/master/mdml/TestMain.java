@@ -123,9 +123,9 @@ public class TestMain {
         Map<Class, BlockContext> contextsForStateMachine = ie.getContextsForStateMachine(stateMachineName);
         contextsForStateMachine.forEach((key, val) -> System.out.println(val.toString()));
         MappingWrapper mappingWrapper = MappingHandler.readJSONV2(jsonPath);
-        TemplateHandler th = new TemplateHandler(contextsForStateMachine, mappingWrapper, TEST_TEMPLATE_PATH);
-        String execute = th.execute();
-        System.out.println("\nexecute = \n" + execute);
+        //TemplateHandler th = new TemplateHandler(contextsForStateMachine, mappingWrapper, TEST_TEMPLATE_PATH);
+        //String execute = th.execute();
+        //System.out.println("\nexecute = \n" + execute);
     }
 
 }
