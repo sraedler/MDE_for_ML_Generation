@@ -75,14 +75,14 @@ public class TemplateHandler {
                                 if (listName.equals(stereotypeNamePairFromQualifiedName.getAttributeName())) {
                                     if (propVal instanceof List<?>) {
                                         Object o = ((List<?>) propVal).get(Integer.parseInt(listIndex));
-                                        velocityContext.put(remappedName, o);
+                                        velocityContext.put(remappedName, handlePropValQualifiedName(o));
                                     }
                                 }
                             } else if (propVal instanceof List<?>) {
                                 velocityContext.put(remappedName, handleValueLists((List<?>) propVal));
                             } else {
                                 if (originalName.equals(stereotypeNamePairFromQualifiedName.getAttributeName())) {
-                                    velocityContext.put(remappedName, propVal);
+                                    velocityContext.put(remappedName, handlePropValQualifiedName(propVal));
                                 }
                             }
                         });
@@ -92,7 +92,7 @@ public class TemplateHandler {
                     if (propVal instanceof List<?>) {
                         velocityContext.put(propName, handleValueLists((List<?>) propVal));
                     } else {
-                        velocityContext.put(propName, propVal);
+                        velocityContext.put(propName, handlePropValQualifiedName(propVal));
                     }
                 }
             });
@@ -102,6 +102,18 @@ public class TemplateHandler {
             }));
         }
         return velocityContext;
+    }
+
+    private static Object handlePropValQualifiedName(Object propVal) {
+        if (propVal instanceof String) {
+            if (((String) propVal).contains("::")) {
+                return getNameFromQualifiedName((String) propVal);
+            } else {
+                return propVal;
+            }
+        } else {
+            return propVal;
+        }
     }
 
     private static String handleValueLists(List<?> list) {
