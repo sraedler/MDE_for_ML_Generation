@@ -34,7 +34,7 @@ public class TemplateHandler {
         p.setProperty(VELOCITY_TEMPLATE_PATH_KEY, templatePath);
         ve.init(p);
         contexts.forEach((key, value) -> {
-            VelocityContext context = handleBlockContext(value);
+            VelocityContext context = handleBlockContext(value, new LinkedList<>());
             key.getAppliedStereotypes().forEach(stereo -> {
                 StereotypeMapping stereotypeMapping = mappingWrapper.getStereotypeMappings().get(stereo.getName());
                 if (stereotypeMapping != null) {
@@ -59,45 +59,48 @@ public class TemplateHandler {
         return sb.toString();
     }
 
-    private VelocityContext handleBlockContext(BlockContext blockContext) {
+    private VelocityContext handleBlockContext(BlockContext blockContext, List<BlockContext> alreadyHandled) {
         VelocityContext velocityContext = new VelocityContext();
-        blockContext.getPropertyMap().forEach((propName, propVal) -> {
-            StereotypeNamePair stereotypeNamePairFromQualifiedName = getStereotypeNamePairFromQualifiedName(propName);
-            if (stereotypeNamePairFromQualifiedName != null) {
-                StereotypeMapping stereotypeMapping = mappingWrapper.getStereotypeMappings().get(stereotypeNamePairFromQualifiedName.getStereoName());
-                if (stereotypeMapping != null) {
-                    stereotypeMapping.getProperties().forEach((originalName, remappedName) -> {
-                        if (originalName.contains("[") && originalName.contains("]")) {
-                            String listName = originalName.substring(0, originalName.indexOf("["));
-                            String listIndex = originalName.substring(originalName.indexOf("[") + 1, originalName.indexOf("]"));
-                            if (listName.equals(stereotypeNamePairFromQualifiedName.getAttributeName())) {
-                                if (propVal instanceof List<?>) {
-                                    Object o = ((List<?>) propVal).get(Integer.parseInt(listIndex));
-                                    velocityContext.put(remappedName, o);
+        if (!alreadyHandled.contains(blockContext)) {
+            alreadyHandled.add(blockContext);
+            blockContext.getPropertyMap().forEach((propName, propVal) -> {
+                StereotypeNamePair stereotypeNamePairFromQualifiedName = getStereotypeNamePairFromQualifiedName(propName);
+                if (stereotypeNamePairFromQualifiedName != null) {
+                    StereotypeMapping stereotypeMapping = mappingWrapper.getStereotypeMappings().get(stereotypeNamePairFromQualifiedName.getStereoName());
+                    if (stereotypeMapping != null) {
+                        stereotypeMapping.getProperties().forEach((originalName, remappedName) -> {
+                            if (originalName.contains("[") && originalName.contains("]")) {
+                                String listName = originalName.substring(0, originalName.indexOf("["));
+                                String listIndex = originalName.substring(originalName.indexOf("[") + 1, originalName.indexOf("]"));
+                                if (listName.equals(stereotypeNamePairFromQualifiedName.getAttributeName())) {
+                                    if (propVal instanceof List<?>) {
+                                        Object o = ((List<?>) propVal).get(Integer.parseInt(listIndex));
+                                        velocityContext.put(remappedName, o);
+                                    }
+                                }
+                            } else if (propVal instanceof List<?>) {
+                                velocityContext.put(remappedName, handleValueLists((List<?>) propVal));
+                            } else {
+                                if (originalName.equals(stereotypeNamePairFromQualifiedName.getAttributeName())) {
+                                    velocityContext.put(remappedName, propVal);
                                 }
                             }
-                        } else if (propVal instanceof List<?>) {
-                            velocityContext.put(remappedName, handleValueLists((List<?>) propVal));
-                        } else {
-                            if (originalName.equals(stereotypeNamePairFromQualifiedName.getAttributeName())) {
-                                velocityContext.put(remappedName, propVal);
-                            }
-                        }
-                    });
-                    //String remName = stereotypeMapping.getProperties().get(stereotypeNamePairFromQualifiedName.getAttributeName());
-                }
-            } else {
-                if (propVal instanceof List<?>) {
-                    velocityContext.put(propName, handleValueLists((List<?>) propVal));
+                        });
+                        //String remName = stereotypeMapping.getProperties().get(stereotypeNamePairFromQualifiedName.getAttributeName());
+                    }
                 } else {
-                    velocityContext.put(propName, propVal);
+                    if (propVal instanceof List<?>) {
+                        velocityContext.put(propName, handleValueLists((List<?>) propVal));
+                    } else {
+                        velocityContext.put(propName, propVal);
+                    }
                 }
-            }
-        });
-        blockContext.getLinkedPartContexts().forEach((propName, bcList) -> bcList.forEach(bc -> {
-            VelocityContext context = handleBlockContext(bc);
-            mergeContexts(velocityContext, context);
-        }));
+            });
+            blockContext.getLinkedPartContexts().forEach((propName, bcList) -> bcList.forEach(bc -> {
+                VelocityContext context = handleBlockContext(bc, alreadyHandled);
+                mergeContexts(velocityContext, context);
+            }));
+        }
         return velocityContext;
     }
 
