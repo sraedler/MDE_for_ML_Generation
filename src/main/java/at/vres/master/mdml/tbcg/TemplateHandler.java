@@ -33,25 +33,32 @@ public class TemplateHandler {
         p.setProperty(VELOCITY_TEMPLATE_PATH_KEY, templatePath);
         ve.init(p);
         contexts.forEach((key, value) -> {
+            List<String> templatesAlreadyMerged = new LinkedList<>();
             VelocityContext context = handleBlockContext(value, new LinkedList<>());
             key.getAppliedStereotypes().forEach(stereo -> {
                 StereotypeMapping stereotypeMapping = mappingWrapper.getStereotypeMappings().get(stereo.getName());
                 if (stereotypeMapping != null) {
-                    try (StringWriter writer = new StringWriter()) {
-                        ve.mergeTemplate(stereotypeMapping.getTemplate(), ENCODING, context, writer);
-                        sb.append(writer).append("\n");
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                    if (!templatesAlreadyMerged.contains(stereotypeMapping.getTemplate())) {
+                        try (StringWriter writer = new StringWriter()) {
+                            ve.mergeTemplate(stereotypeMapping.getTemplate(), ENCODING, context, writer);
+                            templatesAlreadyMerged.add(stereotypeMapping.getTemplate());
+                            sb.append(writer).append("\n");
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             });
             NameMapping nameMapping = mappingWrapper.getNameMappings().get(key.getName());
             if (nameMapping != null) {
-                try (StringWriter writer = new StringWriter()) {
-                    ve.mergeTemplate(nameMapping.getTemplate(), ENCODING, context, writer);
-                    sb.append(writer).append("\n");
-                } catch (IOException e) {
-                    e.printStackTrace();
+                if (!templatesAlreadyMerged.contains(nameMapping.getTemplate())) {
+                    try (StringWriter writer = new StringWriter()) {
+                        ve.mergeTemplate(nameMapping.getTemplate(), ENCODING, context, writer);
+                        templatesAlreadyMerged.add(nameMapping.getTemplate());
+                        sb.append(writer).append("\n");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });
@@ -94,6 +101,25 @@ public class TemplateHandler {
                         velocityContext.put(propName, handlePropValQualifiedName(propVal));
                     }
                 }
+
+                NameMapping nameMapping = mappingWrapper.getNameMappings().get(blockContext.getConnectedClass().getName());
+                if (nameMapping != null) {
+                    nameMapping.getProperties().forEach((originalName, remappedName) -> {
+                        if (originalName.contains("[") && originalName.contains("]")) {
+                            String listName = originalName.substring(0, originalName.indexOf("["));
+                            String listIndex = originalName.substring(originalName.indexOf("[") + 1, originalName.indexOf("]"));
+                            if (propVal instanceof List<?>) {
+                                Object o = ((List<?>) propVal).get(Integer.parseInt(listIndex));
+                                velocityContext.put(remappedName, handlePropValQualifiedName(o));
+                            }
+                        } else if (propVal instanceof List<?>) {
+                            velocityContext.put(remappedName, handleValueLists((List<?>) propVal));
+                        } else {
+                            velocityContext.put(remappedName, handlePropValQualifiedName(propVal));
+                        }
+                    });
+                }
+
             });
             blockContext.getLinkedPartContexts().forEach((propName, bcList) -> bcList.forEach(bc -> {
                 VelocityContext context = handleBlockContext(bc, alreadyHandled);
@@ -126,7 +152,7 @@ public class TemplateHandler {
         return sb.toString();
     }
 
-    private static String getNameFromQualifiedName(String qualifiedName) {
+    public static String getNameFromQualifiedName(String qualifiedName) {
         if (qualifiedName != null) {
             if (!qualifiedName.isEmpty()) {
                 return qualifiedName.substring(qualifiedName.lastIndexOf("::") + 2);

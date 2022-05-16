@@ -3,6 +3,7 @@ package at.vres.master.mdml.decomposition;
 import MLModel.Attributes.ML_Attribute_Input;
 import MLModel.ML;
 import at.vres.master.mdml.model.BlockContext;
+import at.vres.master.mdml.tbcg.TemplateHandler;
 import at.vres.master.mdml.utils.EMFResourceLoader;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -66,9 +67,14 @@ public class InformationExtractor {
                 }
             }
         } else if (checkForPrimitiveValueClass(type.getName())) {
-            // TODO check if the Default String is enough (since we just insert into templates) or if I need to handle the ValueSpecification
             if (!bc.getPropertyMap().containsKey(prop.getQualifiedName())) {
-                bc.getPropertyMap().put(prop.getQualifiedName(), prop.getDefault());
+                ValueSpecification defaultValue = prop.getDefaultValue();
+                if (defaultValue != null) {
+                    // TODO check if the Default String is enough (since we just insert into templates) or if I need to handle the ValueSpecification
+                    bc.getPropertyMap().put(prop.getQualifiedName(), prop.getDefault());
+                } else {
+                    bc.getPropertyMap().put(prop.getQualifiedName(), TemplateHandler.getNameFromQualifiedName(prop.getQualifiedName()));
+                }
                 prop.getAppliedStereotypes().stream()
                         .filter(st -> !stereotypesToIgnore.contains(st.getName()))
                         .forEach(stereo -> contextStereotypeHandling(stereo, bc, prop, prop.getName() + "__"));

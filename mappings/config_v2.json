@@ -73,5 +73,13 @@
         "DatetimeFormat": "old_format"
       }
     }
+  },
+  "nameMappings": {
+    "Format_Date": {
+      "template": "date_conversion_v2.vm",
+      "properties": {
+        "date": "d"
+      }
+    }
   }
 }
