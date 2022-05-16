@@ -77,6 +77,13 @@
     }
   },
   "nameMappings": {
+    "ConfBlock": {
+      "template": "csv_load_v2.vm",
+      "properties": {
+        "skip": "skip",
+        "pathCSV": "path"
+      }
+    },
     "CSV_1": {
       "template": "date_conversion_v2.vm",
       "executeWith": "Format_Date",

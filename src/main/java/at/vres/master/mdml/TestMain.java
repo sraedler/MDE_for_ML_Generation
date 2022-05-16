@@ -40,7 +40,7 @@ public class TestMain {
         //testV2(TEST_MODEL);
         //testJSONV2(JSON_CONFIG_PATH);
         //testV2withJSONConfig(TEST_MODEL, JSON_CONFIG_PATH);
-        testContextVariant(TEST_MODEL, STATE_MACHINE_NAME, JSON_CONFIG_PATH);
+        testContextVariant(WORKSPACE_PROFILE_TEST_MODEL, STATE_MACHINE_NAME, JSON_CONFIG_PATH);
     }
 
     public static void testJSONV2(String jsonPath) {

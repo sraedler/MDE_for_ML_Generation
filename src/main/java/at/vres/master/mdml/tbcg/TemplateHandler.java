@@ -196,7 +196,6 @@ public class TemplateHandler {
                     List<Object> objects = handleOwnerInternal(bc, attributeOfOwner, propVal);
                     if (!objects.isEmpty()) {
                         if (objects.size() > 1) System.out.println("PROPERTY OF OWNER CANNOT BE MATCHED UNIQUELY");
-                        System.out.println("RETURNING " + objects.get(0));
                         return objects.get(0);
                     }
                 }
