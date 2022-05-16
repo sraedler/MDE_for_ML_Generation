@@ -19,6 +19,8 @@ public class TemplateHandler {
     private final Map<Class, BlockContext> contexts;
     private final MappingWrapper mappingWrapper;
     private final String templatePath;
+    private static final String KEYWORD_OWNER = "OWNER";
+    private static final String KEYWORD_SEPARATOR = "\\.";
 
     public TemplateHandler(Map<Class, BlockContext> contexts, MappingWrapper mappingWrapper, String templatePath) {
         this.contexts = contexts;
@@ -84,14 +86,29 @@ public class TemplateHandler {
                                 if (listName.equals(stereotypeNamePairFromQualifiedName.getAttributeName())) {
                                     if (propVal instanceof List<?>) {
                                         Object o = ((List<?>) propVal).get(Integer.parseInt(listIndex));
-                                        velocityContext.put(remappedName, handlePropValQualifiedName(o));
+                                        if (originalName.contains(KEYWORD_OWNER)) {
+                                            Object o1 = handleOwner(blockContext, originalName, o);
+                                            velocityContext.put(remappedName, handlePropValQualifiedName(o1));
+                                        } else {
+                                            velocityContext.put(remappedName, handlePropValQualifiedName(o));
+                                        }
                                     }
                                 }
                             } else if (propVal instanceof List<?>) {
-                                velocityContext.put(remappedName, handleValueLists((List<?>) propVal));
+                                if (originalName.contains(KEYWORD_OWNER)) {
+                                    Object o1 = handleOwner(blockContext, originalName, propVal);
+                                    velocityContext.put(remappedName, handlePropValQualifiedName(o1));
+                                } else {
+                                    velocityContext.put(remappedName, handleValueLists((List<?>) propVal));
+                                }
                             } else {
                                 if (originalName.equals(stereotypeNamePairFromQualifiedName.getAttributeName())) {
-                                    velocityContext.put(remappedName, handlePropValQualifiedName(propVal));
+                                    if (originalName.contains(KEYWORD_OWNER)) {
+                                        Object o1 = handleOwner(blockContext, originalName, propVal);
+                                        velocityContext.put(remappedName, handlePropValQualifiedName(o1));
+                                    } else {
+                                        velocityContext.put(remappedName, handlePropValQualifiedName(propVal));
+                                    }
                                 }
                             }
                         });
@@ -115,14 +132,29 @@ public class TemplateHandler {
                             if (listName.equals(shortPropName)) {
                                 if (propVal instanceof List<?>) {
                                     Object o = ((List<?>) propVal).get(Integer.parseInt(listIndex));
-                                    velocityContext.put(remappedName, handlePropValQualifiedName(o));
+                                    if (originalName.contains(KEYWORD_OWNER)) {
+                                        Object o1 = handleOwner(blockContext, originalName, propVal);
+                                        velocityContext.put(remappedName, handlePropValQualifiedName(o1));
+                                    } else {
+                                        velocityContext.put(remappedName, handlePropValQualifiedName(o));
+                                    }
                                 }
                             }
                         } else if (shortPropName.equals(originalName)) {
                             if (propVal instanceof List<?>) {
-                                velocityContext.put(remappedName, handleValueLists((List<?>) propVal));
+                                if (originalName.contains(KEYWORD_OWNER)) {
+                                    Object o1 = handleOwner(blockContext, originalName, propVal);
+                                    velocityContext.put(remappedName, handlePropValQualifiedName(o1));
+                                } else {
+                                    velocityContext.put(remappedName, handleValueLists((List<?>) propVal));
+                                }
                             } else {
-                                velocityContext.put(remappedName, handlePropValQualifiedName(propVal));
+                                if (originalName.contains(KEYWORD_OWNER)) {
+                                    Object o1 = handleOwner(blockContext, originalName, propVal);
+                                    velocityContext.put(remappedName, handlePropValQualifiedName(o1));
+                                } else {
+                                    velocityContext.put(remappedName, handlePropValQualifiedName(propVal));
+                                }
                             }
                         }
                     });
@@ -135,6 +167,63 @@ public class TemplateHandler {
             }));
         }
         return velocityContext;
+    }
+
+    private static List<Object> handleOwnerInternal(BlockContext bc, String attributeToGet, Object propVal) {
+        Object o = handlePropValGetOwner(propVal);
+        final List<Object> matchingPropVals = new LinkedList<>();
+        bc.getLinkedPartContexts().forEach((name, contextList) -> contextList.forEach(con -> {
+            if (con.getConnectedClass().getName().equals(o)) {
+                con.getPropertyMap().forEach((key, value) -> {
+                    String nameFromQualifiedName = getNameFromQualifiedName(key);
+                    if (nameFromQualifiedName.equals(attributeToGet)) {
+                        matchingPropVals.add(value);
+                    }
+                });
+
+            }
+        }));
+        return matchingPropVals;
+    }
+
+    private static Object handleOwner(final BlockContext bc, final String orginalNameWithOwner, final Object propVal) {
+        System.out.println("HANDLING OWNER");
+        if (orginalNameWithOwner != null && !orginalNameWithOwner.isEmpty()) {
+            if (orginalNameWithOwner.contains(KEYWORD_OWNER)) {
+                String[] split = orginalNameWithOwner.split(KEYWORD_SEPARATOR);
+                if (split.length == 3 && split[1].equals(KEYWORD_OWNER)) {
+                    String getOwnerFor = split[0];
+                    String attributeOfOwner = split[2];
+                    if (getOwnerFor.contains("[") && getOwnerFor.contains("]")) {
+                        getOwnerFor = getOwnerFor.substring(0, getOwnerFor.indexOf("["));
+                    }
+                    System.out.println("getOwnerFor = " + getOwnerFor);
+                    System.out.println("attributeOfOwner = " + attributeOfOwner);
+                    System.out.println("propVal = " + propVal);
+                    List<Object> objects = handleOwnerInternal(bc, attributeOfOwner, propVal);
+                    if (!objects.isEmpty()) {
+                        if (objects.size() > 1) System.out.println("PROPERTY OF OWNER CANNOT BE MATCHED UNIQUELY");
+                        System.out.println("RETURNING " + objects.get(0));
+                        return objects.get(0);
+                    }
+                }
+            }
+        }
+        System.out.println("RETURNING NULL");
+        return null;
+    }
+
+    private static Object handlePropValGetOwner(Object propVal) {
+        if (propVal instanceof String) {
+            if (((String) propVal).contains("::")) {
+                String[] split = ((String) propVal).split("::");
+                return split[split.length - 2];
+            } else {
+                return propVal;
+            }
+        } else {
+            return propVal;
+        }
     }
 
     private static Object handlePropValQualifiedName(Object propVal) {
