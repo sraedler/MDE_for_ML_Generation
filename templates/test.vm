@@ -1,3 +1,0 @@
-import pandas as pd
-
-${VariableName} = pd.read_csv("${Path}", sep="${Delimiter}", encoding="${Encoding}", skiprows="${SkipNrOfLines}")

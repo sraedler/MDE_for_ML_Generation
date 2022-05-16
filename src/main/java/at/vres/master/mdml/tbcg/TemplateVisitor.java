@@ -16,7 +16,7 @@ public class TemplateVisitor extends BaseVisitor {
         Token firstToken = node.getFirstToken();
         tokenList.add(firstToken);
         Token next = firstToken.next;
-        while(next != null) {
+        while (next != null) {
             next = next.next;
             tokenList.add(next);
         }

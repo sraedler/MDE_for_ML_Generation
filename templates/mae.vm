@@ -1,4 +1,0 @@
-from sklearn.metrics import mean_absolute_error
-
-mae = mean_absolute_error(${test_y}, ${pred1})
-print("Mean Absolute Error: %f" % mae_dtr)

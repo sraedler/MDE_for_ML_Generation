@@ -15,7 +15,13 @@ public class BlockContext {
     private Map<String, List<String>> stereotypeToPropsMap;
     private Integer executionOrder;
 
-    private BlockContext() {
+    public BlockContext(Class connectedClass) {
+        this.connectedClass = connectedClass;
+        this.qualifiedName = connectedClass.getQualifiedName();
+        linkedPartContexts = new HashMap<>();
+        propertyMap = new HashMap<>();
+        stereotypeToPropsMap = new HashMap<>();
+        executionOrder = -1;
     }
 
     public void addLinkedBlockContext(String qualifiedName, BlockContext blockContext) {
@@ -45,14 +51,6 @@ public class BlockContext {
         this.stereotypeToPropsMap = stereotypeToPropsMap;
     }
 
-    public BlockContext(Class connectedClass) {
-        this.connectedClass = connectedClass;
-        this.qualifiedName = connectedClass.getQualifiedName();
-        linkedPartContexts = new HashMap<>();
-        propertyMap = new HashMap<>();
-        stereotypeToPropsMap = new HashMap<>();
-        executionOrder = -1;
-    }
 
     public Class getConnectedClass() {
         return connectedClass;

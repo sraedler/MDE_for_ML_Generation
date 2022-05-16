@@ -1,3 +1,0 @@
-import datetime
-
-${VariableName}["${date}"] = ${VariableName}["${date}"].apply(lambda old_date, old_format, new_format: datetime.datetime.strptime(old_date, old_format).strftime(new_format), args=("${DatetimeFormat}", "${Output_Format}"))

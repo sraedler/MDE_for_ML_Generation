@@ -9,7 +9,6 @@ import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.uml2.uml.*;
 import org.eclipse.uml2.uml.Class;
-import org.eclipse.uml2.uml.Enumeration;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -28,13 +27,6 @@ public class InformationExtractor {
 
     public InformationExtractor(String modelPath) {
         existingContexts = new HashMap<>();
-        loadedModelPath = modelPath;
-        init();
-        executionCounter = 0;
-    }
-
-    public InformationExtractor(Map<Class, BlockContext> existingContexts, String modelPath) {
-        this.existingContexts = existingContexts;
         loadedModelPath = modelPath;
         init();
         executionCounter = 0;
@@ -181,24 +173,6 @@ public class InformationExtractor {
         return StreamSupport.stream(iterable.spliterator(), parallel);
     }
 
-    public static Map<Class, Map<String, String>> doExtraction(final Model model, final String stateMachineName) {
-        final Map<Class, Map<String, String>> contextMap = new LinkedHashMap<>();
-        StateMachine stateMachine = (StateMachine) getStreamFromIterator(model.eAllContents(), false)
-                .filter(eo -> eo instanceof StateMachine)
-                .filter(st -> ((StateMachine) st).getName().equals(stateMachineName))
-                .findAny().orElse(null);
-        if (stateMachine != null) {
-            stateMachine.getConnectionPoints().stream()
-                    .filter(e -> e.getKind().getLiteral().equals(ENTRY_POINT)).
-                    findFirst().ifPresent(
-                            ps -> ps.getOutgoings().forEach(
-                                    outgoing -> followVertex(outgoing.getTarget(), 0, contextMap)
-                            )
-                    );
-        }
-        return contextMap;
-    }
-
     public static List<Class> getOrderedBlocksFromModelAndStateMachineDiagram(final Model model, final String stateMachineName) {
         final List<Class> orderedBlocks = new LinkedList<>();
         StateMachine stateMachine = (StateMachine) getStreamFromIterator(model.eAllContents(), false)
@@ -217,43 +191,6 @@ public class InformationExtractor {
         return orderedBlocks;
     }
 
-    public static void handleStereotype(final Stereotype stereo, final Class clazz) {
-        stereo.getAllAttributes().forEach(att -> {
-            Object value = clazz.getValue(stereo, att.getName());
-            if (value != null) {
-
-            }
-
-        });
-    }
-
-    public static void handleClazz(final Class clazz) {
-        // handle stereotypes
-        clazz.getAppliedStereotypes().stream().filter(st -> !stereotypesToIgnore.contains(st.getName())).forEach(s -> handleStereotype(s, clazz));
-        // handle attributes
-        clazz.getAllAttributes().forEach(InformationExtractor::handleProperty);
-    }
-
-    public static void handleProperty(final Property prop) {
-
-    }
-
-    public static void followVertex(final Vertex state, final int depth, Map<Class, Map<String, String>> contextMap) {
-        Stereotype stereotype = state.getAppliedStereotypes().stream()
-                .filter(s -> s.getName().equals(CONNECTION_STEREOTYPE_NAME)).findAny().orElse(null);
-        if (stereotype != null) {
-            Object ml_block = state.getValue(stereotype, "ML_Block");
-            if (ml_block instanceof ML) {
-                Class clazz = ((ML) ml_block).getBase_Class();
-                List<String> alreadyVisited = new LinkedList<>();
-                evaluateBlock(clazz, alreadyVisited);
-                //Map<String, String> stringStringMap = startInformationExtraction(clazz);
-                //contextMap.put(clazz, stringStringMap);
-            }
-        }
-        state.getOutgoings().forEach(out -> followVertex(out.getTarget(), depth + 1, contextMap));
-    }
-
     public static void followVertexForBlock(final Vertex state, final int depth, List<Class> orderedBlocks) {
         Stereotype stereotype = state.getAppliedStereotypes().stream()
                 .filter(s -> s.getName().equals(CONNECTION_STEREOTYPE_NAME)).findAny().orElse(null);
@@ -267,88 +204,9 @@ public class InformationExtractor {
         state.getOutgoings().forEach(out -> followVertexForBlock(out.getTarget(), depth + 1, orderedBlocks));
     }
 
-    public static Map<String, String> startInformationExtraction(final Class clazz) {
-        final Map<String, String> paramToInfoMap = new HashMap<>();
-        clazz.getOwnedAttributes().forEach(att -> {
-            if (att != null) {
-                paramToInfoMap.put(att.getName(), att.getDefault());
-            }
-        });
-        clazz.getAppliedStereotypes().stream()
-                .filter(s -> !stereotypesToIgnore.contains(s.getName()))
-                .forEach(stereo -> stereo.getAllAttributes().forEach(satt -> {
-                    Object value = clazz.getValue(stereo, satt.getName());
-                    if (value != null) {
-                        if (checkForPrimitiveValueClass(value.getClass().getSimpleName())) {
-                            paramToInfoMap.put(satt.getName(), value.toString());
-                        } else if (value instanceof Class) {
-                            Map<String, String> stringStringMap = startInformationExtraction((Class) value);
-                            paramToInfoMap.putAll(stringStringMap);
-                        } else if (value instanceof List<?>) {
-                            if (!((List<?>) value).isEmpty()) {
-                                Object o = ((List<?>) value).get(0);
-                                if (o != null) {
-                                    if (checkForPrimitiveValueClass(o.getClass().getSimpleName())) {
-                                        final StringBuilder sb = new StringBuilder("[");
-                                        ((List<?>) value).forEach(v -> sb.append("\"").append(v).append("\"").append(","));
-                                        paramToInfoMap.put(satt.getName(), sb.toString());
-                                    }
-                                }
-                            }
-                        } else {
-                            System.out.println("Could not handle Object: " + value);
-                        }
-                    }
-                }));
-        return paramToInfoMap;
-    }
-
     public static Boolean checkForPrimitiveValueClass(String simpleClassName) {
         final List<String> primitiveClassNames = new LinkedList<>(List.of("String", "Integer", "Boolean", "Double", "UnlimitedNatural", "Real"));
         return primitiveClassNames.contains(simpleClassName);
     }
-
-    public static void evaluateBlock(Class clazz, List<String> alreadyVisited) {
-        alreadyVisited.add(clazz.getQualifiedName());
-        clazz.getAppliedStereotypes().forEach(s -> evaluateStereotype(s, clazz, alreadyVisited));
-        clazz.getOwnedAttributes().forEach(att -> {
-            att.getAppliedStereotypes().forEach(st -> evaluateStereotype(st, att, alreadyVisited));
-            Type type = att.getType();
-            if (type instanceof PrimitiveType) {
-                System.out.println("PrimitiveType = " + att.getName());
-            } else if (type instanceof Class) {
-                System.out.println("Class = " + att.getClass_());
-                if (!alreadyVisited.contains(att.getClass_().getQualifiedName()))
-                    evaluateBlock(att.getClass_(), alreadyVisited);
-            } else if (type instanceof Property) {
-                evaluateProperty(att);
-            }
-            //System.out.println("type = " + type);
-        });
-    }
-
-    public static void evaluateProperty(Property property) {
-        String aDefault = property.getDefault();
-        System.out.println("aDefault = " + aDefault);
-    }
-
-    public static void evaluateStereotype(Stereotype stereo, Element el, List<String> alreadyVisited) {
-        if (!stereotypesToIgnore.contains(stereo.getName())) {
-            stereo.getAllAttributes().forEach(att -> {
-                Object value = el.getValue(stereo, att.getName());
-                if (value instanceof Property) {
-                    evaluateProperty((Property) value);
-                } else if (value instanceof Class) {
-                    // TODO fix stack overflow due to circular function calls
-                    if (!alreadyVisited.contains(((Class) value).getQualifiedName()))
-                        evaluateBlock((Class) value, alreadyVisited);
-                } else {
-                    System.out.println("Stereotype Attribute: " + att.getName() + " = " + value);
-                }
-
-            });
-        }
-    }
-
 
 }
