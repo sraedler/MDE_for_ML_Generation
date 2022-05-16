@@ -187,19 +187,12 @@ public class TemplateHandler {
     }
 
     private static Object handleOwner(final BlockContext bc, final String orginalNameWithOwner, final Object propVal) {
-        System.out.println("HANDLING OWNER");
         if (orginalNameWithOwner != null && !orginalNameWithOwner.isEmpty()) {
             if (orginalNameWithOwner.contains(KEYWORD_OWNER)) {
                 String[] split = orginalNameWithOwner.split(KEYWORD_SEPARATOR);
                 if (split.length == 3 && split[1].equals(KEYWORD_OWNER)) {
                     String getOwnerFor = split[0];
                     String attributeOfOwner = split[2];
-                    if (getOwnerFor.contains("[") && getOwnerFor.contains("]")) {
-                        getOwnerFor = getOwnerFor.substring(0, getOwnerFor.indexOf("["));
-                    }
-                    System.out.println("getOwnerFor = " + getOwnerFor);
-                    System.out.println("attributeOfOwner = " + attributeOfOwner);
-                    System.out.println("propVal = " + propVal);
                     List<Object> objects = handleOwnerInternal(bc, attributeOfOwner, propVal);
                     if (!objects.isEmpty()) {
                         if (objects.size() > 1) System.out.println("PROPERTY OF OWNER CANNOT BE MATCHED UNIQUELY");
@@ -209,7 +202,6 @@ public class TemplateHandler {
                 }
             }
         }
-        System.out.println("RETURNING NULL");
         return null;
     }
 

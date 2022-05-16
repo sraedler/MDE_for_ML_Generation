@@ -9,6 +9,7 @@ import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.uml2.uml.*;
 import org.eclipse.uml2.uml.Class;
+import org.eclipse.uml2.uml.Enumeration;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -122,7 +123,7 @@ public class InformationExtractor {
                             bc.getPropertyMap().put(prefix + att.getQualifiedName(), qualNames);
                             bc.addStereotypeAttributeMapping(stereo.getQualifiedName(), att.getQualifiedName());
                         } else {
-                            System.out.println("ZZZ" + o + " class: " + o.getClass());
+                            System.out.println("UNKNOWN LIST OBJECT " + o + " class: " + o.getClass());
                         }
                     }
                 } else if (value instanceof Property) {
@@ -143,7 +144,10 @@ public class InformationExtractor {
                     bc.getPropertyMap().put(prefix + att.getQualifiedName(), ((ML_Attribute_Input) value).getBase_Property().getQualifiedName());
                     bc.addStereotypeAttributeMapping(stereo.getQualifiedName(), att.getQualifiedName());
                 } else {
-                    System.out.println(att.getQualifiedName() + " is currently not handled!");
+                    // TODO see if you can split the custom Enumerations from this leftover handling part
+                    bc.getPropertyMap().put(prefix + att.getQualifiedName(), value);
+                    bc.addStereotypeAttributeMapping(stereo.getQualifiedName(), att.getQualifiedName());
+                    System.out.println(value + " is currently not handled!");
                 }
             } else {
                 System.out.println("VALUE IS NULL FOR" + att.getQualifiedName());
@@ -155,10 +159,7 @@ public class InformationExtractor {
         if (!existingContexts.containsKey(clazz)) {
             BlockContext bc = new BlockContext(clazz);
             existingContexts.put(clazz, bc);
-            clazz.getAllAttributes().forEach(att -> {
-                System.out.println("att = " + att);
-                contextPropertyHandling(att, bc);
-            });
+            clazz.getAllAttributes().forEach(att -> contextPropertyHandling(att, bc));
             clazz.getAppliedStereotypes()
                     .stream()
                     .filter(st -> !stereotypesToIgnore.contains(st.getName()))
@@ -204,7 +205,6 @@ public class InformationExtractor {
                 .filter(eo -> eo instanceof StateMachine)
                 .filter(st -> ((StateMachine) st).getName().equals(stateMachineName))
                 .findAny().orElse(null);
-        System.out.println("stateMachine = " + stateMachine);
         if (stateMachine != null) {
             stateMachine.getConnectionPoints().stream()
                     .filter(e -> e.getKind().getLiteral().equals(ENTRY_POINT)).

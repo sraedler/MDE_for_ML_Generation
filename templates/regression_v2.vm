@@ -1,4 +1,4 @@
-from sklearn.tree import ${Algorithm}
+from sklearn.tree import ${algo}
 
 model1=${algo}(random_state=1)
-model1.fit(${train_X}, ${train_y})
+model1.fit(train_X, train_y)
