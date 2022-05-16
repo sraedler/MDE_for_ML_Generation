@@ -517,9 +517,9 @@
   <MLModel.Attributes:Float xmi:id="__xYuwK9JEeyhNoRn0OlPgA" base_Property="_x9iZ0K9IEey8G6m4MAbk9g"/>
   <MLModel.Attributes:String xmi:id="_AyHzAK9KEeyhNoRn0OlPgA" base_Property="_zdphsK9IEey8G6m4MAbk9g"/>
   <Blocks:Block xmi:id="_EJ6CoK9UEeyhNoRn0OlPgA" base_Class="_EJ1KIK9UEeyhNoRn0OlPgA"/>
-  <MLModel.DataStorage:CSV xmi:id="_SKZh4K9UEeyhNoRn0OlPgA" base_Class="_EJ1KIK9UEeyhNoRn0OlPgA" VariableName="df_one" Delimiter=","/>
+  <MLModel.DataStorage:CSV xmi:id="_SKZh4K9UEeyhNoRn0OlPgA" base_Class="_EJ1KIK9UEeyhNoRn0OlPgA" VariableName="df_one" Path="C:\Users\rup\IdeaProjects\MasterModelDrivenML\storage\weather1.csv" Encoding="UTF-8" Delimiter=","/>
   <Blocks:Block xmi:id="_TYJucK9UEeyhNoRn0OlPgA" base_Class="_TX_WYK9UEeyhNoRn0OlPgA"/>
-  <MLModel.DataStorage:CSV xmi:id="_TYMKsK9UEeyhNoRn0OlPgA" base_Class="_TX_WYK9UEeyhNoRn0OlPgA" VariableName="df_two" Encoding="UTF-8" Delimiter=";"/>
+  <MLModel.DataStorage:CSV xmi:id="_TYMKsK9UEeyhNoRn0OlPgA" base_Class="_TX_WYK9UEeyhNoRn0OlPgA" VariableName="df_two" Path="C:\Users\rup\IdeaProjects\MasterModelDrivenML\storage\weather2.csv" Encoding="UTF-8" Delimiter=";"/>
   <PortsAndFlows:ItemFlow xmi:id="_yWjgUK9UEeyhNoRn0OlPgA" base_InformationFlow="_yWgdAK9UEeyhNoRn0OlPgA" itemProperty="_-_quAK81Eey8G6m4MAbk9g"/>
   <Blocks:Block xmi:id="_TmI_wK9XEeyNq4GIFFbv8w" base_Class="_TmCSEK9XEeyNq4GIFFbv8w"/>
   <MLModel.Algorithms:BlackBox_Algorithm xmi:id="_iE5IUK9XEeyNq4GIFFbv8w" base_Class="_TmCSEK9XEeyNq4GIFFbv8w"/>

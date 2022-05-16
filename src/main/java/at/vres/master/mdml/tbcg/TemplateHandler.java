@@ -4,7 +4,6 @@ import at.vres.master.mdml.mapping.MappingWrapper;
 import at.vres.master.mdml.mapping.NameMapping;
 import at.vres.master.mdml.mapping.StereotypeMapping;
 import at.vres.master.mdml.model.BlockContext;
-import at.vres.master.mdml.model.ContextAndTemplatesPair;
 import at.vres.master.mdml.model.StereotypeNamePair;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;

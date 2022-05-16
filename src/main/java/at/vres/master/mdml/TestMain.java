@@ -22,7 +22,7 @@ public class TestMain {
     private static final String WORKSPACE_PROFILE_TEST_MODEL = "C:\\Users\\rup\\Documents\\MASTER\\MLModels\\NewVer_04_05_2022\\ML_Modelling\\UC1_Weather\\UC1_Weather.uml";
     private static final String TEST_TEMPLATE_PATH = "C:\\Users\\rup\\IdeaProjects\\MasterModelDrivenML\\templates";
     private static final String ENCODING = "UTF-8";
-    private static final String JSON_CONFIG_PATH = "mappings\\config.json";
+    private static final String JSON_CONFIG_PATH = "mappings\\config_v2.json";
     private static final String STATE_MACHINE_NAME = "StateMachine1";
     private static final Map<String, String> stereoTemplateMapping = new HashMap<>(Map.of(
             "CSV", "csv_load.vm",

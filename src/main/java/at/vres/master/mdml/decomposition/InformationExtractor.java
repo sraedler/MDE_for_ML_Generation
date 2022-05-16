@@ -156,12 +156,7 @@ public class InformationExtractor {
             clazz.getAppliedStereotypes()
                     .stream()
                     .filter(st -> !stereotypesToIgnore.contains(st.getName()))
-                    .forEach(stereo -> {
-                        if (stereo.getName().equals("Train_Test_Split")) {
-                            System.out.println("Maybe now?");
-                        }
-                        contextStereotypeHandling(stereo, bc, clazz, "");
-                    });
+                    .forEach(stereo -> contextStereotypeHandling(stereo, bc, clazz, ""));
         }
     }
 
