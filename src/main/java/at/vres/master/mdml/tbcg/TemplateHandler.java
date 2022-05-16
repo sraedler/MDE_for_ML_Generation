@@ -52,12 +52,15 @@ public class TemplateHandler {
             NameMapping nameMapping = mappingWrapper.getNameMappings().get(key.getName());
             if (nameMapping != null) {
                 if (!templatesAlreadyMerged.contains(nameMapping.getTemplate())) {
-                    try (StringWriter writer = new StringWriter()) {
-                        ve.mergeTemplate(nameMapping.getTemplate(), ENCODING, context, writer);
-                        templatesAlreadyMerged.add(nameMapping.getTemplate());
-                        sb.append(writer).append("\n");
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                    String executeWith = nameMapping.getExecuteWith();
+                    if (executeWith == null || executeWith.equals(key.getName())) {
+                        try (StringWriter writer = new StringWriter()) {
+                            ve.mergeTemplate(nameMapping.getTemplate(), ENCODING, context, writer);
+                            templatesAlreadyMerged.add(nameMapping.getTemplate());
+                            sb.append(writer).append("\n");
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             }
@@ -104,18 +107,23 @@ public class TemplateHandler {
 
                 NameMapping nameMapping = mappingWrapper.getNameMappings().get(blockContext.getConnectedClass().getName());
                 if (nameMapping != null) {
+                    String shortPropName = getNameFromQualifiedName(propName);
                     nameMapping.getProperties().forEach((originalName, remappedName) -> {
                         if (originalName.contains("[") && originalName.contains("]")) {
                             String listName = originalName.substring(0, originalName.indexOf("["));
                             String listIndex = originalName.substring(originalName.indexOf("[") + 1, originalName.indexOf("]"));
-                            if (propVal instanceof List<?>) {
-                                Object o = ((List<?>) propVal).get(Integer.parseInt(listIndex));
-                                velocityContext.put(remappedName, handlePropValQualifiedName(o));
+                            if (listName.equals(shortPropName)) {
+                                if (propVal instanceof List<?>) {
+                                    Object o = ((List<?>) propVal).get(Integer.parseInt(listIndex));
+                                    velocityContext.put(remappedName, handlePropValQualifiedName(o));
+                                }
                             }
-                        } else if (propVal instanceof List<?>) {
-                            velocityContext.put(remappedName, handleValueLists((List<?>) propVal));
-                        } else {
-                            velocityContext.put(remappedName, handlePropValQualifiedName(propVal));
+                        } else if (shortPropName.equals(originalName)) {
+                            if (propVal instanceof List<?>) {
+                                velocityContext.put(remappedName, handleValueLists((List<?>) propVal));
+                            } else {
+                                velocityContext.put(remappedName, handlePropValQualifiedName(propVal));
+                            }
                         }
                     });
                 }
