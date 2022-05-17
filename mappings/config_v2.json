@@ -64,7 +64,9 @@
         "Prediction_Y": "pred_y",
         "TrainTestSplitSize": "split"
       },
-      "modelCommands": {}
+      "modelCommands": {
+        "THIS.BLOCK.NAME": "split_name"
+      }
     },
     "Regression": {
       "template": "regression_v2.vm",
@@ -72,14 +74,16 @@
         "Algorithm": "algo"
       },
       "modelCommands": {
-        "THIS.BLOCK.NAME": "model_name"
+        "THIS.BLOCK.NAME": "model_name",
+        "CONNECTED.Train_Test_Split.NAME": "split"
       }
     },
     "Predict": {
       "template": "predict_v2.vm",
       "properties": {},
       "modelCommands": {
-        "CONNECTED.Regression.NAME": "pred_name"
+        "CONNECTED.Regression.NAME": "pred_name",
+        "CONNECTED.Train_Test_Split.NAME": "train_test"
       }
     },
     "Metrics": {

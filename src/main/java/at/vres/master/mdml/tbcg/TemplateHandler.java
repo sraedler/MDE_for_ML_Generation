@@ -58,7 +58,7 @@ public class TemplateHandler {
                                     String defaultVal = matcher.group(2);
                                     Object o = context.get(paramName);
                                     if (o == null) {
-                                        context.put(paramName, defaultVal);
+                                        context.put(paramName, defaultVal.replace("\"", ""));
                                     }
                                     int start = matcher.start();
                                     int end = matcher.end();
@@ -249,24 +249,32 @@ public class TemplateHandler {
     private static Object handleConnection(BlockContext bc, String originalName) {
         String[] split = originalName.split(KEYWORD_SEPARATOR);
         if (split.length == 3 && split[0].equals(KEYWORD_CONNECTION)) {
-            return handleConnectedElement(bc, split[1], split[2]);
+            return handleConnectedElement(bc, split[1], split[2], new HashSet<>());
         }
         return null;
     }
 
-    private static Object handleConnectedElement(BlockContext bc, String connectedElement, String attributeToGet) {
+    private static Object handleConnectedElement(BlockContext bc, String connectedElement, String attributeToGet, Set<BlockContext> alreadyChecked) {
         final List<Object> connectedElements = new LinkedList<>();
-        bc.getLinkedPartContexts().forEach((propName, contextList) -> contextList.forEach(context ->
-                context.getStereotypeToPropsMap().forEach((stereoname, stereoprops) -> {
-                    if (getNameFromQualifiedName(stereoname).equals(connectedElement)) {
-                        connectedElements.add(handleBlockConfig(context, attributeToGet));
-                    }
-                })));
-        System.out.println("connectedElements = " + connectedElements);
+        bc.getLinkedPartContexts().forEach((propName, contextList) -> contextList.forEach(context -> {
+                    context.getStereotypeToPropsMap().forEach((stereoname, stereoprops) -> {
+                        if (getNameFromQualifiedName(stereoname).equals(connectedElement)) {
+                            connectedElements.add(handleBlockConfig(context, attributeToGet));
+                        }
+                    });
+                    alreadyChecked.add(context);
+                    context.getLinkedPartContexts().forEach((key, value) -> value.forEach(indirectContext -> {
+                        if (!alreadyChecked.contains(indirectContext)) {
+                            connectedElements.add(handleConnectedElement(indirectContext, connectedElement, attributeToGet, alreadyChecked));
+                        }
+                    }));
+
+                }
+        ));
         if (!connectedElements.isEmpty()) {
             if (connectedElements.size() > 1) {
                 // TODO MAE should end up here, find out why not
-                System.out.println("MORE THAN ONE CONNECTED ELEMENT FOUND, COULD NOT UNIQUELY IDENTIFY IT, RETURNING FIRST ELEMENT!");
+                System.out.println("COULD NOT UNIQUELY IDENTIFY CONNECTED ELEMENT, RETURNING FIRST ELEMENT!");
             }
             return connectedElements.get(0);
         }
