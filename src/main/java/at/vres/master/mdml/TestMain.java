@@ -4,6 +4,7 @@ import at.vres.master.mdml.decomposition.InformationExtractor;
 import at.vres.master.mdml.mapping.MappingHandler;
 import at.vres.master.mdml.mapping.MappingWrapper;
 import at.vres.master.mdml.model.BlockContext;
+import at.vres.master.mdml.output.notebook.formatters.ImportFormatter;
 import at.vres.master.mdml.tbcg.TemplateHandler;
 import org.eclipse.uml2.uml.Class;
 
@@ -28,7 +29,8 @@ public class TestMain {
         MappingWrapper mappingWrapper = MappingHandler.readJSONV2(jsonPath);
         TemplateHandler th = new TemplateHandler(contextsForStateMachine, mappingWrapper, TEST_TEMPLATE_PATH);
         String execute = th.execute();
-        System.out.println("\nexecute = \n" + execute);
+        String format = ImportFormatter.format(execute);
+        System.out.println("\nformat = \n" + format);
     }
 
 }
