@@ -4,14 +4,16 @@
       "template": "csv_load_v2.vm",
       "properties": {
         "VariableName": "varname"
-      }
+      },
+      "modelCommands": {}
     },
     "Text_File": {
       "template": "csv_load_v2.vm",
       "properties": {
         "Path": "path",
         "Encoding": "enc"
-      }
+      },
+      "modelCommands": {}
     },
     "CSV": {
       "template": "csv_load_v2.vm",
@@ -19,7 +21,8 @@
         "Delimiter": "delim",
         "SkipNrOfLines": "skip",
         "GenerateTimestamp": "GenerateTimestamp"
-      }
+      },
+      "modelCommands": {}
     },
     "DataFrame_Merge": {
       "template": "dataframe_merge_v2.vm",
@@ -30,30 +33,37 @@
         "MergeOn[0]": "left",
         "MergeOn[1]": "right",
         "How": "how"
-      }
+      },
+      "modelCommands": {}
     },
     "DateConversion": {
       "template": "date_conversion_v2.vm",
       "properties": {
         "Output_Format": "new_format"
-      }
+      },
+      "modelCommands": {}
     },
     "MeanAbsoluteError": {
       "template": "mae_v2.vm",
       "properties": {
         "Text": "txt"
-      }
+      },
+      "modelCommands": {}
     },
     "Predict": {
       "template": "predict_v2.vm",
       "properties": {
+      },
+      "modelCommands": {
         "CONNECTED.Regression.NAME": "pred_name"
       }
     },
     "Regression": {
       "template": "regression_v2.vm",
       "properties": {
-        "Algorithm": "algo",
+        "Algorithm": "algo"
+      },
+      "modelCommands": {
         "THIS.BLOCK.NAME": "model_name"
       }
     },
@@ -63,19 +73,22 @@
         "Features_X": "feat_x",
         "Prediction_Y": "pred_y",
         "TrainTestSplitSize": "split"
-      }
+      },
+      "modelCommands": {}
     },
     "ML_Attribute_Input": {
       "template": "date_conversion_v2.vm",
       "properties": {
         "MappedToName": "mapName"
-      }
+      },
+      "modelCommands": {}
     },
     "Datetime": {
       "template": "date_conversion_v2.vm",
       "properties": {
         "DatetimeFormat": "old_format"
-      }
+      },
+      "modelCommands": {}
     }
   },
   "nameMappings": {
@@ -84,14 +97,16 @@
       "properties": {
         "skip": "skip",
         "pathCSV": "path"
-      }
+      },
+      "modelCommands": {}
     },
     "CSV_1": {
       "template": "date_conversion_v2.vm",
       "executeWith": "Format_Date",
       "properties": {
         "date": "d"
-      }
+      },
+      "modelCommands": {}
     }
   }
 }

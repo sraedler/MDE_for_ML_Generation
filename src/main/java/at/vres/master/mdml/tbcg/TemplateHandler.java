@@ -24,6 +24,7 @@ public class TemplateHandler {
     private static final String KEYWORD_THIS = "THIS";
     private static final String KEYWORD_BLOCK = "BLOCK";
     private static final String KEYWORD_NAME = "NAME";
+    private static final String KEYWORD_CONNECTION = "CONNECTED";
 
     public TemplateHandler(Map<Class, BlockContext> contexts, MappingWrapper mappingWrapper, String templatePath) {
         this.contexts = contexts;
@@ -82,6 +83,9 @@ public class TemplateHandler {
                 if (stereotypeNamePairFromQualifiedName != null) {
                     StereotypeMapping stereotypeMapping = mappingWrapper.getStereotypeMappings().get(stereotypeNamePairFromQualifiedName.getStereoName());
                     if (stereotypeMapping != null) {
+                        if (stereotypeMapping.getTemplate().equals("predict_v2.vm")) {
+                            System.out.println("predict_v2.vm");
+                        }
                         stereotypeMapping.getProperties().forEach((originalName, remappedName) -> {
                             if (originalName.contains("[") && originalName.contains("]")) {
                                 String listName = originalName.substring(0, originalName.indexOf("["));
@@ -96,11 +100,6 @@ public class TemplateHandler {
                                             velocityContext.put(remappedName, handlePropValQualifiedName(o));
                                         }
                                     }
-                                }
-                            } else if (originalName.contains(KEYWORD_THIS)) {
-                                Object o = handleThis(blockContext, originalName);
-                                if (o != null) {
-                                    velocityContext.put(remappedName, o);
                                 }
                             } else if (propVal instanceof List<?>) {
                                 if (originalName.equals(stereotypeNamePairFromQualifiedName.getAttributeName())) {
@@ -149,11 +148,6 @@ public class TemplateHandler {
                                     }
                                 }
                             }
-                        } else if (originalName.contains(KEYWORD_THIS)) {
-                            Object o = handleThis(blockContext, originalName);
-                            if (o != null) {
-                                velocityContext.put(remappedName, o);
-                            }
                         } else if (shortPropName.equals(originalName)) {
                             if (propVal instanceof List<?>) {
                                 if (originalName.contains(KEYWORD_OWNER)) {
@@ -175,12 +169,73 @@ public class TemplateHandler {
                 }
 
             });
+
+            blockContext.getConnectedClass().getAppliedStereotypes().forEach(stereotype -> {
+                StereotypeMapping stereotypeMapping = mappingWrapper.getStereotypeMappings().get(stereotype.getName());
+                if (stereotypeMapping != null) {
+                    stereotypeMapping.getModelCommands().forEach((originalName, remappedName) -> {
+                        if (originalName.contains(KEYWORD_THIS)) {
+                            Object o = handleThis(blockContext, originalName);
+                            if (o != null) {
+                                velocityContext.put(remappedName, o);
+                            }
+                        } else if (originalName.contains(KEYWORD_CONNECTION)) {
+                            Object o = handleConnection(blockContext, originalName);
+                            if (o != null) {
+                                velocityContext.put(remappedName, o);
+                            }
+                        }
+                    });
+                }
+            });
+
+            NameMapping nameMapping = mappingWrapper.getNameMappings().get(blockContext.getConnectedClass().getName());
+            if (nameMapping != null) {
+                nameMapping.getModelCommands().forEach((originalName, remappedName) -> {
+                    if (originalName.contains(KEYWORD_THIS)) {
+                        Object o = handleThis(blockContext, originalName);
+                        if (o != null) {
+                            velocityContext.put(remappedName, o);
+                        }
+                    } else if (originalName.contains(KEYWORD_CONNECTION)) {
+                        Object o = handleConnection(blockContext, originalName);
+                        if (o != null) {
+                            velocityContext.put(remappedName, o);
+                        }
+                    }
+                });
+            }
+
             blockContext.getLinkedPartContexts().forEach((propName, bcList) -> bcList.forEach(bc -> {
                 VelocityContext context = handleBlockContext(bc, alreadyHandled);
                 mergeContexts(velocityContext, context);
             }));
         }
         return velocityContext;
+    }
+
+    private static Object handleConnection(BlockContext bc, String originalName) {
+        String[] split = originalName.split(KEYWORD_SEPARATOR);
+        if (split.length == 3 && split[0].equals(KEYWORD_CONNECTION)) {
+            return handleConnectedElement(bc, split[1], split[2]);
+        }
+        return null;
+    }
+
+    private static Object handleConnectedElement(BlockContext bc, String connectedElement, String attributeToGet) {
+        final List<Object> connectedElements = new LinkedList<>();
+        bc.getLinkedPartContexts().forEach((propName, contextList) -> contextList.forEach(context ->
+                context.getStereotypeToPropsMap().forEach((stereoname, stereoprops) -> {
+            if (getNameFromQualifiedName(stereoname).equals(connectedElement)) {
+                connectedElements.add(handleBlockConfig(context, attributeToGet));
+            }
+        })));
+        if (!connectedElement.isEmpty()) {
+            if (connectedElements.size() > 1)
+                System.out.println("MORE THAN ONE CONNECTED ELEMENT FOUND, COULD NOT UNIQUELY IDENTIFY IT, RETURNING FIRST ELEMENT!");
+            return connectedElements.get(0);
+        }
+        return null;
     }
 
     private static Object handleThis(BlockContext bc, String originalName) {

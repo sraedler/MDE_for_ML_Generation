@@ -6,6 +6,7 @@ public class NameMapping {
     private String template;
     private String executeWith;
     private Map<String, String> properties;
+    private Map<String, String> modelCommands;
 
     public String getTemplate() {
         return template;
@@ -29,5 +30,13 @@ public class NameMapping {
 
     public void setExecuteWith(String executeWith) {
         this.executeWith = executeWith;
+    }
+
+    public Map<String, String> getModelCommands() {
+        return modelCommands;
+    }
+
+    public void setModelCommands(Map<String, String> modelCommands) {
+        this.modelCommands = modelCommands;
     }
 }
