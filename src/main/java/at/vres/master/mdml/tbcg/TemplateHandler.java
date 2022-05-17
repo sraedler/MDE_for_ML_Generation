@@ -39,6 +39,9 @@ public class TemplateHandler {
             VelocityContext context = handleBlockContext(value, new LinkedList<>());
             key.getAppliedStereotypes().forEach(stereo -> {
                 StereotypeMapping stereotypeMapping = mappingWrapper.getStereotypeMappings().get(stereo.getName());
+                if (stereo.getName().equals("Train_Test_Split")) {
+                    System.out.println("Train_Test_Split");
+                }
                 if (stereotypeMapping != null) {
                     if (!templatesAlreadyMerged.contains(stereotypeMapping.getTemplate())) {
                         try (StringWriter writer = new StringWriter()) {
@@ -95,11 +98,13 @@ public class TemplateHandler {
                                     }
                                 }
                             } else if (propVal instanceof List<?>) {
-                                if (originalName.contains(KEYWORD_OWNER)) {
-                                    Object o1 = handleOwner(blockContext, originalName, propVal);
-                                    velocityContext.put(remappedName, handlePropValQualifiedName(o1));
-                                } else {
-                                    velocityContext.put(remappedName, handleValueLists((List<?>) propVal));
+                                if (originalName.equals(stereotypeNamePairFromQualifiedName.getAttributeName())) {
+                                    if (originalName.contains(KEYWORD_OWNER)) {
+                                        Object o1 = handleOwner(blockContext, originalName, propVal);
+                                        velocityContext.put(remappedName, handlePropValQualifiedName(o1));
+                                    } else {
+                                        velocityContext.put(remappedName, handleValueLists((List<?>) propVal));
+                                    }
                                 }
                             } else {
                                 if (originalName.equals(stereotypeNamePairFromQualifiedName.getAttributeName())) {
