@@ -254,6 +254,19 @@ public class TemplateHandler {
     private static Object handleBlockConfig(BlockContext bc, String attributeToGet) {
         if (attributeToGet.equals(KEYWORD_NAME)) {
             return bc.getConnectedClass().getName();
+        } else {
+            final List<Object> matchingAttributes = new LinkedList<>();
+            bc.getPropertyMap().forEach((propName, propVal) -> {
+                String nameFromQualifiedName = getNameFromQualifiedName(propName);
+                if (nameFromQualifiedName.equals(attributeToGet)) {
+                    matchingAttributes.add(propVal);
+                }
+            });
+            if (!matchingAttributes.isEmpty()) {
+                if (matchingAttributes.size() > 1)
+                    System.out.println("CANNOT UNIQUELY IDENTIFY ATTRIBUTE, RETURNING FIRST ONE");
+                return matchingAttributes.get(0);
+            }
         }
         return null;
     }

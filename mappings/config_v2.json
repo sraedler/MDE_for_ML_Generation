@@ -98,16 +98,6 @@
     }
   },
   "nameMappings": {
-    "ConfBlock": {
-      "template": "csv_load_v2.vm",
-      "executeWith": "ConfBlock",
-      "properties": {
-        "skip": "skip",
-        "pathCSV": "path"
-      },
-      "modelCommands": {
-      }
-    },
     "CSV_1": {
       "template": "date_conversion_v2.vm",
       "executeWith": "Format_Date",
@@ -115,6 +105,16 @@
         "date": "d"
       },
       "modelCommands": {
+      }
+    },
+    "EncodeLabel": {
+      "template": "label_encode.vm",
+      "executeWith": "EncodeLabel",
+      "properties": {
+        "toEncode": "feature"
+      },
+      "modelCommands": {
+        "CONNECTED.DataFrame_Merge.NewDFName": "df"
       }
     }
   }
