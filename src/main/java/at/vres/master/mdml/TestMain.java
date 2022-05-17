@@ -4,7 +4,7 @@ import at.vres.master.mdml.decomposition.InformationExtractor;
 import at.vres.master.mdml.mapping.MappingHandler;
 import at.vres.master.mdml.mapping.MappingWrapper;
 import at.vres.master.mdml.model.BlockContext;
-import at.vres.master.mdml.output.notebook.formatters.ImportFormatter;
+import at.vres.master.mdml.formatters.ImportFormatter;
 import at.vres.master.mdml.tbcg.TemplateHandler;
 import org.eclipse.uml2.uml.Class;
 
