@@ -1,4 +1,8 @@
-from sklearn.tree import ${algo}
+#if (${algo} == "RandomForestRegressor")
+from sklearn.ensemble import RandomForestRegressor
+#else
+from sklearn.tree import DecisionTreeRegressor
+#end
 
 model_${model_name}=${algo}(random_state=1)
 model_${model_name}.fit(train_X, train_y)
