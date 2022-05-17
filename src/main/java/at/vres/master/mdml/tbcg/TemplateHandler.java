@@ -226,13 +226,16 @@ public class TemplateHandler {
         final List<Object> connectedElements = new LinkedList<>();
         bc.getLinkedPartContexts().forEach((propName, contextList) -> contextList.forEach(context ->
                 context.getStereotypeToPropsMap().forEach((stereoname, stereoprops) -> {
-            if (getNameFromQualifiedName(stereoname).equals(connectedElement)) {
-                connectedElements.add(handleBlockConfig(context, attributeToGet));
-            }
-        })));
-        if (!connectedElement.isEmpty()) {
-            if (connectedElements.size() > 1)
+                    if (getNameFromQualifiedName(stereoname).equals(connectedElement)) {
+                        connectedElements.add(handleBlockConfig(context, attributeToGet));
+                    }
+                })));
+        System.out.println("connectedElements = " + connectedElements);
+        if (!connectedElements.isEmpty()) {
+            if (connectedElements.size() > 1) {
+                // TODO MAE should end up here, find out why not
                 System.out.println("MORE THAN ONE CONNECTED ELEMENT FOUND, COULD NOT UNIQUELY IDENTIFY IT, RETURNING FIRST ELEMENT!");
+            }
             return connectedElements.get(0);
         }
         return null;

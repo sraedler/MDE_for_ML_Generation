@@ -48,12 +48,13 @@
       "properties": {
         "Text": "txt"
       },
-      "modelCommands": {}
+      "modelCommands": {
+        "CONNECTED.Predict.NAME": "pred_name"
+      }
     },
     "Predict": {
       "template": "predict_v2.vm",
-      "properties": {
-      },
+      "properties": {},
       "modelCommands": {
         "CONNECTED.Regression.NAME": "pred_name"
       }
@@ -94,6 +95,7 @@
   "nameMappings": {
     "ConfBlock": {
       "template": "csv_load_v2.vm",
+      "executeWith": "ConfBlock",
       "properties": {
         "skip": "skip",
         "pathCSV": "path"
