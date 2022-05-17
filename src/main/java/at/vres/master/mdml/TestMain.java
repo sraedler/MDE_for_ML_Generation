@@ -1,6 +1,7 @@
 package at.vres.master.mdml;
 
 import at.vres.master.mdml.decomposition.InformationExtractor;
+import at.vres.master.mdml.formatters.EmptyLineFormatter;
 import at.vres.master.mdml.mapping.MappingHandler;
 import at.vres.master.mdml.mapping.MappingWrapper;
 import at.vres.master.mdml.model.BlockContext;
@@ -30,7 +31,8 @@ public class TestMain {
         TemplateHandler th = new TemplateHandler(contextsForStateMachine, mappingWrapper, TEST_TEMPLATE_PATH);
         String execute = th.execute();
         String format = ImportFormatter.format(execute);
-        System.out.println("\nformat = \n" + format);
+        String format1 = EmptyLineFormatter.format(format);
+        System.out.println("\nformat = \n" + format1);
     }
 
 }
