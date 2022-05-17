@@ -47,12 +47,14 @@
     "Predict": {
       "template": "predict_v2.vm",
       "properties": {
+        "CONNECTED.Regression.NAME": "pred_name"
       }
     },
     "Regression": {
       "template": "regression_v2.vm",
       "properties": {
-        "Algorithm": "algo"
+        "Algorithm": "algo",
+        "THIS.BLOCK.NAME": "model_name"
       }
     },
     "Train_Test_Split": {

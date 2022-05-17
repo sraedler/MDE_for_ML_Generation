@@ -21,6 +21,9 @@ public class TemplateHandler {
     private final String templatePath;
     private static final String KEYWORD_OWNER = "OWNER";
     private static final String KEYWORD_SEPARATOR = "\\.";
+    private static final String KEYWORD_THIS = "THIS";
+    private static final String KEYWORD_BLOCK = "BLOCK";
+    private static final String KEYWORD_NAME = "NAME";
 
     public TemplateHandler(Map<Class, BlockContext> contexts, MappingWrapper mappingWrapper, String templatePath) {
         this.contexts = contexts;
@@ -94,6 +97,11 @@ public class TemplateHandler {
                                         }
                                     }
                                 }
+                            } else if (originalName.contains(KEYWORD_THIS)) {
+                                Object o = handleThis(blockContext, originalName);
+                                if (o != null) {
+                                    velocityContext.put(remappedName, o);
+                                }
                             } else if (propVal instanceof List<?>) {
                                 if (originalName.equals(stereotypeNamePairFromQualifiedName.getAttributeName())) {
                                     if (originalName.contains(KEYWORD_OWNER)) {
@@ -141,6 +149,11 @@ public class TemplateHandler {
                                     }
                                 }
                             }
+                        } else if (originalName.contains(KEYWORD_THIS)) {
+                            Object o = handleThis(blockContext, originalName);
+                            if (o != null) {
+                                velocityContext.put(remappedName, o);
+                            }
                         } else if (shortPropName.equals(originalName)) {
                             if (propVal instanceof List<?>) {
                                 if (originalName.contains(KEYWORD_OWNER)) {
@@ -168,6 +181,23 @@ public class TemplateHandler {
             }));
         }
         return velocityContext;
+    }
+
+    private static Object handleThis(BlockContext bc, String originalName) {
+        String[] split = originalName.split(KEYWORD_SEPARATOR);
+        if (split.length == 3 && split[0].equals(KEYWORD_THIS)) {
+            if (split[1].equals(KEYWORD_BLOCK)) {
+                return handleBlockConfig(bc, split[2]);
+            }
+        }
+        return null;
+    }
+
+    private static Object handleBlockConfig(BlockContext bc, String attributeToGet) {
+        if (attributeToGet.equals(KEYWORD_NAME)) {
+            return bc.getConnectedClass().getName();
+        }
+        return null;
     }
 
     private static List<Object> handleOwnerInternal(BlockContext bc, String attributeToGet, Object propVal) {
