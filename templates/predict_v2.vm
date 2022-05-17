@@ -1,1 +1,1 @@
-pred = ${model}.predict(${test_data})
+pred_${algo} = model_${algo}.predict(test_X)

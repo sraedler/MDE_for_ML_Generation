@@ -39,9 +39,6 @@ public class TemplateHandler {
             VelocityContext context = handleBlockContext(value, new LinkedList<>());
             key.getAppliedStereotypes().forEach(stereo -> {
                 StereotypeMapping stereotypeMapping = mappingWrapper.getStereotypeMappings().get(stereo.getName());
-                if (stereo.getName().equals("Train_Test_Split")) {
-                    System.out.println("Train_Test_Split");
-                }
                 if (stereotypeMapping != null) {
                     if (!templatesAlreadyMerged.contains(stereotypeMapping.getTemplate())) {
                         try (StringWriter writer = new StringWriter()) {
@@ -117,7 +114,6 @@ public class TemplateHandler {
                                 }
                             }
                         });
-                        //String remName = stereotypeMapping.getProperties().get(stereotypeNamePairFromQualifiedName.getAttributeName());
                     }
                 } else {
                     if (propVal instanceof List<?>) {
