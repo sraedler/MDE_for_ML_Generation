@@ -6,7 +6,7 @@ import java.util.Set;
 public class ImportFormatter {
     private static final String KEYWORD_IMPORT = "import";
 
-    public static String format(String input) {
+    public static String format(final String input) {
         final Set<String> importLines = new LinkedHashSet<>();
         final StringBuilder codeLines = new StringBuilder();
         input.lines().forEach(line -> {

@@ -9,9 +9,10 @@ import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.eclipse.uml2.uml.Class;
 
-import java.io.IOException;
-import java.io.StringWriter;
+import java.io.*;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class TemplateHandler {
     private static final String VELOCITY_TEMPLATE_PATH_KEY = "file.resource.loader.path";
@@ -25,6 +26,7 @@ public class TemplateHandler {
     private static final String KEYWORD_BLOCK = "BLOCK";
     private static final String KEYWORD_NAME = "NAME";
     private static final String KEYWORD_CONNECTION = "CONNECTED";
+    private static final String DEFAULT_VALUE_REGEX = "\\$\\{\\((.*),\"?(.*)\"?\\)}";
 
     public TemplateHandler(Map<Class, BlockContext> contexts, MappingWrapper mappingWrapper, String templatePath) {
         this.contexts = contexts;
@@ -45,10 +47,40 @@ public class TemplateHandler {
                 StereotypeMapping stereotypeMapping = mappingWrapper.getStereotypeMappings().get(stereo.getName());
                 if (stereotypeMapping != null) {
                     if (!templatesAlreadyMerged.contains(stereotypeMapping.getTemplate())) {
-                        try (StringWriter writer = new StringWriter()) {
-                            ve.mergeTemplate(stereotypeMapping.getTemplate(), ENCODING, context, writer);
-                            templatesAlreadyMerged.add(stereotypeMapping.getTemplate());
-                            sb.append(writer).append("\n");
+                        try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(templatePath + "\\" + stereotypeMapping.getTemplate())))) {
+                            final StringBuilder templateString = new StringBuilder();
+                            String line;
+                            Pattern pattern = Pattern.compile(DEFAULT_VALUE_REGEX);
+                            while ((line = br.readLine()) != null) {
+                                Matcher matcher = pattern.matcher(line);
+                                if (matcher.find()) {
+                                    String paramName = matcher.group(1);
+                                    String defaultVal = matcher.group(2);
+                                    Object o = context.get(paramName);
+                                    if (o == null) {
+                                        context.put(paramName, defaultVal);
+                                    }
+                                    int start = matcher.start();
+                                    int end = matcher.end();
+                                    System.out.println("start = " + start);
+                                    System.out.println("end = " + end);
+                                    templateString.append(line, matcher.regionStart(), matcher.start()).append("${")
+                                            .append(paramName)
+                                            .append("}")
+                                            .append(line, matcher.end(), matcher.regionEnd()).append("\n");
+                                } else {
+                                    templateString.append(line).append("\n");
+                                }
+                            }
+                            System.out.println("templateString = " + templateString);
+                            try (StringWriter writer = new StringWriter()) {
+                                //ve.mergeTemplate(stereotypeMapping.getTemplate(), ENCODING, context, writer);
+                                ve.evaluate(context, writer, stereotypeMapping.getTemplate(), templateString.toString());
+                                templatesAlreadyMerged.add(stereotypeMapping.getTemplate());
+                                sb.append(writer).append("\n");
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                         } catch (IOException e) {
                             e.printStackTrace();
                         }

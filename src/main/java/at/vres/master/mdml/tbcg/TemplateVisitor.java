@@ -25,6 +25,14 @@ public class TemplateVisitor extends BaseVisitor {
 
     @Override
     public Object visit(SimpleNode node, Object data) {
-        return node.literal();
+        final List<Token> tokenList = new LinkedList<>();
+        Token firstToken = node.getFirstToken();
+        tokenList.add(firstToken);
+        Token next = firstToken.next;
+        while (next != null) {
+            next = next.next;
+            tokenList.add(next);
+        }
+        return tokenList;
     }
 }
