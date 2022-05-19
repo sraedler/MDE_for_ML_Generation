@@ -19,6 +19,7 @@ public class InformationExtractor {
     private static final String ENTRY_POINT = "entryPoint";
     private static final String CONNECTION_STEREOTYPE_NAME = "ML_Block_Connection";
     private static final String ATTRIBUTE_STEREOTYPE_NAME = "ML_Attribute_Input";
+    private static final String PROPNAME_QUALIFIED_NAME_SEPARATOR = "__";
     private static final List<String> stereotypesToIgnore = new LinkedList<>(List.of("Block"));
     private final Map<Class, BlockContext> existingContexts;
     private final String loadedModelPath;
@@ -70,7 +71,7 @@ public class InformationExtractor {
                 }
                 prop.getAppliedStereotypes().stream()
                         .filter(st -> !stereotypesToIgnore.contains(st.getName()))
-                        .forEach(stereo -> contextStereotypeHandling(stereo, bc, prop, prop.getName() + "__"));
+                        .forEach(stereo -> contextStereotypeHandling(stereo, bc, prop, prop.getName() + PROPNAME_QUALIFIED_NAME_SEPARATOR));
             }
         }
     }
@@ -104,7 +105,7 @@ public class InformationExtractor {
                                     .filter(st -> st.getName().equals(ATTRIBUTE_STEREOTYPE_NAME))
                                     .findAny()
                                     .ifPresent(stereotype ->
-                                            contextStereotypeHandling(stereo, bc, (Element) o, prefix + att.getName() + "__")
+                                            contextStereotypeHandling(stereo, bc, (Element) o, prefix + att.getName() + PROPNAME_QUALIFIED_NAME_SEPARATOR)
                                     );
                         } else if (o instanceof ML_Attribute_Input) {
                             final List<String> qualNames = new LinkedList<>();
@@ -129,7 +130,7 @@ public class InformationExtractor {
                             .filter(st -> st.getName().equals(ATTRIBUTE_STEREOTYPE_NAME))
                             .findAny()
                             .ifPresent(stereotype ->
-                                    contextStereotypeHandling(stereo, bc, (Element) value, prefix + att.getName() + "__")
+                                    contextStereotypeHandling(stereo, bc, (Element) value, prefix + att.getName() + PROPNAME_QUALIFIED_NAME_SEPARATOR)
                             );
                 } else if (value instanceof ML_Attribute_Input) {
                     contextPropertyHandling(((ML_Attribute_Input) value).getBase_Property(), bc);

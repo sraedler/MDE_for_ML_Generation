@@ -27,6 +27,11 @@ public class TemplateHandler {
     private static final String KEYWORD_NAME = "NAME";
     private static final String KEYWORD_CONNECTION = "CONNECTED";
     private static final String DEFAULT_VALUE_REGEX = "\\$\\{\\(([a-zA-Z0-9_.-]*),\"?([a-zA-Z0-9_.-]*)\"?\\)}";
+    private static final String KEYWORD_PROPNAME = "PROPNAME";
+    private static final String PROPNAME_QUALIFIED_NAME_SEPARATOR = "__";
+    private static final String QUALIFIED_NAME_SEPARATOR = "::";
+    private static final String START_TEMPLATE_VARIABLE = "${";
+    private static final String END_TEMPLATE_VARIABLE = "}";
 
     public TemplateHandler(Map<Class, BlockContext> contexts, MappingWrapper mappingWrapper, String templatePath) {
         this.contexts = contexts;
@@ -97,9 +102,9 @@ public class TemplateHandler {
                         if (o == null) {
                             context.put(paramName, defaultVal.replace("\"", ""));
                         }
-                        templateString.append(line, matcher.regionStart(), matcher.start()).append("${")
+                        templateString.append(line, matcher.regionStart(), matcher.start()).append(START_TEMPLATE_VARIABLE)
                                 .append(paramName)
-                                .append("}");
+                                .append(END_TEMPLATE_VARIABLE);
                         toMatch = line.substring(matcher.end(), matcher.regionEnd());
                     } else {
                         Matcher matcherTwo = pattern.matcher(toMatch);
@@ -111,9 +116,9 @@ public class TemplateHandler {
                                 context.put(paramName, defaultVal.replace("\"", ""));
                             }
 
-                            templateString.append(toMatch, matcherTwo.regionStart(), matcherTwo.start()).append("${")
+                            templateString.append(toMatch, matcherTwo.regionStart(), matcherTwo.start()).append(START_TEMPLATE_VARIABLE)
                                     .append(paramName)
-                                    .append("}");
+                                    .append(END_TEMPLATE_VARIABLE);
                             toMatch = toMatch.substring(matcherTwo.end(), matcherTwo.regionEnd());
                         }
                     }
@@ -141,9 +146,6 @@ public class TemplateHandler {
                 if (stereotypeNamePairFromQualifiedName != null) {
                     StereotypeMapping stereotypeMapping = mappingWrapper.getStereotypeMappings().get(stereotypeNamePairFromQualifiedName.getStereoName());
                     if (stereotypeMapping != null) {
-                        if (stereotypeMapping.getTemplate().equals("predict_v2.vm")) {
-                            System.out.println("predict_v2.vm");
-                        }
                         stereotypeMapping.getProperties().forEach((originalName, remappedName) -> {
                             if (originalName.contains("[") && originalName.contains("]")) {
                                 String listName = originalName.substring(0, originalName.indexOf("["));
@@ -285,7 +287,7 @@ public class TemplateHandler {
         bc.getLinkedPartContexts().forEach((propName, contextList) -> contextList.forEach(context -> {
                     context.getStereotypeToPropsMap().forEach((stereoname, stereoprops) -> {
                         if (getNameFromQualifiedName(stereoname).equals(connectedElement)) {
-                            connectedElements.add(handleBlockConfig(context, attributeToGet));
+                            connectedElements.add(handleBlockConfig(context, attributeToGet, connectedElement));
                         }
                     });
                     alreadyChecked.add(context);
@@ -311,15 +313,32 @@ public class TemplateHandler {
         String[] split = originalName.split(KEYWORD_SEPARATOR);
         if (split.length == 3 && split[0].equals(KEYWORD_THIS)) {
             if (split[1].equals(KEYWORD_BLOCK)) {
-                return handleBlockConfig(bc, split[2]);
+                return handleBlockConfig(bc, split[2], split[1]);
             }
         }
         return null;
     }
 
-    private static Object handleBlockConfig(BlockContext bc, String attributeToGet) {
+    private static Object handleBlockConfig(BlockContext bc, String attributeToGet, String stereoName) {
         if (attributeToGet.equals(KEYWORD_NAME)) {
             return bc.getConnectedClass().getName();
+        } else if (attributeToGet.equals(KEYWORD_PROPNAME)) {
+            final List<Object> matchingAttributes = new LinkedList<>();
+            bc.getPropertyMap().forEach((propName, propVal) -> {
+                String[] split = propName.split(QUALIFIED_NAME_SEPARATOR);
+                if (split.length > 2) {
+                    String propStereo = split[split.length - 2];
+                    if (propStereo.equals(stereoName)) {
+                        String[] s = split[0].split(PROPNAME_QUALIFIED_NAME_SEPARATOR);
+                        matchingAttributes.add(s[0]);
+                    }
+                }
+            });
+            if (!matchingAttributes.isEmpty()) {
+                if (matchingAttributes.size() > 1)
+                    System.out.println("CANNOT UNIQUELY IDENTIFY ATTRIBUTE, RETURNING FIRST ONE");
+                return matchingAttributes.get(0);
+            }
         } else {
             final List<Object> matchingAttributes = new LinkedList<>();
             bc.getPropertyMap().forEach((propName, propVal) -> {
@@ -374,8 +393,8 @@ public class TemplateHandler {
 
     private static Object handlePropValGetOwner(Object propVal) {
         if (propVal instanceof String) {
-            if (((String) propVal).contains("::")) {
-                String[] split = ((String) propVal).split("::");
+            if (((String) propVal).contains(QUALIFIED_NAME_SEPARATOR)) {
+                String[] split = ((String) propVal).split(QUALIFIED_NAME_SEPARATOR);
                 return split[split.length - 2];
             } else {
                 return propVal;
@@ -387,7 +406,7 @@ public class TemplateHandler {
 
     private static Object handlePropValQualifiedName(Object propVal) {
         if (propVal instanceof String) {
-            if (((String) propVal).contains("::")) {
+            if (((String) propVal).contains(QUALIFIED_NAME_SEPARATOR)) {
                 return getNameFromQualifiedName((String) propVal);
             } else {
                 return propVal;
@@ -411,7 +430,7 @@ public class TemplateHandler {
     public static String getNameFromQualifiedName(String qualifiedName) {
         if (qualifiedName != null) {
             if (!qualifiedName.isEmpty()) {
-                return qualifiedName.substring(qualifiedName.lastIndexOf("::") + 2);
+                return qualifiedName.substring(qualifiedName.lastIndexOf(QUALIFIED_NAME_SEPARATOR) + 2);
             } else {
                 return "";
             }
@@ -424,7 +443,7 @@ public class TemplateHandler {
         StereotypeNamePair pair = null;
         if (qualifiedName != null) {
             if (!qualifiedName.isEmpty()) {
-                String[] split = qualifiedName.split("::");
+                String[] split = qualifiedName.split(QUALIFIED_NAME_SEPARATOR);
                 if (split.length > 1) {
                     pair = new StereotypeNamePair(split[split.length - 2], split[split.length - 1]);
                 }

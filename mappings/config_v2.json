@@ -43,7 +43,9 @@
       "properties": {
         "Output_Format": "new_format"
       },
-      "modelCommands": {}
+      "modelCommands": {
+        "CONNECTED.Datetime.PROPNAME": "d"
+      }
     },
     "DataFrame_Merge": {
       "template": "dataframe_merge_v2.vm",
@@ -102,15 +104,6 @@
     }
   },
   "nameMappings": {
-    "CSV_1": {
-      "template": "date_conversion_v2.vm",
-      "executeWith": "Format_Date",
-      "properties": {
-        "date": "d"
-      },
-      "modelCommands": {
-      }
-    },
     "EncodeLabel": {
       "template": "label_encode.vm",
       "executeWith": "EncodeLabel",
