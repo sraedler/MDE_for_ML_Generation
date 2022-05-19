@@ -283,17 +283,19 @@ public class TemplateHandler {
     }
 
     private static Object handleConnectedElement(BlockContext bc, String connectedElement, String attributeToGet, Set<BlockContext> alreadyChecked) {
-        final List<Object> connectedElements = new LinkedList<>();
+        final Set<Object> connectedElements = new HashSet<>();
         bc.getLinkedPartContexts().forEach((propName, contextList) -> contextList.forEach(context -> {
                     context.getStereotypeToPropsMap().forEach((stereoname, stereoprops) -> {
                         if (getNameFromQualifiedName(stereoname).equals(connectedElement)) {
-                            connectedElements.add(handleBlockConfig(context, attributeToGet, connectedElement));
+                            Object o = handleBlockConfig(context, attributeToGet, connectedElement);
+                            if(o != null) connectedElements.add(o);
                         }
                     });
                     alreadyChecked.add(context);
                     context.getLinkedPartContexts().forEach((key, value) -> value.forEach(indirectContext -> {
                         if (!alreadyChecked.contains(indirectContext)) {
-                            connectedElements.add(handleConnectedElement(indirectContext, connectedElement, attributeToGet, alreadyChecked));
+                            Object o = handleConnectedElement(indirectContext, connectedElement, attributeToGet, alreadyChecked);
+                            if(o != null) connectedElements.add(o);
                         }
                     }));
 
@@ -302,9 +304,10 @@ public class TemplateHandler {
         if (!connectedElements.isEmpty()) {
             if (connectedElements.size() > 1) {
                 // TODO MAE should end up here, find out why not
+                connectedElements.forEach(ce -> System.out.println("CONNECTED ELEMENT " + ce));
                 System.out.println("COULD NOT UNIQUELY IDENTIFY CONNECTED ELEMENT, RETURNING FIRST ELEMENT!");
             }
-            return connectedElements.get(0);
+            return connectedElements.iterator().next();
         }
         return null;
     }
@@ -323,7 +326,7 @@ public class TemplateHandler {
         if (attributeToGet.equals(KEYWORD_NAME)) {
             return bc.getConnectedClass().getName();
         } else if (attributeToGet.equals(KEYWORD_PROPNAME)) {
-            final List<Object> matchingAttributes = new LinkedList<>();
+            final Set<Object> matchingAttributes = new HashSet<>();
             bc.getPropertyMap().forEach((propName, propVal) -> {
                 String[] split = propName.split(QUALIFIED_NAME_SEPARATOR);
                 if (split.length > 2) {
@@ -337,10 +340,10 @@ public class TemplateHandler {
             if (!matchingAttributes.isEmpty()) {
                 if (matchingAttributes.size() > 1)
                     System.out.println("CANNOT UNIQUELY IDENTIFY ATTRIBUTE, RETURNING FIRST ONE");
-                return matchingAttributes.get(0);
+                return matchingAttributes.iterator().next();
             }
         } else {
-            final List<Object> matchingAttributes = new LinkedList<>();
+            final Set<Object> matchingAttributes = new HashSet<>();
             bc.getPropertyMap().forEach((propName, propVal) -> {
                 String nameFromQualifiedName = getNameFromQualifiedName(propName);
                 if (nameFromQualifiedName.equals(attributeToGet)) {
@@ -350,15 +353,15 @@ public class TemplateHandler {
             if (!matchingAttributes.isEmpty()) {
                 if (matchingAttributes.size() > 1)
                     System.out.println("CANNOT UNIQUELY IDENTIFY ATTRIBUTE, RETURNING FIRST ONE");
-                return matchingAttributes.get(0);
+                return matchingAttributes.iterator().next();
             }
         }
         return null;
     }
 
-    private static List<Object> handleOwnerInternal(BlockContext bc, String attributeToGet, Object propVal) {
+    private static Set<Object> handleOwnerInternal(BlockContext bc, String attributeToGet, Object propVal) {
         Object o = handlePropValGetOwner(propVal);
-        final List<Object> matchingPropVals = new LinkedList<>();
+        final Set<Object> matchingPropVals = new HashSet<>();
         bc.getLinkedPartContexts().forEach((name, contextList) -> contextList.forEach(con -> {
             if (con.getConnectedClass().getName().equals(o)) {
                 con.getPropertyMap().forEach((key, value) -> {
@@ -380,10 +383,10 @@ public class TemplateHandler {
                 if (split.length == 3 && split[1].equals(KEYWORD_OWNER)) {
                     String getOwnerFor = split[0];
                     String attributeOfOwner = split[2];
-                    List<Object> objects = handleOwnerInternal(bc, attributeOfOwner, propVal);
+                    Set<Object> objects = handleOwnerInternal(bc, attributeOfOwner, propVal);
                     if (!objects.isEmpty()) {
                         if (objects.size() > 1) System.out.println("PROPERTY OF OWNER CANNOT BE MATCHED UNIQUELY");
-                        return objects.get(0);
+                        return objects.iterator().next();
                     }
                 }
             }
