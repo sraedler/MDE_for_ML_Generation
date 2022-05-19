@@ -89,7 +89,7 @@
       }
     },
     "Metrics": {
-      "template": "mae_v2.vm",
+      "template": "metrics.vm",
       "properties": {
         "Text": "txt"
       },
