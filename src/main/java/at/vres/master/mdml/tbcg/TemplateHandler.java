@@ -51,7 +51,7 @@ public class TemplateHandler {
             key.getAppliedStereotypes().forEach(stereo -> {
                 StereotypeMapping stereotypeMapping = mappingWrapper.getStereotypeMappings().get(stereo.getName());
                 if (stereotypeMapping != null) {
-                    if (!mappingWrapper.getBlockedMappings().contains(stereo.getName())) {
+                    if (!mappingWrapper.getBlockedMappings().contains(stereo.getName()) && !mappingWrapper.getBlockedMappings().contains(key.getName())) {
                         if (!templatesAlreadyMerged.contains(stereotypeMapping.getTemplate())) {
                             String templateString = handleTemplate(context, templatePath + "//" + stereotypeMapping.getTemplate());
                             try (StringWriter writer = new StringWriter()) {
@@ -69,15 +69,17 @@ public class TemplateHandler {
 
             NameMapping nameMapping = mappingWrapper.getNameMappings().get(key.getName());
             if (nameMapping != null) {
-                if (!templatesAlreadyMerged.contains(nameMapping.getTemplate())) {
-                    String executeWith = nameMapping.getExecuteWith();
-                    if (executeWith == null || executeWith.equals(key.getName())) {
-                        try (StringWriter writer = new StringWriter()) {
-                            ve.mergeTemplate(nameMapping.getTemplate(), ENCODING, context, writer);
-                            templatesAlreadyMerged.add(nameMapping.getTemplate());
-                            sb.append(writer).append("\n");
-                        } catch (IOException e) {
-                            e.printStackTrace();
+                if (!mappingWrapper.getBlockedMappings().contains(key.getName())) {
+                    if (!templatesAlreadyMerged.contains(nameMapping.getTemplate())) {
+                        String executeWith = nameMapping.getExecuteWith();
+                        if (executeWith == null || executeWith.equals(key.getName())) {
+                            try (StringWriter writer = new StringWriter()) {
+                                ve.mergeTemplate(nameMapping.getTemplate(), ENCODING, context, writer);
+                                templatesAlreadyMerged.add(nameMapping.getTemplate());
+                                sb.append(writer).append("\n");
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                         }
                     }
                 }
