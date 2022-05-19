@@ -51,7 +51,7 @@ public class TemplateHandler {
             key.getAppliedStereotypes().forEach(stereo -> {
                 StereotypeMapping stereotypeMapping = mappingWrapper.getStereotypeMappings().get(stereo.getName());
                 if (stereotypeMapping != null) {
-                    if (!mappingWrapper.getBlockedMappings().contains(stereo.getName()) && !mappingWrapper.getBlockedMappings().contains(key.getName())) {
+                    if (!mappingWrapper.getBlockedStereotypes().contains(stereo.getName()) && !mappingWrapper.getBlockedNames().contains(key.getName())) {
                         if (!templatesAlreadyMerged.contains(stereotypeMapping.getTemplate())) {
                             String templateString = handleTemplate(context, templatePath + "//" + stereotypeMapping.getTemplate());
                             try (StringWriter writer = new StringWriter()) {
@@ -69,7 +69,7 @@ public class TemplateHandler {
 
             NameMapping nameMapping = mappingWrapper.getNameMappings().get(key.getName());
             if (nameMapping != null) {
-                if (!mappingWrapper.getBlockedMappings().contains(key.getName())) {
+                if (!mappingWrapper.getBlockedNames().contains(key.getName())) {
                     if (!templatesAlreadyMerged.contains(nameMapping.getTemplate())) {
                         String executeWith = nameMapping.getExecuteWith();
                         if (executeWith == null || executeWith.equals(key.getName())) {

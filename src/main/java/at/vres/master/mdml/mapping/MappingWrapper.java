@@ -5,16 +5,25 @@ import java.util.List;
 import java.util.Map;
 
 public class MappingWrapper {
-    private List<String> blockedMappings;
+    private List<String> blockedStereotypes;
+    private List<String> blockedNames;
     public Map<String, StereotypeMapping> stereotypeMappings = new HashMap<>();
     public Map<String, NameMapping> nameMappings = new HashMap<>();
 
-    public List<String> getBlockedMappings() {
-        return blockedMappings;
+    public List<String> getBlockedStereotypes() {
+        return blockedStereotypes;
     }
 
-    public void setBlockedMappings(List<String> blockedMappings) {
-        this.blockedMappings = blockedMappings;
+    public void setBlockedStereotypes(List<String> blockedStereotypes) {
+        this.blockedStereotypes = blockedStereotypes;
+    }
+
+    public List<String> getBlockedNames() {
+        return blockedNames;
+    }
+
+    public void setBlockedNames(List<String> blockedNames) {
+        this.blockedNames = blockedNames;
     }
 
     public Map<String, StereotypeMapping> getStereotypeMappings() {

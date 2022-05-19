@@ -1,7 +1,9 @@
 {
-  "blockedMappings": [
+  "blockedStereotypes": [
     "BlackBox_Storage",
-    "Text_File",
+    "Text_File"
+  ],
+  "blockedNames": [
     "TestStorage"
   ],
   "stereotypeMappings": {
