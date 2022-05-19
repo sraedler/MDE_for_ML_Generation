@@ -1,4 +1,8 @@
 {
+  "blockedMappings": [
+    "BlackBox_Storage",
+    "Text_File"
+  ],
   "stereotypeMappings": {
     "ML_Attribute_Input": {
       "template": "date_conversion_v2.vm",

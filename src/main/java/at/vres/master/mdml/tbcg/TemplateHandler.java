@@ -51,15 +51,17 @@ public class TemplateHandler {
             key.getAppliedStereotypes().forEach(stereo -> {
                 StereotypeMapping stereotypeMapping = mappingWrapper.getStereotypeMappings().get(stereo.getName());
                 if (stereotypeMapping != null) {
-                    if (!templatesAlreadyMerged.contains(stereotypeMapping.getTemplate())) {
-                        String templateString = handleTemplate(context, templatePath + "//" + stereotypeMapping.getTemplate());
-                        try (StringWriter writer = new StringWriter()) {
-                            //ve.mergeTemplate(stereotypeMapping.getTemplate(), ENCODING, context, writer);
-                            ve.evaluate(context, writer, stereotypeMapping.getTemplate(), templateString);
-                            templatesAlreadyMerged.add(stereotypeMapping.getTemplate());
-                            sb.append(writer).append("\n");
-                        } catch (IOException e) {
-                            e.printStackTrace();
+                    if (!mappingWrapper.getBlockedMappings().contains(stereo.getName())) {
+                        if (!templatesAlreadyMerged.contains(stereotypeMapping.getTemplate())) {
+                            String templateString = handleTemplate(context, templatePath + "//" + stereotypeMapping.getTemplate());
+                            try (StringWriter writer = new StringWriter()) {
+                                //ve.mergeTemplate(stereotypeMapping.getTemplate(), ENCODING, context, writer);
+                                ve.evaluate(context, writer, stereotypeMapping.getTemplate(), templateString);
+                                templatesAlreadyMerged.add(stereotypeMapping.getTemplate());
+                                sb.append(writer).append("\n");
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                         }
                     }
                 }
@@ -288,14 +290,14 @@ public class TemplateHandler {
                     context.getStereotypeToPropsMap().forEach((stereoname, stereoprops) -> {
                         if (getNameFromQualifiedName(stereoname).equals(connectedElement)) {
                             Object o = handleBlockConfig(context, attributeToGet, connectedElement);
-                            if(o != null) connectedElements.add(o);
+                            if (o != null) connectedElements.add(o);
                         }
                     });
                     alreadyChecked.add(context);
                     context.getLinkedPartContexts().forEach((key, value) -> value.forEach(indirectContext -> {
                         if (!alreadyChecked.contains(indirectContext)) {
                             Object o = handleConnectedElement(indirectContext, connectedElement, attributeToGet, alreadyChecked);
-                            if(o != null) connectedElements.add(o);
+                            if (o != null) connectedElements.add(o);
                         }
                     }));
 
