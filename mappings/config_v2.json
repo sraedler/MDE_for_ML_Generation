@@ -15,7 +15,7 @@
       "modelCommands": {}
     },
     "BlackBox_Storage": {
-      "template": "csv_load_v2.vm",
+      "template": "blackbox_storage.vm",
       "properties": {
         "VariableName": "varname"
       },
