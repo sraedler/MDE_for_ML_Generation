@@ -22,7 +22,7 @@
       "modelCommands": {}
     },
     "Text_File": {
-      "template": "csv_load_v2.vm",
+      "template": "text_file.vm",
       "properties": {
         "Path": "path",
         "Encoding": "enc"

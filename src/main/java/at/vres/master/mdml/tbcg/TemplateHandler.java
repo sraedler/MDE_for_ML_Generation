@@ -26,7 +26,7 @@ public class TemplateHandler {
     private static final String KEYWORD_BLOCK = "BLOCK";
     private static final String KEYWORD_NAME = "NAME";
     private static final String KEYWORD_CONNECTION = "CONNECTED";
-    private static final String DEFAULT_VALUE_REGEX = "\\$\\{\\((.*),\"?(.*)\"?\\)}";
+    private static final String DEFAULT_VALUE_REGEX = "\\$\\{\\(([a-zA-Z0-9_.-]*),\"?([a-zA-Z0-9_.-]*)\"?\\)}";
 
     public TemplateHandler(Map<Class, BlockContext> contexts, MappingWrapper mappingWrapper, String templatePath) {
         this.contexts = contexts;
@@ -47,46 +47,19 @@ public class TemplateHandler {
                 StereotypeMapping stereotypeMapping = mappingWrapper.getStereotypeMappings().get(stereo.getName());
                 if (stereotypeMapping != null) {
                     if (!templatesAlreadyMerged.contains(stereotypeMapping.getTemplate())) {
-                        try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(templatePath + "\\" + stereotypeMapping.getTemplate())))) {
-                            final StringBuilder templateString = new StringBuilder();
-                            String line;
-                            Pattern pattern = Pattern.compile(DEFAULT_VALUE_REGEX);
-                            while ((line = br.readLine()) != null) {
-                                Matcher matcher = pattern.matcher(line);
-                                if (matcher.find()) {
-                                    String paramName = matcher.group(1);
-                                    String defaultVal = matcher.group(2);
-                                    Object o = context.get(paramName);
-                                    if (o == null) {
-                                        context.put(paramName, defaultVal.replace("\"", ""));
-                                    }
-                                    int start = matcher.start();
-                                    int end = matcher.end();
-                                    System.out.println("start = " + start);
-                                    System.out.println("end = " + end);
-                                    templateString.append(line, matcher.regionStart(), matcher.start()).append("${")
-                                            .append(paramName)
-                                            .append("}")
-                                            .append(line, matcher.end(), matcher.regionEnd()).append("\n");
-                                } else {
-                                    templateString.append(line).append("\n");
-                                }
-                            }
-                            System.out.println("templateString = " + templateString);
-                            try (StringWriter writer = new StringWriter()) {
-                                //ve.mergeTemplate(stereotypeMapping.getTemplate(), ENCODING, context, writer);
-                                ve.evaluate(context, writer, stereotypeMapping.getTemplate(), templateString.toString());
-                                templatesAlreadyMerged.add(stereotypeMapping.getTemplate());
-                                sb.append(writer).append("\n");
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
+                        String templateString = handleTemplate(context, templatePath + "//" + stereotypeMapping.getTemplate());
+                        try (StringWriter writer = new StringWriter()) {
+                            //ve.mergeTemplate(stereotypeMapping.getTemplate(), ENCODING, context, writer);
+                            ve.evaluate(context, writer, stereotypeMapping.getTemplate(), templateString);
+                            templatesAlreadyMerged.add(stereotypeMapping.getTemplate());
+                            sb.append(writer).append("\n");
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
                     }
                 }
             });
+
             NameMapping nameMapping = mappingWrapper.getNameMappings().get(key.getName());
             if (nameMapping != null) {
                 if (!templatesAlreadyMerged.contains(nameMapping.getTemplate())) {
@@ -105,6 +78,59 @@ public class TemplateHandler {
         });
         return sb.toString();
     }
+
+    private String handleTemplate(VelocityContext context, String templateFilePath) {
+        final StringBuilder templateString = new StringBuilder();
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(templateFilePath)))) {
+            String line;
+            Pattern pattern = Pattern.compile(DEFAULT_VALUE_REGEX);
+            int findCount = 0;
+            while ((line = br.readLine()) != null) {
+                String toMatch = line;
+                Matcher matcher = pattern.matcher(line);
+                while (matcher.find()) {
+                    if (findCount == 0) {
+                        findCount += 1;
+                        String paramName = matcher.group(1);
+                        String defaultVal = matcher.group(2);
+                        Object o = context.get(paramName);
+                        if (o == null) {
+                            context.put(paramName, defaultVal.replace("\"", ""));
+                        }
+                        templateString.append(line, matcher.regionStart(), matcher.start()).append("${")
+                                .append(paramName)
+                                .append("}");
+                        toMatch = line.substring(matcher.end(), matcher.regionEnd());
+                    } else {
+                        Matcher matcherTwo = pattern.matcher(toMatch);
+                        if (matcherTwo.find()) {
+                            String paramName = matcherTwo.group(1);
+                            String defaultVal = matcherTwo.group(2);
+                            Object o = context.get(paramName);
+                            if (o == null) {
+                                context.put(paramName, defaultVal.replace("\"", ""));
+                            }
+
+                            templateString.append(toMatch, matcherTwo.regionStart(), matcherTwo.start()).append("${")
+                                    .append(paramName)
+                                    .append("}");
+                            toMatch = toMatch.substring(matcherTwo.end(), matcherTwo.regionEnd());
+                        }
+                    }
+                }
+                if (findCount == 0) {
+                    templateString.append(line);
+                } else {
+                    templateString.append(toMatch);
+                }
+                templateString.append("\n");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return templateString.toString();
+    }
+
 
     private VelocityContext handleBlockContext(BlockContext blockContext, List<BlockContext> alreadyHandled) {
         VelocityContext velocityContext = new VelocityContext();
