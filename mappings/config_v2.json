@@ -6,6 +6,14 @@
   "blockedNames": [
     "TestStorage"
   ],
+  "constants": {
+    "TRAIN": "train",
+    "TEST": "test",
+    "PREDICT": "pre",
+    "MODEL": "mod",
+    "X": "X",
+    "Y": "y"
+  },
   "stereotypeMappings": {
     "ML_Attribute_Input": {
       "template": "date_conversion_v2.vm",

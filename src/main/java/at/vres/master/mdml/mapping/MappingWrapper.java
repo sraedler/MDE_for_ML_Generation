@@ -9,6 +9,7 @@ public class MappingWrapper {
     private List<String> blockedNames;
     public Map<String, StereotypeMapping> stereotypeMappings = new HashMap<>();
     public Map<String, NameMapping> nameMappings = new HashMap<>();
+    public Map<String, String> constants = new HashMap<>();
 
     public List<String> getBlockedStereotypes() {
         return blockedStereotypes;
@@ -40,5 +41,13 @@ public class MappingWrapper {
 
     public void setNameMappings(Map<String, NameMapping> nameMappings) {
         this.nameMappings = nameMappings;
+    }
+
+    public Map<String, String> getConstants() {
+        return constants;
+    }
+
+    public void setConstants(Map<String, String> constants) {
+        this.constants = constants;
     }
 }

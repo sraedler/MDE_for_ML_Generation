@@ -1,5 +1,5 @@
 from sklearn.metrics import mean_absolute_error
 
-mae = mean_absolute_error(${split_name}_test_y, pred_${pred_name})
+mae = mean_absolute_error(${split_name}_${TEST}_${Y}, ${PREDICT}_${pred_name})
 print("Mean Absolute Error: %f" % mae)
 print("${txt}")

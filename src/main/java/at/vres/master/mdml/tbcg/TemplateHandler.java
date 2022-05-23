@@ -59,6 +59,7 @@ public class TemplateHandler {
         contexts.forEach((key, value) -> {
             List<String> templatesAlreadyMerged = new LinkedList<>();
             VelocityContext context = handleBlockContext(value, new LinkedList<>());
+            mappingWrapper.constants.forEach(context::put);
             key.getAppliedStereotypes().forEach(stereo -> {
                 StereotypeMapping stereotypeMapping = mappingWrapper.getStereotypeMappings().get(stereo.getName());
                 if (stereotypeMapping != null) {
