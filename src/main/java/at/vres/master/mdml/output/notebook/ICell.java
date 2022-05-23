@@ -1,17 +1,20 @@
 package at.vres.master.mdml.output.notebook;
 
 import java.util.List;
+import java.util.Map;
 
 public interface ICell {
-    CellCategory getCategory();
+    String getCell_type();
 
-    String getSource();
+    List<String> getSource();
 
-    String getMetadata();
+    Map<String, Object> getMetadata();
 
-    String getCellId();
-
-    List<String> getVariableNames();
+    String getId();
 
     String getConnectedElementName();
+
+    void addToSource(String toAdd);
+
+    void setCell_type(CellCategory cell_type);
 }

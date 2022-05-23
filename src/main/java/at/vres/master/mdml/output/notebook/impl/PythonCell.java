@@ -2,42 +2,50 @@ package at.vres.master.mdml.output.notebook.impl;
 
 import at.vres.master.mdml.output.notebook.CellCategory;
 import at.vres.master.mdml.output.notebook.ICell;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class PythonCell implements ICell {
 
-    private static final String cellId = UUID.randomUUID().toString();
-    private static final CellCategory category = CellCategory.CODE;
-    private String source;
-    private String metadata;
+    private String id = UUID.randomUUID().toString();
+    private CellCategory cell_type;
+    private Map<String, Object> metadata = new HashMap<>();
+    private List<String> source = new LinkedList<>();
+    @JsonIgnore
     private final List<String> variables = new LinkedList<>();
+    @JsonIgnore
     private String connectedElementName;
 
     @Override
-    public CellCategory getCategory() {
-        return category;
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     @Override
-    public String getSource() {
-        return source;
+    public String getCell_type() {
+        return cell_type.toString();
     }
 
     @Override
-    public String getMetadata() {
+    public void setCell_type(CellCategory cell_type) {
+        this.cell_type = cell_type;
+    }
+
+    @Override
+    public Map<String, Object> getMetadata() {
         return metadata;
     }
 
-    @Override
-    public String getCellId() {
-        return cellId;
+    public void setMetadata(Map<String, Object> metadata) {
+        this.metadata = metadata;
     }
 
-    @Override
-    public List<String> getVariableNames() {
+    public List<String> getVariables() {
         return variables;
     }
 
@@ -46,23 +54,21 @@ public class PythonCell implements ICell {
         return connectedElementName;
     }
 
-    public void setSource(String source) {
-        this.source = source;
-    }
-
-    public void addVariableName(String varName) {
-        variables.add(varName);
-    }
-
-    public Boolean containsVarName(String varName) {
-        return variables.contains(varName);
-    }
-
-    public void setMetadata(String metadata) {
-        this.metadata = metadata;
+    @Override
+    public void addToSource(String toAdd) {
+        source.add(toAdd);
     }
 
     public void setConnectedElementName(String connectedElementName) {
         this.connectedElementName = connectedElementName;
+    }
+
+    @Override
+    public List<String> getSource() {
+        return source;
+    }
+
+    public void setSource(List<String> source) {
+        this.source = source;
     }
 }
