@@ -12,9 +12,21 @@ public interface ICell {
 
     String getId();
 
-    String getConnectedElementName();
+    List<String> getConnectedElementNames();
 
     void addToSource(String toAdd);
 
+    void addAllToSource(List<String> allToAdd);
+
     void setCell_type(CellCategory cell_type);
+
+    void addConnectedElementName(String name);
+
+    void addConnectedElementNames(List<String> names);
+
+    List<String> getVariables();
+
+    void addVariable(String variable);
+
+    void addVariables(List<String> variables);
 }

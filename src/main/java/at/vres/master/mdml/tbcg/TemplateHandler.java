@@ -5,13 +5,9 @@ import at.vres.master.mdml.mapping.NameMapping;
 import at.vres.master.mdml.mapping.StereotypeMapping;
 import at.vres.master.mdml.model.BlockContext;
 import at.vres.master.mdml.model.StereotypeNamePair;
+import at.vres.master.mdml.output.generation.NotebookGenerator;
 import at.vres.master.mdml.output.notebook.CellCategory;
 import at.vres.master.mdml.output.notebook.ICell;
-import at.vres.master.mdml.output.notebook.INotebook;
-import at.vres.master.mdml.output.notebook.impl.PythonCell;
-import at.vres.master.mdml.output.notebook.impl.PythonMetadata;
-import at.vres.master.mdml.output.notebook.impl.PythonNotebook;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.eclipse.uml2.uml.Class;
@@ -47,10 +43,7 @@ public class TemplateHandler {
     }
 
     public String execute() {
-        INotebook notebook = new PythonNotebook();
-        notebook.setNbformat(4);
-        notebook.setNbformat_minor(5);
-        notebook.setMetadata(new PythonMetadata());
+        List<ICell> cells = new LinkedList<>();
         VelocityEngine ve = new VelocityEngine();
         Properties p = new Properties();
         final StringBuilder sb = new StringBuilder();
@@ -63,19 +56,20 @@ public class TemplateHandler {
             key.getAppliedStereotypes().forEach(stereo -> {
                 StereotypeMapping stereotypeMapping = mappingWrapper.getStereotypeMappings().get(stereo.getName());
                 if (stereotypeMapping != null) {
-                    if (!mappingWrapper.getBlockedStereotypes().contains(stereo.getName()) && !mappingWrapper.getBlockedNames().contains(key.getName())) {
+                    if (!mappingWrapper.getBlockedStereotypes().contains(stereo.getName())
+                            && !mappingWrapper.getBlockedNames().contains(key.getName())) {
                         if (!templatesAlreadyMerged.contains(stereotypeMapping.getTemplate())) {
-                            String templateString = handleTemplate(context, templatePath + "//" + stereotypeMapping.getTemplate());
+                            String templateString = handleTemplate(
+                                    context, templatePath + "//" + stereotypeMapping.getTemplate()
+                            );
                             try (StringWriter writer = new StringWriter()) {
                                 //ve.mergeTemplate(stereotypeMapping.getTemplate(), ENCODING, context, writer);
                                 ve.evaluate(context, writer, stereotypeMapping.getTemplate(), templateString);
                                 templatesAlreadyMerged.add(stereotypeMapping.getTemplate());
                                 sb.append(writer).append("\n");
-                                ICell thisCell = new PythonCell();
-                                thisCell.setCell_type(CellCategory.CODE);
-                                thisCell.addToSource(writer.toString());
-                                thisCell.addToSource("\n");
-                                notebook.addCell(thisCell);
+                                cells.add(NotebookGenerator.createPythonNotebookCell(
+                                        new LinkedList<>(List.of(writer.toString(), "\n")), CellCategory.CODE
+                                ));
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
@@ -94,11 +88,9 @@ public class TemplateHandler {
                                 ve.mergeTemplate(nameMapping.getTemplate(), ENCODING, context, writer);
                                 templatesAlreadyMerged.add(nameMapping.getTemplate());
                                 sb.append(writer).append("\n");
-                                ICell thisCell = new PythonCell();
-                                thisCell.setCell_type(CellCategory.CODE);
-                                thisCell.addToSource(writer.toString());
-                                thisCell.addToSource("\n");
-                                notebook.addCell(thisCell);
+                                cells.add(NotebookGenerator.createPythonNotebookCell(
+                                        new LinkedList<>(List.of(writer.toString(), "\n")), CellCategory.CODE
+                                ));
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
@@ -107,12 +99,9 @@ public class TemplateHandler {
                 }
             }
         });
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            objectMapper.writeValue(new File("transout/test.ipynb"), notebook);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        NotebookGenerator.generateTo(
+                "transout/test.ipynb", NotebookGenerator.createDefaultPythonNotebook(cells)
+        );
         return sb.toString();
     }
 

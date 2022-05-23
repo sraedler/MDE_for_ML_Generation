@@ -40,7 +40,10 @@ public class PythonNotebook implements INotebook {
 
     @Override
     public ICell getCellByElementName(String elementName) {
-        return cells.stream().filter(c -> c.getConnectedElementName().equals(elementName)).findFirst().orElse(null);
+        return cells.stream()
+                .filter(c -> c.getConnectedElementNames().contains(elementName))
+                .findFirst()
+                .orElse(null);
     }
 
     @Override
@@ -88,5 +91,10 @@ public class PythonNotebook implements INotebook {
     @Override
     public void setMetadata(IMetadata metadata) {
         this.metadata = metadata;
+    }
+
+    @Override
+    public void addCells(List<ICell> cells) {
+        this.cells.addAll(cells);
     }
 }

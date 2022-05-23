@@ -15,11 +15,11 @@ public class PythonCell implements ICell {
     @JsonIgnore
     private final List<String> variables = new LinkedList<>();
     @JsonIgnore
-    private String connectedElementName;
+    private List<String> connectedElementNames;
 
     @Override
     public String getId() {
-        return id;
+        return this.id;
     }
 
     public void setId(String id) {
@@ -28,7 +28,7 @@ public class PythonCell implements ICell {
 
     @Override
     public String getCell_type() {
-        return cell_type.getValue();
+        return this.cell_type.getValue();
     }
 
     @Override
@@ -37,8 +37,18 @@ public class PythonCell implements ICell {
     }
 
     @Override
+    public void addConnectedElementName(String name) {
+        this.connectedElementNames.add(name);
+    }
+
+    @Override
+    public void addConnectedElementNames(List<String> names) {
+        this.connectedElementNames.addAll(names);
+    }
+
+    @Override
     public Map<String, Object> getMetadata() {
-        return metadata;
+        return this.metadata;
     }
 
     public void setMetadata(Map<String, Object> metadata) {
@@ -46,29 +56,45 @@ public class PythonCell implements ICell {
     }
 
     public List<String> getVariables() {
-        return variables;
+        return this.variables;
     }
 
     @Override
-    public String getConnectedElementName() {
-        return connectedElementName;
+    public void addVariable(String variable) {
+        this.variables.add(variable);
+    }
+
+    @Override
+    public void addVariables(List<String> variables) {
+        this.variables.addAll(variables);
     }
 
     @Override
     public void addToSource(String toAdd) {
-        source.add(toAdd);
-    }
-
-    public void setConnectedElementName(String connectedElementName) {
-        this.connectedElementName = connectedElementName;
+        this.source.add(toAdd);
     }
 
     @Override
+    public void addAllToSource(List<String> allToAdd) {
+        this.source.addAll(allToAdd);
+    }
+
+
+    @Override
     public List<String> getSource() {
-        return source;
+        return this.source;
     }
 
     public void setSource(List<String> source) {
         this.source = source;
+    }
+
+    @Override
+    public List<String> getConnectedElementNames() {
+        return this.connectedElementNames;
+    }
+
+    public void setConnectedElementNames(List<String> connectedElementNames) {
+        this.connectedElementNames = connectedElementNames;
     }
 }

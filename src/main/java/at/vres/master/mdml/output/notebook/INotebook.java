@@ -28,4 +28,6 @@ public interface INotebook {
     IMetadata getMetadata();
 
     void setMetadata(IMetadata metadata);
+
+    void addCells(List<ICell> cells);
 }
