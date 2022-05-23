@@ -28,7 +28,7 @@ public class PythonCell implements ICell {
 
     @Override
     public String getCell_type() {
-        return cell_type.toString();
+        return cell_type.getValue();
     }
 
     @Override

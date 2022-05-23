@@ -6,9 +6,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class PythonMetadata implements IMetadata {
-    private Map<String, String> kernelspec = new HashMap<>(Map.of("display_name", "Python 3", "language", "python", "name", "python3"));
-    private Map<String, Object> language_info = new HashMap<>(Map.of("codemirror_mode", new HashMap<>(Map.of("name", "ipython", "version", 3)),
-            "file_extension", ".py", "mimetype", "text/x-python", "name", "python", "nbconvert_exporter", "python", "pygments_lexer", "ipython3", "version", "3.7.12"));
+    private Map<String, String> kernelspec = new HashMap<>(Map.of("display_name", "Python 3",
+            "language", "python", "name", "python3"));
+    private Map<String, Object> language_info = new HashMap<>(Map.of(
+            "codemirror_mode", new HashMap<>(Map.of(
+                    "name", "ipython", "version", 3)
+            ),
+            "file_extension", ".py", "mimetype", "text/x-python", "name", "python",
+            "nbconvert_exporter", "python", "pygments_lexer", "ipython3", "version", "3.7.12")
+    );
 
     @Override
     public Map<String, String> getKernelspec() {
