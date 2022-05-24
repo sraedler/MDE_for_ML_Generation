@@ -191,6 +191,7 @@ public class InformationExtractor {
             BlockContext bc = new BlockContext(clazz);
             existingContexts.put(clazz, bc);
             clazz.getAllAttributes().forEach(att -> contextPropertyHandling(att, bc));
+            clazz.getOwnedComments().forEach(comment -> bc.addMarkdown(comment.getBody()));
             clazz.getAppliedStereotypes()
                     .stream()
                     .filter(st -> !stereotypesToIgnore.contains(st.getName()))
