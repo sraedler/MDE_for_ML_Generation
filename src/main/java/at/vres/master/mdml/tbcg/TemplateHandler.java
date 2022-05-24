@@ -38,6 +38,8 @@ public class TemplateHandler {
     private static final String QUALIFIED_NAME_SEPARATOR = "::";
     private static final String START_TEMPLATE_VARIABLE = "${";
     private static final String END_TEMPLATE_VARIABLE = "}";
+    private static final String MULTILINE_COMMENT_START = "\"\"\"";
+    private static final String MULTILINE_COMMENT_END = "\"\"\"";
 
     /**
      * Constructor for TemplateHandler
@@ -67,6 +69,18 @@ public class TemplateHandler {
         contexts.forEach((key, value) -> {
             List<String> templatesAlreadyMerged = new LinkedList<>();
             VelocityContext context = handleBlockContext(value, new LinkedList<>());
+            value.getMarkdown().forEach(markdown -> {
+                sb.append(MULTILINE_COMMENT_START)
+                        .append("\n")
+                        .append(markdown)
+                        .append("\n")
+                        .append(MULTILINE_COMMENT_END).append("\n");
+                ICell markdownCell = NotebookGenerator.createPythonNotebookCell(
+                        new ArrayList<>(List.of(markdown)), CellCategory.MARKDOWN
+                );
+                cells.add(markdownCell);
+
+            });
             mappingWrapper.constants.forEach(context::put);
             key.getAppliedStereotypes().forEach(stereo -> {
                 StereotypeMapping stereotypeMapping = mappingWrapper.getStereotypeMappings().get(stereo.getName());

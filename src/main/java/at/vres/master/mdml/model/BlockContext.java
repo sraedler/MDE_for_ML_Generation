@@ -13,6 +13,7 @@ import java.util.Map;
 public class BlockContext {
     private Class connectedClass;
     private String qualifiedName;
+    private List<String> markdown;
     private Map<String, List<BlockContext>> linkedPartContexts;
     private Map<String, Object> propertyMap;
     private Map<String, List<String>> stereotypeToPropsMap;
@@ -21,10 +22,23 @@ public class BlockContext {
     public BlockContext(Class connectedClass) {
         this.connectedClass = connectedClass;
         this.qualifiedName = connectedClass.getQualifiedName();
+        this.markdown = new LinkedList<>();
         linkedPartContexts = new HashMap<>();
         propertyMap = new HashMap<>();
         stereotypeToPropsMap = new HashMap<>();
         executionOrder = -1;
+    }
+
+    public List<String> getMarkdown() {
+        return markdown;
+    }
+
+    public void setMarkdown(List<String> markdown) {
+        this.markdown = markdown;
+    }
+
+    public void addMarkdown(String markdown) {
+        this.markdown.add(markdown);
     }
 
     /**
