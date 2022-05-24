@@ -57,7 +57,7 @@ public class TemplateHandler {
     /**
      * Executes the transformation based on the parameters used during construction of the class
      *
-     * @return The result of the transforamtion process as a String
+     * @return The result of the transformation process as a String
      */
     public String execute() {
         List<ICell> cells = new LinkedList<>();

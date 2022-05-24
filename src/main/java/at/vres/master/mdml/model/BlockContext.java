@@ -19,6 +19,12 @@ public class BlockContext {
     private Map<String, List<String>> stereotypeToPropsMap;
     private Integer executionOrder;
 
+    /**
+     * Constructor for BlockContext. Will automatically set the qualifiedName based on the passed Class and
+     * initialize all collections to empty collections.
+     *
+     * @param connectedClass The UML Class that is connected to this BlockContext (that this BlockContext was created from)
+     */
     public BlockContext(Class connectedClass) {
         this.connectedClass = connectedClass;
         this.qualifiedName = connectedClass.getQualifiedName();
@@ -29,14 +35,29 @@ public class BlockContext {
         executionOrder = -1;
     }
 
+    /**
+     * Get the list of Strings extracted from Comments representing the markdown-cells of this BlockContext
+     *
+     * @return The list of Strings representing the markdown cells of this BlockContext
+     */
     public List<String> getMarkdown() {
         return markdown;
     }
 
+    /**
+     * Set the List of Strings that represent the markdown cells of this BlockContext
+     *
+     * @param markdown The list of Strings to set as markdown cells of this BlockContext
+     */
     public void setMarkdown(List<String> markdown) {
         this.markdown = markdown;
     }
 
+    /**
+     * Add a String to the List of markdown Strings
+     *
+     * @param markdown The markdown String to add
+     */
     public void addMarkdown(String markdown) {
         this.markdown.add(markdown);
     }
