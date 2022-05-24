@@ -5,6 +5,9 @@ import at.vres.master.mdml.output.notebook.IMetadata;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * A specific implementation of the IMetadata interface for Python notebooks
+ */
 public class PythonMetadata implements IMetadata {
     private Map<String, String> kernelspec = new HashMap<>(Map.of("display_name", "Python 3",
             "language", "python", "name", "python3"));
@@ -26,10 +29,20 @@ public class PythonMetadata implements IMetadata {
         return language_info;
     }
 
+    /**
+     * Method for setting the language info of the metadata
+     *
+     * @param language_info The language info to set for the metadata
+     */
     public void setLanguage_info(Map<String, Object> language_info) {
         this.language_info = language_info;
     }
 
+    /**
+     * Method for setting the kernelspec of the metadata
+     *
+     * @param kernelspec The kernelspec to set for the metadata
+     */
     public void setKernelspec(Map<String, String> kernelspec) {
         this.kernelspec = kernelspec;
 

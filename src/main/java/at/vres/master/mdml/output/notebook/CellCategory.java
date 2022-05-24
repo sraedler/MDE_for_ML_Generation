@@ -1,5 +1,8 @@
 package at.vres.master.mdml.output.notebook;
 
+/**
+ * Enum for the different types a notebook cell can have
+ */
 public enum CellCategory {
     MARKDOWN("markdown"),
     CODE("code");
@@ -10,6 +13,11 @@ public enum CellCategory {
         this.value = value;
     }
 
+    /**
+     * Get the String representation of the value (conforms to how the category is named in notebooks)
+     *
+     * @return The String representation of the cell type
+     */
     public String getValue() {
         return value;
     }

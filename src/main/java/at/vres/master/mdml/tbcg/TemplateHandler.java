@@ -17,6 +17,9 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Class for handling the merging of extracted information, templates and mappings.
+ */
 public class TemplateHandler {
     private static final String VELOCITY_TEMPLATE_PATH_KEY = "file.resource.loader.path";
     private static final String ENCODING = "UTF-8";
@@ -36,12 +39,24 @@ public class TemplateHandler {
     private static final String START_TEMPLATE_VARIABLE = "${";
     private static final String END_TEMPLATE_VARIABLE = "}";
 
+    /**
+     * Constructor for TemplateHandler
+     *
+     * @param contexts       Map of UML-Classes and their corresponding BlockContexts
+     * @param mappingWrapper The MappingWrapper extracted from the JSON-mapping file
+     * @param templatePath   The path to the template directory (where the templates are stored)
+     */
     public TemplateHandler(Map<Class, BlockContext> contexts, MappingWrapper mappingWrapper, String templatePath) {
         this.contexts = contexts;
         this.mappingWrapper = mappingWrapper;
         this.templatePath = templatePath;
     }
 
+    /**
+     * Executes the transformation based on the parameters used during construction of the class
+     *
+     * @return The result of the transforamtion process as a String
+     */
     public String execute() {
         List<ICell> cells = new LinkedList<>();
         VelocityEngine ve = new VelocityEngine();
@@ -105,6 +120,13 @@ public class TemplateHandler {
         return sb.toString();
     }
 
+    /**
+     * Helper method for handling templates, their variables and their default values
+     *
+     * @param context          The VelocityContext to be merged with the template
+     * @param templateFilePath The path to the template file
+     * @return The String resulting from merging the template with the VelocityContext
+     */
     private String handleTemplate(VelocityContext context, String templateFilePath) {
         final StringBuilder templateString = new StringBuilder();
         try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(templateFilePath)))) {
@@ -157,7 +179,13 @@ public class TemplateHandler {
         return templateString.toString();
     }
 
-
+    /**
+     * Helper method for preparing a VelocityContext based on the BlockContext.
+     *
+     * @param blockContext   The BlockContext to prepare the VelocityContext for
+     * @param alreadyHandled A list of BlockContexts that were already handled, to prevent loops
+     * @return The VelocityContext with the processed information from the BlockContext
+     */
     private VelocityContext handleBlockContext(BlockContext blockContext, List<BlockContext> alreadyHandled) {
         VelocityContext velocityContext = new VelocityContext();
         if (!alreadyHandled.contains(blockContext)) {
@@ -295,6 +323,13 @@ public class TemplateHandler {
         return velocityContext;
     }
 
+    /**
+     * Helper Method for handling connection mappings from the JSON-file.
+     *
+     * @param bc           The BlockContext to handle the connection for
+     * @param originalName The original name (the key) from the JSON mapping
+     * @return The Object that the connection mapping refers to or null if none could be found
+     */
     private static Object handleConnection(BlockContext bc, String originalName) {
         String[] split = originalName.split(KEYWORD_SEPARATOR);
         if (split.length == 3 && split[0].equals(KEYWORD_CONNECTION)) {
@@ -303,6 +338,15 @@ public class TemplateHandler {
         return null;
     }
 
+    /**
+     * Helper method for finding the right element based on the connection mapping from the JSON-file after some processing
+     *
+     * @param bc               The BlockContext to handle the connection for
+     * @param connectedElement The stereotype that has the attribute and is applied to the connected element
+     * @param attributeToGet   The attribute of said stereotype to check
+     * @param alreadyChecked   A set of BlockContexts that were already checked to prevent loops
+     * @return The Object that the connection mapping refers to or null if none could be found
+     */
     private static Object handleConnectedElement(BlockContext bc, String connectedElement, String attributeToGet, Set<BlockContext> alreadyChecked) {
         final Set<Object> connectedElements = new HashSet<>();
         bc.getLinkedPartContexts().forEach((propName, contextList) -> contextList.forEach(context -> {
@@ -333,6 +377,13 @@ public class TemplateHandler {
         return null;
     }
 
+    /**
+     * Helper method for handling mappings with the "THIS" keyword
+     *
+     * @param bc           The BlockContext to handle the mapping for
+     * @param originalName The original name (the key) from the JSON mapping file
+     * @return The Object that the "THIS" mapping refers to or null if none could be found
+     */
     private static Object handleThis(BlockContext bc, String originalName) {
         String[] split = originalName.split(KEYWORD_SEPARATOR);
         if (split.length == 3 && split[0].equals(KEYWORD_THIS)) {
@@ -343,6 +394,14 @@ public class TemplateHandler {
         return null;
     }
 
+    /**
+     * Helper method for handling Block mappings from the JSON mapping file.
+     *
+     * @param bc             The BlockContext to handle the mapping for
+     * @param attributeToGet The name of the attribute to get
+     * @param stereoName     The name of the stereotype the attribute is to be gotten for
+     * @return The Object that the mapping refers to or null if none could be found
+     */
     private static Object handleBlockConfig(BlockContext bc, String attributeToGet, String stereoName) {
         if (attributeToGet.equals(KEYWORD_NAME)) {
             return bc.getConnectedClass().getName();
@@ -380,6 +439,14 @@ public class TemplateHandler {
         return null;
     }
 
+    /**
+     * Helper method for handling the "OWNER" keyword
+     *
+     * @param bc             The BlockContext to handle the "OWNER" mapping for
+     * @param attributeToGet The name of the attribute to get
+     * @param propVal        Property to get the owner for
+     * @return The specified attribute of the owner of the property or null if none can be found
+     */
     private static Set<Object> handleOwnerInternal(BlockContext bc, String attributeToGet, Object propVal) {
         Object o = handlePropValGetOwner(propVal);
         final Set<Object> matchingPropVals = new HashSet<>();
@@ -397,6 +464,14 @@ public class TemplateHandler {
         return matchingPropVals;
     }
 
+    /**
+     * Helper method for handling "OWNER" mappings
+     *
+     * @param bc                   The BlockContext to handle the "OWNER" mapping for
+     * @param orginalNameWithOwner The original name (key) of the mapping with the owner keyword
+     * @param propVal              The property to get the owner for
+     * @return The specified attribute of the owner of the property or null if none can be found
+     */
     private static Object handleOwner(final BlockContext bc, final String orginalNameWithOwner, final Object propVal) {
         if (orginalNameWithOwner != null && !orginalNameWithOwner.isEmpty()) {
             if (orginalNameWithOwner.contains(KEYWORD_OWNER)) {
@@ -415,6 +490,12 @@ public class TemplateHandler {
         return null;
     }
 
+    /**
+     * Helper method for splitting qualified name of propVal to get the owner name
+     *
+     * @param propVal The propval to split (if it's a String)
+     * @return The name of the owner if propVal is a String, otherwise propVal is returned
+     */
     private static Object handlePropValGetOwner(Object propVal) {
         if (propVal instanceof String) {
             if (((String) propVal).contains(QUALIFIED_NAME_SEPARATOR)) {
@@ -428,6 +509,12 @@ public class TemplateHandler {
         }
     }
 
+    /**
+     * Helper method for getting the name form the qualified name from an Object
+     *
+     * @param propVal The Object to get the name from
+     * @return The name extracted from the qualified name if propVal is a String, otherwise returns propVal
+     */
     private static Object handlePropValQualifiedName(Object propVal) {
         if (propVal instanceof String) {
             if (((String) propVal).contains(QUALIFIED_NAME_SEPARATOR)) {
@@ -440,6 +527,12 @@ public class TemplateHandler {
         }
     }
 
+    /**
+     * Helper method for handling Lists ( to turn them into formatted Strings to put into the context)
+     *
+     * @param list The list to work on
+     * @return A String representing the list
+     */
     private static String handleValueLists(List<?> list) {
         final StringBuilder sb = new StringBuilder();
         sb.append("[");
@@ -451,6 +544,12 @@ public class TemplateHandler {
         return sb.toString();
     }
 
+    /**
+     * Helper method for getting the name from the qualified name
+     *
+     * @param qualifiedName The qualified name to extract the name from
+     * @return The name extracted from the qualified name or "null" if the qualifiedName is null or "" if qualifiedName is empty
+     */
     public static String getNameFromQualifiedName(String qualifiedName) {
         if (qualifiedName != null) {
             if (!qualifiedName.isEmpty()) {
@@ -463,6 +562,12 @@ public class TemplateHandler {
         }
     }
 
+    /**
+     * Helper method for getting a Pair containing the name of a Stereotype and the name of an attribute of said Stereotype
+     *
+     * @param qualifiedName The qualified name of the stereotype attribute
+     * @return A StereotypeNamePair containing the Stereotype name and the name of the Stereotype attribute
+     */
     private static StereotypeNamePair getStereotypeNamePairFromQualifiedName(String qualifiedName) {
         StereotypeNamePair pair = null;
         if (qualifiedName != null) {
@@ -476,6 +581,12 @@ public class TemplateHandler {
         return pair;
     }
 
+    /**
+     * Helper methods for merging two contexts by putting all key-value-pairs of the second context into the first if the key does not exist in the first context
+     *
+     * @param superContext   The context to merge into, will retain all it's key-value-pairs
+     * @param contextToMerge The context to merge, will only merge key-value-pairs where the key does not exist in the superContext
+     */
     private static void mergeContexts(VelocityContext superContext, final VelocityContext contextToMerge) {
         for (String key : contextToMerge.getKeys()) {
             Object o = contextToMerge.get(key);

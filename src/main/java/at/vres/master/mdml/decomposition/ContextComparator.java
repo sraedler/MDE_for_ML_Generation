@@ -6,6 +6,9 @@ import org.eclipse.uml2.uml.Class;
 import java.util.Comparator;
 import java.util.Map;
 
+/**
+ * Comparator for UML Class to BlockContext mappings which will sort based on the BlockContext execution order
+ */
 public class ContextComparator implements Comparator<Map.Entry<Class, BlockContext>> {
 
     @Override

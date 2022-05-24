@@ -6,6 +6,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.*;
 
+/**
+ * A specific implementation of the ICell interface for Python notebooks
+ */
 public class PythonCell implements ICell {
 
     private String id = UUID.randomUUID().toString();
@@ -51,10 +54,16 @@ public class PythonCell implements ICell {
         return this.metadata;
     }
 
+    /**
+     * Method for setting the metadata of the cell
+     *
+     * @param metadata The metadata to set for the cell
+     */
     public void setMetadata(Map<String, Object> metadata) {
         this.metadata = metadata;
     }
 
+    @Override
     public List<String> getVariables() {
         return this.variables;
     }
@@ -94,6 +103,11 @@ public class PythonCell implements ICell {
         return this.connectedElementNames;
     }
 
+    /**
+     * Method for setting the connectedElementNames of the cell
+     *
+     * @param connectedElementNames The list of connected element names to set for the cell
+     */
     public void setConnectedElementNames(List<String> connectedElementNames) {
         this.connectedElementNames = connectedElementNames;
     }

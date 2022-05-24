@@ -8,6 +8,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * A specific implementation of the INotebook interface for Python notebooks
+ */
 public class PythonNotebook implements INotebook {
     @JsonIgnore
     private String name;
@@ -55,10 +58,18 @@ public class PythonNotebook implements INotebook {
         this.name = name;
     }
 
+    /**
+     * Method for increasing the executionCount by one
+     */
     public void increaseExecutionCount() {
         executionCount += 1;
     }
 
+    /**
+     * Method for setting the execution count to a Integer value
+     *
+     * @param executionCount The new value to set the count to
+     */
     public void setExecutionCount(Integer executionCount) {
         this.executionCount = executionCount;
     }
