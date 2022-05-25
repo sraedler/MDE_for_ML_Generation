@@ -210,6 +210,7 @@
         </packagedElement>
         <packagedElement xmi:type="uml:Realization" xmi:id="_wGNY4K9VEeyhNoRn0OlPgA" client="_EJ1KIK9UEeyhNoRn0OlPgA" supplier="_R67BoK83Eey8G6m4MAbk9g"/>
         <packagedElement xmi:type="uml:Realization" xmi:id="_wujyUK9VEeyhNoRn0OlPgA" client="_TX_WYK9UEeyhNoRn0OlPgA" supplier="_R67BoK83Eey8G6m4MAbk9g"/>
+        <packagedElement xmi:type="uml:Class" xmi:id="_-KjegNdDEey62-DuRe1g7g" name="TestStorage"/>
       </packagedElement>
       <packagedElement xmi:type="uml:Package" xmi:id="_2G4qQK9HEey8G6m4MAbk9g" name="02_ML_BlackBox_RQAndSpec">
         <packagedElement xmi:type="uml:Dependency" xmi:id="_BwfxsK9IEey8G6m4MAbk9g" client="_2G4qQK9HEey8G6m4MAbk9g" supplier="_jmXnUK9FEey8G6m4MAbk9g"/>
@@ -382,7 +383,6 @@
         <region xmi:type="uml:Region" xmi:id="_aGzM8K_yEeyP_5ArodVN4A" name="Region1">
           <transition xmi:type="uml:Transition" xmi:id="_z8dNQK_7Eey1R5-2CjLPMg" source="_jK7JwK_7Eey1R5-2CjLPMg" target="_xC3GwK_3EeyP_5ArodVN4A"/>
           <transition xmi:type="uml:Transition" xmi:id="_1bpIEK_7Eey1R5-2CjLPMg" source="_xC3GwK_3EeyP_5ArodVN4A" target="_uvq_UK_7Eey1R5-2CjLPMg"/>
-          <transition xmi:type="uml:Transition" xmi:id="_B5zR4K_8Eey1R5-2CjLPMg" source="_uvq_UK_7Eey1R5-2CjLPMg" target="_76ZUMK_7Eey1R5-2CjLPMg"/>
           <transition xmi:type="uml:Transition" xmi:id="_d8ymEK_9Eey1R5-2CjLPMg" source="_76ZUMK_7Eey1R5-2CjLPMg" target="_bg4kUK_9Eey1R5-2CjLPMg"/>
           <transition xmi:type="uml:Transition" xmi:id="_vzWX8K_9Eey1R5-2CjLPMg" source="_euJKgK_9Eey1R5-2CjLPMg" target="_e_gAQK_9Eey1R5-2CjLPMg"/>
           <transition xmi:type="uml:Transition" xmi:id="_wOgp8K_9Eey1R5-2CjLPMg" source="_e_gAQK_9Eey1R5-2CjLPMg" target="_fNKo0K_9Eey1R5-2CjLPMg"/>
@@ -392,6 +392,8 @@
           <transition xmi:type="uml:Transition" xmi:id="_YNV6gK_-Eey1R5-2CjLPMg" source="_9HYZ0K_9Eey1R5-2CjLPMg" target="_XzDyQK_-Eey1R5-2CjLPMg"/>
           <transition xmi:type="uml:Transition" xmi:id="_nJQNkNW4EeyUVbfQFb3pCQ" source="_bg4kUK_9Eey1R5-2CjLPMg" target="_hjEBINW4EeyUVbfQFb3pCQ"/>
           <transition xmi:type="uml:Transition" xmi:id="_nweloNW4EeyUVbfQFb3pCQ" source="_hjEBINW4EeyUVbfQFb3pCQ" target="_euJKgK_9Eey1R5-2CjLPMg"/>
+          <transition xmi:type="uml:Transition" xmi:id="_23QakNdEEey62-DuRe1g7g" source="_uvq_UK_7Eey1R5-2CjLPMg" target="_uiPQYNdEEey62-DuRe1g7g"/>
+          <transition xmi:type="uml:Transition" xmi:id="_3ajU4NdEEey62-DuRe1g7g" source="_uiPQYNdEEey62-DuRe1g7g" target="_76ZUMK_7Eey1R5-2CjLPMg"/>
           <subvertex xmi:type="uml:State" xmi:id="_xC3GwK_3EeyP_5ArodVN4A" name="Load_CSV1"/>
           <subvertex xmi:type="uml:State" xmi:id="_uvq_UK_7Eey1R5-2CjLPMg" name="Load_CSV2"/>
           <subvertex xmi:type="uml:State" xmi:id="_76ZUMK_7Eey1R5-2CjLPMg" name="Convert_Date"/>
@@ -403,6 +405,7 @@
           <subvertex xmi:type="uml:State" xmi:id="_9HYZ0K_9Eey1R5-2CjLPMg" name="MAE"/>
           <subvertex xmi:type="uml:State" xmi:id="_IwX2MK_-Eey1R5-2CjLPMg" name="Predict_RandomForest"/>
           <subvertex xmi:type="uml:State" xmi:id="_hjEBINW4EeyUVbfQFb3pCQ" name="LabelEncode"/>
+          <subvertex xmi:type="uml:State" xmi:id="_uiPQYNdEEey62-DuRe1g7g" name="TextFileTest"/>
         </region>
       </packagedElement>
     </packagedElement>
@@ -594,4 +597,9 @@
   <Blocks:Block xmi:id="_PLOHINW4EeyUVbfQFb3pCQ" base_Class="_PLBS0NW4EeyUVbfQFb3pCQ"/>
   <MLModel.AlgorithmWorkflow:ML_Block_Connection xmi:id="_jslSYNW4EeyUVbfQFb3pCQ" base_State="_hjEBINW4EeyUVbfQFb3pCQ" ML_Block="_fMiKcNW_EeyUVbfQFb3pCQ"/>
   <MLModel.Algorithms:BlackBox_ReinforcementLearning xmi:id="_fMiKcNW_EeyUVbfQFb3pCQ" base_Class="_PLBS0NW4EeyUVbfQFb3pCQ"/>
+  <MLModel.AlgorithmWorkflow:ML_Block_Connection xmi:id="_w6MmQNdEEey62-DuRe1g7g" base_State="_uiPQYNdEEey62-DuRe1g7g" ML_Block="_CFXHMNdEEey62-DuRe1g7g"/>
+  <Blocks:Block xmi:id="_-Kw54NdDEey62-DuRe1g7g" base_Class="_-KjegNdDEey62-DuRe1g7g"/>
+  <MLModel.DataStorage:BlackBox_Storage xmi:id="_UmDkwNdQEey62-DuRe1g7g" base_Class="_-KjegNdDEey62-DuRe1g7g" VariableName="blackbox"/>
+  <MLModel.DataStorage:CSV xmi:id="_OJm7MNdPEey62-DuRe1g7g" base_Class="_-KjegNdDEey62-DuRe1g7g" VariableName="dundundun" Encoding="ASCII" Path="PATH_OF_THE_NINJA" Delimiter="," SkipNrOfLines="12"/>
+  <MLModel.DataStorage:Text_File xmi:id="_CFXHMNdEEey62-DuRe1g7g" base_Class="_-KjegNdDEey62-DuRe1g7g" VariableName="texty" Encoding="UTF-12" Path="C:/APATH/t.txt"/>
 </xmi:XMI>

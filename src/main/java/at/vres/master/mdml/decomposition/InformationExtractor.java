@@ -1,7 +1,7 @@
 package at.vres.master.mdml.decomposition;
 
 import MLModel.Attributes.ML_Attribute_Input;
-import MLModel.ML;
+import MLModel.Common.ML;
 import at.vres.master.mdml.model.BlockContext;
 import at.vres.master.mdml.tbcg.TemplateHandler;
 import at.vres.master.mdml.utils.EMFResourceLoader;

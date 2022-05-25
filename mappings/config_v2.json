@@ -65,14 +65,15 @@
     "DataFrame_Merge": {
       "template": "dataframe_merge_v2.vm",
       "properties": {
-        "NewDFName": "new_name",
         "MergeOn[0].OWNER.VariableName": "one",
         "MergeOn[1].OWNER.VariableName": "two",
         "MergeOn[0]": "left",
         "MergeOn[1]": "right",
         "How": "how"
       },
-      "modelCommands": {}
+      "modelCommands": {
+        "THIS.BLOCK.NAME": "new_name"
+      }
     },
     "Train_Test_Split": {
       "template": "train_test_split_v2.vm",
@@ -126,7 +127,7 @@
         "toEncode": "feature"
       },
       "modelCommands": {
-        "CONNECTED.DataFrame_Merge.NewDFName": "df"
+        "CONNECTED.DataFrame_Merge.NAME": "df"
       }
     }
   }
