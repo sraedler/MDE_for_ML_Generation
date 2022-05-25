@@ -62,6 +62,15 @@
         "CONNECTED.Datetime.PROPNAME": "d"
       }
     },
+    "Encoding": {
+      "template": "label_encode.vm",
+      "properties": {
+        "ToEncode": "feature"
+      },
+      "modelCommands": {
+        "CONNECTED.DataFrame_Merge.NAME": "df"
+      }
+    },
     "DataFrame_Merge": {
       "template": "dataframe_merge_v2.vm",
       "properties": {
@@ -119,16 +128,5 @@
       }
     }
   },
-  "nameMappings": {
-    "EncodeLabel": {
-      "template": "label_encode.vm",
-      "executeWith": "EncodeLabel",
-      "properties": {
-        "toEncode": "feature"
-      },
-      "modelCommands": {
-        "CONNECTED.DataFrame_Merge.NAME": "df"
-      }
-    }
-  }
+  "nameMappings": { }
 }
