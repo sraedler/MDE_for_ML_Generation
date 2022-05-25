@@ -16,6 +16,7 @@ import java.util.*;
  */
 public class TestMain {
     private static final String TEST_MODEL = "SysMLModels/UC1_Weather/UC1_Weather.uml";
+    private static final String UPDATED_TEST_MODEL = "SysMLModels/New_UC1_Weather/UC1_Weather.uml";
     private static final String WORKSPACE_PROFILE_TEST_MODEL = "C:\\Users\\rup\\Documents\\MASTER\\MLModels\\NewVer_04_05_2022\\ML_Modelling\\UC1_Weather\\UC1_Weather.uml";
     private static final String WORKSPACE_UPDATED_MODEL = "C:\\Users\\rup\\Documents\\MASTER\\MasterModels\\ML_Modelling\\UC1_Weather\\UC1_Weather.uml";
     private static final String TEST_TEMPLATE_PATH = "C:\\Users\\rup\\IdeaProjects\\MasterModelDrivenML\\templates";
@@ -29,7 +30,7 @@ public class TestMain {
      * @param args Arguments for main as String array
      */
     public static void main(String[] args) {
-        testContextVariant(WORKSPACE_UPDATED_MODEL, UPDATED_STATE_MACHINE_NAME, JSON_CONFIG_PATH);
+        testContextVariant(UPDATED_TEST_MODEL, UPDATED_STATE_MACHINE_NAME, JSON_CONFIG_PATH);
     }
 
     /**
