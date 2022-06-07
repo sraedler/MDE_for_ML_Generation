@@ -16,14 +16,14 @@
   },
   "stereotypeMappings": {
     "ML_Attribute_Input": {
-      "template": "date_conversion_v2.vm",
+      "template": "attribute_input.vm",
       "properties": {
         "MappedToName": "mapName"
       },
       "modelCommands": {}
     },
     "Datetime": {
-      "template": "date_conversion_v2.vm",
+      "template": "datetime.vm",
       "properties": {
         "DatetimeFormat": "old_format"
       },
