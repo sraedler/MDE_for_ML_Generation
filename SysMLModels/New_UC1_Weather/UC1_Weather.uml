@@ -184,6 +184,14 @@
           <generalization xmi:type="uml:Generalization" xmi:id="_t1aa8K9VEeyhNoRn0OlPgA" general="_TX_WYK9UEeyhNoRn0OlPgA"/>
         </packagedElement>
         <packagedElement xmi:type="uml:Class" xmi:id="_EJ1KIK9UEeyhNoRn0OlPgA" name="CSV_1">
+          <ownedComment xmi:type="uml:Comment" xmi:id="_tqY4kOZ9Eey8xuBhnr3k8A">
+            <body>&lt;div>
+&lt;h1>Dataset load&lt;/h1>
+
+&lt;p>Load the dataset(s)&lt;/p>
+&lt;/div>
+</body>
+          </ownedComment>
           <ownedAttribute xmi:type="uml:Property" xmi:id="_mFiREK9IEey8G6m4MAbk9g" name="date" redefinedProperty="_fvPFEK9CEey8G6m4MAbk9g">
             <type xmi:type="uml:DataType" href="pathmap://SysML16_LIBRARIES/SysML-Standard-Library.uml#SysML.package_packagedElement_Libraries.package_packagedElement_PrimitiveValueTypes.dataType_packagedElement_String"/>
           </ownedAttribute>
@@ -232,6 +240,14 @@
         <packagedElement xmi:type="uml:Dependency" xmi:id="_pUheIK9fEeyMp6YloUW0pA" client="_iNZqcK9fEeyMp6YloUW0pA" supplier="_jmXnUK9FEey8G6m4MAbk9g"/>
         <packagedElement xmi:type="uml:Dependency" xmi:id="_p4S5kK9fEeyMp6YloUW0pA" client="_iNZqcK9fEeyMp6YloUW0pA" supplier="_2G4qQK9HEey8G6m4MAbk9g"/>
         <packagedElement xmi:type="uml:Class" xmi:id="_TH0rEK9iEeyMp6YloUW0pA" name="Merge_DF">
+          <ownedComment xmi:type="uml:Comment" xmi:id="_qdPAEOZ9Eey8xuBhnr3k8A">
+            <body>&lt;div>
+&lt;h1>Dataframe Merge&lt;/h1>
+
+&lt;p>Merge dataframes&lt;/p>
+&lt;/div>
+</body>
+          </ownedComment>
           <ownedAttribute xmi:type="uml:Property" xmi:id="__TiLotprEeyS58DCA-jigA" name="csv_1" type="_EJ1KIK9UEeyhNoRn0OlPgA" aggregation="shared" association="__ThkkNprEeyS58DCA-jigA">
             <lowerValue xmi:type="uml:LiteralInteger" xmi:id="__TiLo9prEeyS58DCA-jigA"/>
             <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="__TiLpNprEeyS58DCA-jigA" value="1"/>
@@ -242,12 +258,26 @@
           </ownedAttribute>
         </packagedElement>
         <packagedElement xmi:type="uml:Class" xmi:id="_VfqPsK9jEeyMp6YloUW0pA" name="Format_Date">
+          <ownedComment xmi:type="uml:Comment" xmi:id="_UFKK0OZ9Eey8xuBhnr3k8A">
+            <body>&lt;div>
+&lt;h1>Data Preprocessing: Date Conversion&amp;nbsp;&lt;/h1>
+&lt;/div>
+
+&lt;p>&amp;nbsp;&lt;/p>
+</body>
+          </ownedComment>
           <ownedAttribute xmi:type="uml:Property" xmi:id="_B_mJQtpsEeyS58DCA-jigA" name="csv_1" type="_EJ1KIK9UEeyhNoRn0OlPgA" aggregation="shared" association="_B_liMNpsEeyS58DCA-jigA">
             <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_B_mwUNpsEeyS58DCA-jigA"/>
             <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_B_mwUdpsEeyS58DCA-jigA" value="1"/>
           </ownedAttribute>
         </packagedElement>
         <packagedElement xmi:type="uml:Class" xmi:id="_zEajYNprEeyS58DCA-jigA" name="Encoded_Values">
+          <ownedComment xmi:type="uml:Comment" xmi:id="_mvFTUOZ9Eey8xuBhnr3k8A">
+            <body>&lt;div>
+&lt;h1>Data Pre-Processing: Label Encoding&lt;/h1>
+&lt;/div>
+</body>
+          </ownedComment>
           <ownedAttribute xmi:type="uml:Property" xmi:id="_5rMqINprEeyS58DCA-jigA" name="merge_df" type="_TH0rEK9iEeyMp6YloUW0pA" aggregation="shared" association="_5rBrANprEeyS58DCA-jigA">
             <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_5rNRMNprEeyS58DCA-jigA"/>
             <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_5rNRMdprEeyS58DCA-jigA" value="1"/>
@@ -281,6 +311,18 @@
       <packagedElement xmi:type="uml:Package" xmi:id="_kPjvcK9fEeyMp6YloUW0pA" name="04_ML_Algorithm">
         <packagedElement xmi:type="uml:Dependency" xmi:id="_udBB8K9fEeyMp6YloUW0pA" client="_kPjvcK9fEeyMp6YloUW0pA" supplier="_iNZqcK9fEeyMp6YloUW0pA"/>
         <packagedElement xmi:type="uml:Class" xmi:id="_uWGvYK9kEeyMp6YloUW0pA" name="ML_1">
+          <ownedComment xmi:type="uml:Comment" xmi:id="_76YMYOZ9Eey8xuBhnr3k8A">
+            <body>&lt;div>
+&lt;div>
+&lt;h1>Create Model&lt;/h1>
+
+&lt;p>Section where models are created&lt;/p>
+&lt;/div>
+
+&lt;h2>Random Forest Regressor&lt;/h2>
+&lt;/div>
+</body>
+          </ownedComment>
           <ownedAttribute xmi:type="uml:Property" xmi:id="_qalOMLmaEeyIM-HDIDpVnQ" name="max_depth">
             <type xmi:type="uml:DataType" href="pathmap://SysML16_LIBRARIES/SysML-Standard-Library.uml#SysML.package_packagedElement_Libraries.package_packagedElement_PrimitiveValueTypes.dataType_packagedElement_Integer"/>
             <defaultValue xmi:type="uml:LiteralInteger" xmi:id="_xQIJsLmaEeyIM-HDIDpVnQ" value="4"/>
@@ -291,12 +333,21 @@
           </ownedAttribute>
         </packagedElement>
         <packagedElement xmi:type="uml:Class" xmi:id="_aGZfYK9lEeyMp6YloUW0pA" name="ML_2">
+          <ownedComment xmi:type="uml:Comment" xmi:id="_47NskOZ9Eey8xuBhnr3k8A">
+            <body>&lt;div>
+&lt;h2>Decision Tree Regressor&lt;/h2>
+
+&lt;p>Creation of decision tree regressor&lt;/p>
+&lt;/div>
+</body>
+          </ownedComment>
           <ownedAttribute xmi:type="uml:Property" xmi:id="_Spy1sdpsEeyS58DCA-jigA" name="trainsplit" type="_7bpjsK_wEeyP_5ArodVN4A" aggregation="shared" association="_SpyOoNpsEeyS58DCA-jigA">
             <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_Spy1stpsEeyS58DCA-jigA"/>
             <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_Spy1s9psEeyS58DCA-jigA" value="1"/>
           </ownedAttribute>
         </packagedElement>
         <packagedElement xmi:type="uml:Class" xmi:id="_7bpjsK_wEeyP_5ArodVN4A" name="TrainSplit">
+          <ownedComment xmi:type="uml:Comment" xmi:id="_yD7EoOZ9Eey8xuBhnr3k8A"/>
           <ownedAttribute xmi:type="uml:Property" xmi:id="_UzH5stpsEeyS58DCA-jigA" name="merge_df" type="_TH0rEK9iEeyMp6YloUW0pA" aggregation="shared" association="_UzHSoNpsEeyS58DCA-jigA">
             <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_UzIgwNpsEeyS58DCA-jigA"/>
             <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_UzIgwdpsEeyS58DCA-jigA" value="1"/>
@@ -324,18 +375,52 @@
       <packagedElement xmi:type="uml:Package" xmi:id="_rAKgkK9fEeyMp6YloUW0pA" name="05_ML_Metrics">
         <packagedElement xmi:type="uml:Dependency" xmi:id="_vPwtgK9fEeyMp6YloUW0pA" client="_rAKgkK9fEeyMp6YloUW0pA" supplier="_kPjvcK9fEeyMp6YloUW0pA"/>
         <packagedElement xmi:type="uml:Class" xmi:id="_yVpd8K_vEeyP_5ArodVN4A" name="MAE1">
+          <ownedComment xmi:type="uml:Comment" xmi:id="_SjVWQOZ-Eey8xuBhnr3k8A">
+            <body>&lt;div>
+&lt;h1>Metrics&lt;/h1>
+
+&lt;p>Section for metrics for the used model(s)&lt;/p>
+&lt;/div>
+
+&lt;div>
+&lt;h2>Random Forest Regressor&lt;/h2>
+&lt;/div>
+
+&lt;p>&amp;nbsp;&lt;/p>
+</body>
+          </ownedComment>
           <ownedAttribute xmi:type="uml:Property" xmi:id="_e2GagtpsEeyS58DCA-jigA" name="predict_ml1" type="_0ztmYK_wEeyP_5ArodVN4A" aggregation="shared" association="_e2FzcNpsEeyS58DCA-jigA">
             <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_e2Gag9psEeyS58DCA-jigA"/>
             <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_e2GahNpsEeyS58DCA-jigA" value="1"/>
           </ownedAttribute>
         </packagedElement>
         <packagedElement xmi:type="uml:Class" xmi:id="_0ztmYK_wEeyP_5ArodVN4A" name="Predict_ML1">
+          <ownedComment xmi:type="uml:Comment" xmi:id="__e8fUOZ9Eey8xuBhnr3k8A">
+            <body>&lt;div>
+&lt;h1>Prediction&lt;/h1>
+
+&lt;p>Section where models are used to predict&lt;/p>
+&lt;/div>
+
+&lt;div>
+&lt;h2>Random&amp;nbsp;Forest Regressor&lt;/h2>
+&lt;/div>
+
+&lt;p>&amp;nbsp;&lt;/p>
+</body>
+          </ownedComment>
           <ownedAttribute xmi:type="uml:Property" xmi:id="_c0bdstpsEeyS58DCA-jigA" name="ml_1" type="_uWGvYK9kEeyMp6YloUW0pA" aggregation="shared" association="_c0a2oNpsEeyS58DCA-jigA">
             <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_c0bds9psEeyS58DCA-jigA"/>
             <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_c0bdtNpsEeyS58DCA-jigA" value="1"/>
           </ownedAttribute>
         </packagedElement>
         <packagedElement xmi:type="uml:Class" xmi:id="_b6cxUK_xEeyP_5ArodVN4A" name="Predict_ML2">
+          <ownedComment xmi:type="uml:Comment" xmi:id="_GZWssOZ-Eey8xuBhnr3k8A">
+            <body>&lt;div>
+&lt;h2>Decision Tree Regressor&lt;/h2>
+&lt;/div>
+</body>
+          </ownedComment>
           <ownedAttribute xmi:type="uml:Property" xmi:id="_eJJN49psEeyS58DCA-jigA" name="ml_2" type="_aGZfYK9lEeyMp6YloUW0pA" aggregation="shared" association="_eJJN4NpsEeyS58DCA-jigA">
             <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_eJJ08NpsEeyS58DCA-jigA"/>
             <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_eJJ08dpsEeyS58DCA-jigA" value="1"/>
@@ -360,6 +445,12 @@
           <ownedEnd xmi:type="uml:Property" xmi:id="_e2GahdpsEeyS58DCA-jigA" name="mae" type="_yVpd8K_vEeyP_5ArodVN4A" association="_e2FzcNpsEeyS58DCA-jigA"/>
         </packagedElement>
         <packagedElement xmi:type="uml:Class" xmi:id="_VO6HsNp1EeyS58DCA-jigA" name="MAE2">
+          <ownedComment xmi:type="uml:Comment" xmi:id="_WVgAUOZ-Eey8xuBhnr3k8A">
+            <body>&lt;div>
+&lt;h2>Decision Tree Regressor&lt;/h2>
+&lt;/div>
+</body>
+          </ownedComment>
           <ownedAttribute xmi:type="uml:Property" xmi:id="_YLhCwtp1EeyS58DCA-jigA" name="predict_ml2" type="_b6cxUK_xEeyP_5ArodVN4A" aggregation="shared" association="_YLgbsNp1EeyS58DCA-jigA">
             <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_YLhCw9p1EeyS58DCA-jigA"/>
             <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_YLhp0Np1EeyS58DCA-jigA" value="1"/>
@@ -388,8 +479,9 @@
           <transition xmi:type="uml:Transition" xmi:id="_WId4sK_-Eey1R5-2CjLPMg" source="_fNKo0K_9Eey1R5-2CjLPMg" target="_8n4aYK_9Eey1R5-2CjLPMg"/>
           <transition xmi:type="uml:Transition" xmi:id="_Wp5x0K_-Eey1R5-2CjLPMg" source="_8n4aYK_9Eey1R5-2CjLPMg" target="_IwX2MK_-Eey1R5-2CjLPMg"/>
           <transition xmi:type="uml:Transition" xmi:id="_XHzOwK_-Eey1R5-2CjLPMg" source="_IwX2MK_-Eey1R5-2CjLPMg" target="_9HYZ0K_9Eey1R5-2CjLPMg"/>
-          <transition xmi:type="uml:Transition" xmi:id="_YNV6gK_-Eey1R5-2CjLPMg" source="_9HYZ0K_9Eey1R5-2CjLPMg" target="_XzDyQK_-Eey1R5-2CjLPMg"/>
           <transition xmi:type="uml:Transition" xmi:id="_1jrsENp0EeyS58DCA-jigA" source="_t8kJsNp0EeyS58DCA-jigA" target="_euJKgK_9Eey1R5-2CjLPMg"/>
+          <transition xmi:type="uml:Transition" xmi:id="_ZM-zwNwKEeyjyI9eMiuerg" source="_9HYZ0K_9Eey1R5-2CjLPMg" target="_gZ5nENwCEeyjyI9eMiuerg"/>
+          <transition xmi:type="uml:Transition" xmi:id="_aE-ywNwKEeyjyI9eMiuerg" source="_gZ5nENwCEeyjyI9eMiuerg" target="_XzDyQK_-Eey1R5-2CjLPMg"/>
           <subvertex xmi:type="uml:State" xmi:id="_xC3GwK_3EeyP_5ArodVN4A" name="Load_CSV1"/>
           <subvertex xmi:type="uml:State" xmi:id="_uvq_UK_7Eey1R5-2CjLPMg" name="Load_CSV2"/>
           <subvertex xmi:type="uml:State" xmi:id="_76ZUMK_7Eey1R5-2CjLPMg" name="Convert_Date"/>
@@ -401,6 +493,7 @@
           <subvertex xmi:type="uml:State" xmi:id="_9HYZ0K_9Eey1R5-2CjLPMg" name="MAE"/>
           <subvertex xmi:type="uml:State" xmi:id="_IwX2MK_-Eey1R5-2CjLPMg" name="Predict_RandomForest"/>
           <subvertex xmi:type="uml:State" xmi:id="_t8kJsNp0EeyS58DCA-jigA" name="Encode"/>
+          <subvertex xmi:type="uml:State" xmi:id="_gZ5nENwCEeyjyI9eMiuerg" name="MAE_2"/>
         </region>
       </packagedElement>
     </packagedElement>
@@ -588,4 +681,5 @@
   <MLModel.AlgorithmWorkflow:ML_Block_Connection xmi:id="_xpBNUNp0EeyS58DCA-jigA" base_State="_t8kJsNp0EeyS58DCA-jigA" ML_Block="_41r-cNprEeyS58DCA-jigA"/>
   <Blocks:Block xmi:id="_VO9yENp1EeyS58DCA-jigA" base_Class="_VO6HsNp1EeyS58DCA-jigA"/>
   <MLModel.NotebookOutput:MeanAbsoluteError xmi:id="_Z1JTANp1EeyS58DCA-jigA" base_Class="_VO6HsNp1EeyS58DCA-jigA" Text="Second mean absolute error"/>
+  <MLModel.AlgorithmWorkflow:ML_Block_Connection xmi:id="_iuECENwCEeyjyI9eMiuerg" base_State="_gZ5nENwCEeyjyI9eMiuerg" ML_Block="_Z1JTANp1EeyS58DCA-jigA"/>
 </xmi:XMI>

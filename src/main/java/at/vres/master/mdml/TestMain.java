@@ -30,7 +30,7 @@ public class TestMain {
      * @param args Arguments for main as String array
      */
     public static void main(String[] args) {
-        testContextVariant(WORKSPACE_UPDATED_MODEL, UPDATED_STATE_MACHINE_NAME, JSON_CONFIG_PATH);
+        testContextVariant(UPDATED_TEST_MODEL, UPDATED_STATE_MACHINE_NAME, JSON_CONFIG_PATH);
     }
 
     /**
