@@ -70,16 +70,17 @@ public class TemplateHandler {
             List<String> templatesAlreadyMerged = new LinkedList<>();
             VelocityContext context = handleBlockContext(value, new LinkedList<>());
             value.getMarkdown().forEach(markdown -> {
-                sb.append(MULTILINE_COMMENT_START)
-                        .append("\n")
-                        .append(markdown)
-                        .append("\n")
-                        .append(MULTILINE_COMMENT_END).append("\n");
-                ICell markdownCell = NotebookGenerator.createPythonNotebookCell(
-                        new ArrayList<>(List.of(markdown)), CellCategory.MARKDOWN
-                );
-                cells.add(markdownCell);
-
+                if (markdown != null) {
+                    sb.append(MULTILINE_COMMENT_START)
+                            .append("\n")
+                            .append(markdown)
+                            .append("\n")
+                            .append(MULTILINE_COMMENT_END).append("\n");
+                    ICell markdownCell = NotebookGenerator.createPythonNotebookCell(
+                            new ArrayList<>(List.of(markdown)), CellCategory.MARKDOWN
+                    );
+                    cells.add(markdownCell);
+                }
             });
             mappingWrapper.constants.forEach(context::put);
             key.getAppliedStereotypes().forEach(stereo -> {
