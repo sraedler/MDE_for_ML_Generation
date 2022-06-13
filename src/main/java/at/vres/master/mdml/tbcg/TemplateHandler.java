@@ -123,8 +123,13 @@ public class TemplateHandler {
                     if (!templatesAlreadyMerged.contains(nameMapping.getTemplate())) {
                         String executeWith = nameMapping.getExecuteWith();
                         if (executeWith == null || executeWith.equals(key.getName())) {
+                            String templateString = handleTemplate(
+                                    context, templatePath + "//" + nameMapping.getTemplate()
+                            );
+                            String afterImportHandle = handleImport(templateString, importStrings);
                             try (StringWriter writer = new StringWriter()) {
-                                ve.mergeTemplate(nameMapping.getTemplate(), ENCODING, context, writer);
+                                //ve.mergeTemplate(nameMapping.getTemplate(), ENCODING, context, writer);
+                                ve.evaluate(context, writer, nameMapping.getTemplate(), afterImportHandle);
                                 templatesAlreadyMerged.add(nameMapping.getTemplate());
                                 sb.append(writer).append("\n");
                                 cells.add(NotebookGenerator.createPythonNotebookCell(
