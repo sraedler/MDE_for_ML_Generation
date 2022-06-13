@@ -27,6 +27,7 @@ public class TestMain {
 
     /**
      * Main method
+     *
      * @param args Arguments for main as String array
      */
     public static void main(String[] args) {
@@ -35,16 +36,17 @@ public class TestMain {
 
     /**
      * Helper method for testing the context variant of the ModelDrivenML framework (is the method that worked the best)
-     * @param modelPath The path to the UML file for the model
+     *
+     * @param modelPath        The path to the UML file for the model
      * @param stateMachineName The name of the state machine that represents the ML workflow
-     * @param jsonPath The path to the mapping JSON-file
+     * @param jsonPath         The path to the mapping JSON-file
      */
     public static void testContextVariant(String modelPath, String stateMachineName, String jsonPath) {
         InformationExtractor ie = new InformationExtractor(modelPath);
         Map<Class, BlockContext> contextsForStateMachine = ie.getContextsForStateMachine(stateMachineName);
         contextsForStateMachine.forEach((key, val) -> System.out.println(val.toString()));
         MappingWrapper mappingWrapper = MappingHandler.readJSONV2(jsonPath);
-        TemplateHandler th = new TemplateHandler(contextsForStateMachine, mappingWrapper, TEST_TEMPLATE_PATH);
+        TemplateHandler th = new TemplateHandler(contextsForStateMachine, mappingWrapper, TEST_TEMPLATE_PATH, ie.getModelName());
         String execute = th.execute();
         String format = ImportFormatter.format(execute);
         String format1 = EmptyLineFormatter.format(format);

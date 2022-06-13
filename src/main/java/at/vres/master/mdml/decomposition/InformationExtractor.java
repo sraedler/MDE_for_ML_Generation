@@ -42,6 +42,18 @@ public class InformationExtractor {
     }
 
     /**
+     * Getter for the name of the loaded Model
+     * @return The name of the loaded model or null if the model has not been loaded yet
+     */
+    public String getModelName() {
+        if (loadedModel != null) {
+            return loadedModel.getName();
+        } else {
+            return null;
+        }
+    }
+
+    /**
      * Initializes the EMF resources and loads the model given to the constructor
      */
     public void init() {

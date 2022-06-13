@@ -8,11 +8,30 @@ import java.util.Map;
  * Object for deserializing the configuration JSON file
  */
 public class MappingWrapper {
+    private Boolean trimEmptyLines;
     private List<String> blockedStereotypes;
     private List<String> blockedNames;
     public Map<String, StereotypeMapping> stereotypeMappings = new HashMap<>();
     public Map<String, NameMapping> nameMappings = new HashMap<>();
     public Map<String, String> constants = new HashMap<>();
+
+    /**
+     * Getter for trimEmptyLines attribute (whether empty line should be trimmed or not)
+     *
+     * @return The value of the trimEmptyLines attribute
+     */
+    public Boolean getTrimEmptyLines() {
+        return trimEmptyLines;
+    }
+
+    /**
+     * Setter for trimEmptyLines attribute (whether empty line should be trimmed or not)
+     *
+     * @param trimEmptyLines The value of the trimEmptyLines attribute to set
+     */
+    public void setTrimEmptyLines(Boolean trimEmptyLines) {
+        this.trimEmptyLines = trimEmptyLines;
+    }
 
     /**
      * Get the names of the stereotypes for which no code is to be generated

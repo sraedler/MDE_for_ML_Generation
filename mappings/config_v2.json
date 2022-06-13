@@ -1,4 +1,5 @@
 {
+  "trimEmptyLines": true,
   "blockedStereotypes": [
     "BlackBox_Storage",
     "Text_File"
@@ -128,5 +129,5 @@
       }
     }
   },
-  "nameMappings": { }
+  "nameMappings": {}
 }

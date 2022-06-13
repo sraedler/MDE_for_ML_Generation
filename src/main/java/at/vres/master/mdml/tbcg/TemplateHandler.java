@@ -8,7 +8,6 @@ import at.vres.master.mdml.model.StereotypeNamePair;
 import at.vres.master.mdml.output.generation.NotebookGenerator;
 import at.vres.master.mdml.output.notebook.CellCategory;
 import at.vres.master.mdml.output.notebook.ICell;
-import at.vres.master.mdml.output.notebook.impl.PythonCell;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.eclipse.uml2.uml.Class;
@@ -27,6 +26,7 @@ public class TemplateHandler {
     private final Map<Class, BlockContext> contexts;
     private final MappingWrapper mappingWrapper;
     private final String templatePath;
+    private final String notebookName;
     private static final String KEYWORD_OWNER = "OWNER";
     private static final String KEYWORD_SEPARATOR = "\\.";
     private static final String KEYWORD_THIS = "THIS";
@@ -50,11 +50,13 @@ public class TemplateHandler {
      * @param contexts       Map of UML-Classes and their corresponding BlockContexts
      * @param mappingWrapper The MappingWrapper extracted from the JSON-mapping file
      * @param templatePath   The path to the template directory (where the templates are stored)
+     * @param notebookName   The name the generated Notebook is supposed to have
      */
-    public TemplateHandler(Map<Class, BlockContext> contexts, MappingWrapper mappingWrapper, String templatePath) {
+    public TemplateHandler(Map<Class, BlockContext> contexts, MappingWrapper mappingWrapper, String templatePath, String notebookName) {
         this.contexts = contexts;
         this.mappingWrapper = mappingWrapper;
         this.templatePath = templatePath;
+        this.notebookName = notebookName;
     }
 
     /**
@@ -100,14 +102,16 @@ public class TemplateHandler {
                             String templateString = handleTemplate(
                                     context, templatePath + "//" + stereotypeMapping.getTemplate()
                             );
-                            String afterImportHandle = handleImport(templateString, importStrings);
+                            String afterImportHandle = handleImport(
+                                    templateString, importStrings, mappingWrapper.getTrimEmptyLines()
+                            );
                             try (StringWriter writer = new StringWriter()) {
                                 //ve.mergeTemplate(stereotypeMapping.getTemplate(), ENCODING, context, writer);
                                 ve.evaluate(context, writer, stereotypeMapping.getTemplate(), afterImportHandle);
                                 templatesAlreadyMerged.add(stereotypeMapping.getTemplate());
                                 sb.append(writer).append("\n");
                                 cells.add(NotebookGenerator.createPythonNotebookCell(
-                                        new LinkedList<>(List.of(writer.toString(), "\n")), CellCategory.CODE
+                                        new LinkedList<>(List.of(writer.toString())), CellCategory.CODE
                                 ));
                             } catch (IOException e) {
                                 e.printStackTrace();
@@ -126,7 +130,9 @@ public class TemplateHandler {
                             String templateString = handleTemplate(
                                     context, templatePath + "//" + nameMapping.getTemplate()
                             );
-                            String afterImportHandle = handleImport(templateString, importStrings);
+                            String afterImportHandle = handleImport(
+                                    templateString, importStrings, mappingWrapper.getTrimEmptyLines()
+                            );
                             try (StringWriter writer = new StringWriter()) {
                                 //ve.mergeTemplate(nameMapping.getTemplate(), ENCODING, context, writer);
                                 ve.evaluate(context, writer, nameMapping.getTemplate(), afterImportHandle);
@@ -146,16 +152,30 @@ public class TemplateHandler {
         ICell importCell = generateImportCellFromHashSet(importStrings);
         cells.add(1, importCell);
         NotebookGenerator.generateTo(
-                "transout/test.ipynb", NotebookGenerator.createDefaultPythonNotebook(cells)
+                "transout/" + notebookName + ".ipynb", NotebookGenerator.createDefaultPythonNotebook(cells)
         );
         return sb.toString();
     }
 
+    /**
+     * Helper method for generating a cell for Python imports from a HashSet
+     *
+     * @param importStrings The HashSet containing the import statements as Strings
+     * @return A PythonCell that has the import statements separated by newlines as source
+     */
     private static ICell generateImportCellFromHashSet(final HashSet<String> importStrings) {
         return NotebookGenerator.createPythonNotebookCell(List.of(String.join("\n", importStrings)), CellCategory.CODE);
     }
 
-    private static String handleImport(String mergedTemplate, HashSet<String> existingImportStrings) {
+    /**
+     * Helper Method for moving import statements into a HashSet
+     *
+     * @param mergedTemplate        The String that resulted from merging/evaluating the VelocityContext and the template
+     * @param existingImportStrings A HashSet that contains all import statements
+     * @param trimLines             Whether empty lines should be dropped
+     * @return The mergedTemplate String after all import statements have been removed
+     */
+    private static String handleImport(String mergedTemplate, HashSet<String> existingImportStrings, Boolean trimLines) {
         final StringBuilder sb = new StringBuilder();
         try (BufferedReader br = new BufferedReader(new StringReader(mergedTemplate))) {
             String line;
@@ -164,14 +184,20 @@ public class TemplateHandler {
                 if (line.contains(MULTILINE_COMMENT_START)) {
                     inMultilineComment = true;
                 }
-                if (isImporStatement(line)) {
+                if (isImportStatement(line)) {
                     if (!inMultilineComment) {
                         existingImportStrings.add(line);
                     } else {
                         existingImportStrings.add("# " + line);
                     }
                 } else {
-                    sb.append(line).append("\n");
+                    if (trimLines) {
+                        if (!line.isEmpty() && !line.isBlank()) {
+                            sb.append(line).append("\n");
+                        }
+                    } else {
+                        sb.append(line).append("\n");
+                    }
                 }
                 if (line.contains(MULTILINE_COMMENT_END)) {
                     inMultilineComment = false;
@@ -183,8 +209,15 @@ public class TemplateHandler {
         return sb.toString();
     }
 
-    private static Boolean isImporStatement(String line) {
-        return line.contains(IMPORT_STATEMENT) && !line.contains(SINGLE_LINE_COMMENT);
+    /**
+     * Helper method to check whether a line is an import statement
+     * (Currently only checks whether the word "import" is contained in the line)
+     *
+     * @param line The line to check for import statements
+     * @return True if the line is an import statement, false otherwise
+     */
+    private static Boolean isImportStatement(String line) {
+        return line.contains(IMPORT_STATEMENT);
     }
 
     /**
