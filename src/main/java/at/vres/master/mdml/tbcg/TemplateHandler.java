@@ -42,7 +42,6 @@ public class TemplateHandler {
     private static final String MULTILINE_COMMENT_START = "\"\"\"";
     private static final String MULTILINE_COMMENT_END = "\"\"\"";
     private static final String IMPORT_STATEMENT = "import";
-    private static final String SINGLE_LINE_COMMENT = "#";
 
     /**
      * Constructor for TemplateHandler
@@ -183,6 +182,8 @@ public class TemplateHandler {
             while ((line = br.readLine()) != null) {
                 if (line.contains(MULTILINE_COMMENT_START)) {
                     inMultilineComment = true;
+                } else if (line.contains(MULTILINE_COMMENT_END)) {
+                    inMultilineComment = false;
                 }
                 if (isImportStatement(line)) {
                     if (!inMultilineComment) {
@@ -198,9 +199,6 @@ public class TemplateHandler {
                     } else {
                         sb.append(line).append("\n");
                     }
-                }
-                if (line.contains(MULTILINE_COMMENT_END)) {
-                    inMultilineComment = false;
                 }
             }
         } catch (IOException e) {
