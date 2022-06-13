@@ -8,6 +8,7 @@ import at.vres.master.mdml.model.StereotypeNamePair;
 import at.vres.master.mdml.output.generation.NotebookGenerator;
 import at.vres.master.mdml.output.notebook.CellCategory;
 import at.vres.master.mdml.output.notebook.ICell;
+import at.vres.master.mdml.output.notebook.impl.PythonCell;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.eclipse.uml2.uml.Class;
@@ -40,6 +41,8 @@ public class TemplateHandler {
     private static final String END_TEMPLATE_VARIABLE = "}";
     private static final String MULTILINE_COMMENT_START = "\"\"\"";
     private static final String MULTILINE_COMMENT_END = "\"\"\"";
+    private static final String IMPORT_STATEMENT = "import";
+    private static final String SINGLE_LINE_COMMENT = "#";
 
     /**
      * Constructor for TemplateHandler
@@ -61,6 +64,11 @@ public class TemplateHandler {
      */
     public String execute() {
         List<ICell> cells = new LinkedList<>();
+        ICell importMarkdown = NotebookGenerator.createPythonNotebookCell(
+                new ArrayList<>(List.of("# Import section\nImports for notebook")), CellCategory.MARKDOWN
+        );
+        cells.add(importMarkdown);
+        HashSet<String> importStrings = new HashSet<>();
         VelocityEngine ve = new VelocityEngine();
         Properties p = new Properties();
         final StringBuilder sb = new StringBuilder();
@@ -92,9 +100,10 @@ public class TemplateHandler {
                             String templateString = handleTemplate(
                                     context, templatePath + "//" + stereotypeMapping.getTemplate()
                             );
+                            String afterImportHandle = handleImport(templateString, importStrings);
                             try (StringWriter writer = new StringWriter()) {
                                 //ve.mergeTemplate(stereotypeMapping.getTemplate(), ENCODING, context, writer);
-                                ve.evaluate(context, writer, stereotypeMapping.getTemplate(), templateString);
+                                ve.evaluate(context, writer, stereotypeMapping.getTemplate(), afterImportHandle);
                                 templatesAlreadyMerged.add(stereotypeMapping.getTemplate());
                                 sb.append(writer).append("\n");
                                 cells.add(NotebookGenerator.createPythonNotebookCell(
@@ -129,10 +138,48 @@ public class TemplateHandler {
                 }
             }
         });
+        ICell importCell = generateImportCellFromHashSet(importStrings);
+        cells.add(1, importCell);
         NotebookGenerator.generateTo(
                 "transout/test.ipynb", NotebookGenerator.createDefaultPythonNotebook(cells)
         );
         return sb.toString();
+    }
+
+    private static ICell generateImportCellFromHashSet(final HashSet<String> importStrings) {
+        return NotebookGenerator.createPythonNotebookCell(List.of(String.join("\n", importStrings)), CellCategory.CODE);
+    }
+
+    private static String handleImport(String mergedTemplate, HashSet<String> existingImportStrings) {
+        final StringBuilder sb = new StringBuilder();
+        try (BufferedReader br = new BufferedReader(new StringReader(mergedTemplate))) {
+            String line;
+            boolean inMultilineComment = false;
+            while ((line = br.readLine()) != null) {
+                if (line.contains(MULTILINE_COMMENT_START)) {
+                    inMultilineComment = true;
+                }
+                if (isImporStatement(line)) {
+                    if (!inMultilineComment) {
+                        existingImportStrings.add(line);
+                    } else {
+                        existingImportStrings.add("# " + line);
+                    }
+                } else {
+                    sb.append(line).append("\n");
+                }
+                if (line.contains(MULTILINE_COMMENT_END)) {
+                    inMultilineComment = false;
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return sb.toString();
+    }
+
+    private static Boolean isImporStatement(String line) {
+        return line.contains(IMPORT_STATEMENT) && !line.contains(SINGLE_LINE_COMMENT);
     }
 
     /**
