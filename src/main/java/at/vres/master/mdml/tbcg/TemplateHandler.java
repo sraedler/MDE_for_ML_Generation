@@ -92,57 +92,56 @@ public class TemplateHandler {
                 }
             });
             mappingWrapper.constants.forEach(context::put);
+            NameMapping nameMapping = mappingWrapper.getNameMappings().get(key.getName());
             key.getAppliedStereotypes().forEach(stereo -> {
                 StereotypeMapping stereotypeMapping = mappingWrapper.getStereotypeMappings().get(stereo.getName());
                 if (stereotypeMapping != null) {
-                    if (!mappingWrapper.getBlockedStereotypes().contains(stereo.getName())
-                            && !mappingWrapper.getBlockedNames().contains(key.getName())) {
-                        if (!templatesAlreadyMerged.contains(stereotypeMapping.getTemplate())) {
-                            String templateString = handleTemplate(
-                                    context, templatePath + "//" + stereotypeMapping.getTemplate()
-                            );
-                            String afterImportHandle = handleImport(
-                                    templateString, importStrings, mappingWrapper.getTrimEmptyLines()
-                            );
-                            try (StringWriter writer = new StringWriter()) {
-                                //ve.mergeTemplate(stereotypeMapping.getTemplate(), ENCODING, context, writer);
-                                ve.evaluate(context, writer, stereotypeMapping.getTemplate(), afterImportHandle);
-                                templatesAlreadyMerged.add(stereotypeMapping.getTemplate());
-                                sb.append(writer).append("\n");
-                                cells.add(NotebookGenerator.createPythonNotebookCell(
-                                        new LinkedList<>(List.of(writer.toString())), CellCategory.CODE
-                                ));
-                            } catch (IOException e) {
-                                e.printStackTrace();
+                    if (nameMapping == null) {
+                        if (!mappingWrapper.getBlockedStereotypes().contains(stereo.getName())
+                                && !mappingWrapper.getBlockedNames().contains(key.getName())) {
+                            if (!templatesAlreadyMerged.contains(stereotypeMapping.getTemplate())) {
+                                String templateString = handleTemplate(
+                                        context, templatePath + "//" + stereotypeMapping.getTemplate()
+                                );
+                                String afterImportHandle = handleImport(
+                                        templateString, importStrings, mappingWrapper.getTrimEmptyLines()
+                                );
+                                try (StringWriter writer = new StringWriter()) {
+                                    //ve.mergeTemplate(stereotypeMapping.getTemplate(), ENCODING, context, writer);
+                                    ve.evaluate(context, writer, stereotypeMapping.getTemplate(), afterImportHandle);
+                                    templatesAlreadyMerged.add(stereotypeMapping.getTemplate());
+                                    sb.append(writer).append("\n");
+                                    cells.add(NotebookGenerator.createPythonNotebookCell(
+                                            new LinkedList<>(List.of(writer.toString())), CellCategory.CODE
+                                    ));
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
                             }
                         }
                     }
                 }
             });
 
-            NameMapping nameMapping = mappingWrapper.getNameMappings().get(key.getName());
             if (nameMapping != null) {
                 if (!mappingWrapper.getBlockedNames().contains(key.getName())) {
                     if (!templatesAlreadyMerged.contains(nameMapping.getTemplate())) {
-                        String executeWith = nameMapping.getExecuteWith();
-                        if (executeWith == null || executeWith.equals(key.getName())) {
-                            String templateString = handleTemplate(
-                                    context, templatePath + "//" + nameMapping.getTemplate()
-                            );
-                            String afterImportHandle = handleImport(
-                                    templateString, importStrings, mappingWrapper.getTrimEmptyLines()
-                            );
-                            try (StringWriter writer = new StringWriter()) {
-                                //ve.mergeTemplate(nameMapping.getTemplate(), ENCODING, context, writer);
-                                ve.evaluate(context, writer, nameMapping.getTemplate(), afterImportHandle);
-                                templatesAlreadyMerged.add(nameMapping.getTemplate());
-                                sb.append(writer).append("\n");
-                                cells.add(NotebookGenerator.createPythonNotebookCell(
-                                        new LinkedList<>(List.of(writer.toString(), "\n")), CellCategory.CODE
-                                ));
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
+                        String templateString = handleTemplate(
+                                context, templatePath + "//" + nameMapping.getTemplate()
+                        );
+                        String afterImportHandle = handleImport(
+                                templateString, importStrings, mappingWrapper.getTrimEmptyLines()
+                        );
+                        try (StringWriter writer = new StringWriter()) {
+                            //ve.mergeTemplate(nameMapping.getTemplate(), ENCODING, context, writer);
+                            ve.evaluate(context, writer, nameMapping.getTemplate(), afterImportHandle);
+                            templatesAlreadyMerged.add(nameMapping.getTemplate());
+                            sb.append(writer).append("\n");
+                            cells.add(NotebookGenerator.createPythonNotebookCell(
+                                    new LinkedList<>(List.of(writer.toString(), "\n")), CellCategory.CODE
+                            ));
+                        } catch (IOException e) {
+                            e.printStackTrace();
                         }
                     }
                 }

@@ -129,5 +129,18 @@
       }
     }
   },
-  "nameMappings": {}
+  "nameMappings": {
+    "CSV_1": {
+      "template": "name_csv.vm",
+      "properties": {
+        "VariableName": "varname",
+        "Path": "p",
+        "Encoding": "e",
+        "Delimiter": "d",
+        "SkipNrOfLines": "s",
+        "GenerateTimestamp": "GenerateTimestamp"
+      },
+      "modelCommands": {}
+    }
+  }
 }

@@ -1,5 +1,7 @@
 package at.vres.master.mdml.mapping;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Map;
 
 /**
@@ -7,7 +9,6 @@ import java.util.Map;
  */
 public class NameMapping implements IMapping {
     private String template;
-    private String executeWith;
     private Map<String, String> properties;
     private Map<String, String> modelCommands;
 
@@ -29,24 +30,6 @@ public class NameMapping implements IMapping {
     @Override
     public void setProperties(Map<String, String> properties) {
         this.properties = properties;
-    }
-
-    /**
-     * Get the name of the Block this mapping is to be executed with (for correctly timing the generation)
-     *
-     * @return The name of the Block this mapping is to be executed with
-     */
-    public String getExecuteWith() {
-        return executeWith;
-    }
-
-    /**
-     * Set the name of the Block this mapping is to be executed with (for correctly timing the generation)
-     *
-     * @param executeWith Tha name of the Block this mapping is to be executed with
-     */
-    public void setExecuteWith(String executeWith) {
-        this.executeWith = executeWith;
     }
 
     @Override

@@ -1,0 +1,5 @@
+import pandas as pd
+path = "${p}"
+separator = "${d}"
+enc = "${e}"
+${varname} = pd.read_csv(path, sep=separator, encoding=enc, skiprows=${s})
