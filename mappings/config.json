@@ -46,7 +46,7 @@
       "modelCommands": {}
     },
     "CSV": {
-      "template": "csv_load_v2.vm",
+      "template": "csv_load.vm",
       "properties": {
         "Delimiter": "delim",
         "SkipNrOfLines": "skip",
@@ -55,7 +55,7 @@
       "modelCommands": {}
     },
     "DateConversion": {
-      "template": "date_conversion_v2.vm",
+      "template": "date_conversion.vm",
       "properties": {
         "Output_Format": "new_format"
       },
@@ -73,7 +73,7 @@
       }
     },
     "DataFrame_Merge": {
-      "template": "dataframe_merge_v2.vm",
+      "template": "dataframe_merge.vm",
       "properties": {
         "MergeOn[0].OWNER.VariableName": "one",
         "MergeOn[1].OWNER.VariableName": "two",
@@ -86,7 +86,7 @@
       }
     },
     "Train_Test_Split": {
-      "template": "train_test_split_v2.vm",
+      "template": "train_test_split.vm",
       "properties": {
         "Features_X": "feat_x",
         "Prediction_Y": "pred_y",
@@ -97,7 +97,7 @@
       }
     },
     "Regression": {
-      "template": "regression_v2.vm",
+      "template": "regression.vm",
       "properties": {
         "Algorithm": "algo"
       },
@@ -107,7 +107,7 @@
       }
     },
     "Predict": {
-      "template": "predict_v2.vm",
+      "template": "predict.vm",
       "properties": {},
       "modelCommands": {
         "CONNECTED.Regression.NAME": "pred_name",
@@ -122,7 +122,7 @@
       "modelCommands": {}
     },
     "MeanAbsoluteError": {
-      "template": "mae_v2.vm",
+      "template": "mae.vm",
       "properties": {},
       "modelCommands": {
         "CONNECTED.Predict.NAME": "pred_name"
