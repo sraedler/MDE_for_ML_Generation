@@ -1,7 +1,5 @@
 package at.vres.master.mdml.mapping;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import java.util.Map;
 
 /**

@@ -43,6 +43,7 @@ public class InformationExtractor {
 
     /**
      * Getter for the name of the loaded Model
+     *
      * @return The name of the loaded model or null if the model has not been loaded yet
      */
     public String getModelName() {
@@ -150,6 +151,7 @@ public class InformationExtractor {
                                     .ifPresent(stereotype ->
                                             contextStereotypeHandling(stereo, bc, (Element) o, prefix + att.getName() + PROPNAME_QUALIFIED_NAME_SEPARATOR)
                                     );
+                            // TODO make generic
                         } else if (o instanceof ML_Attribute_Input) {
                             final List<String> qualNames = new LinkedList<>();
                             ((List<?>) value).forEach(mli -> {
@@ -176,6 +178,7 @@ public class InformationExtractor {
                                     contextStereotypeHandling(stereo, bc, (Element) value,
                                             prefix + att.getName() + PROPNAME_QUALIFIED_NAME_SEPARATOR)
                             );
+                    // TODO make generic
                 } else if (value instanceof ML_Attribute_Input) {
                     contextPropertyHandling(((ML_Attribute_Input) value).getBase_Property(), bc);
                     bc.getPropertyMap().put(prefix + att.getQualifiedName(),
@@ -273,6 +276,7 @@ public class InformationExtractor {
      * @param orderedBlocks The list to add the connected UML Class to
      */
     public static void followVertexForBlock(final Vertex state, final int depth, List<Class> orderedBlocks) {
+        // TODO: make generic
         Stereotype stereotype = state.getAppliedStereotypes().stream()
                 .filter(s -> s.getName().equals(CONNECTION_STEREOTYPE_NAME)).findAny().orElse(null);
         if (stereotype != null) {
