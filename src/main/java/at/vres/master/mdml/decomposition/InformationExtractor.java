@@ -11,6 +11,7 @@ import org.eclipse.uml2.uml.*;
 import org.eclipse.uml2.uml.Class;
 
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -22,6 +23,7 @@ public class InformationExtractor {
     private static final String ENTRY_POINT = "entryPoint";
     private static final String CONNECTION_STEREOTYPE_NAME = "ML_Block_Connection";
     private static final String ATTRIBUTE_STEREOTYPE_NAME = "ML_Attribute_Input";
+    private static final String STATE_MACHINE_STEREOTYPE_ATTRIBUTE = "ML_Block";
     private static final String PROPNAME_QUALIFIED_NAME_SEPARATOR = "__";
     private static final List<String> stereotypesToIgnore = new LinkedList<>(List.of("Block"));
     private final Map<Class, BlockContext> existingContexts;
@@ -261,7 +263,17 @@ public class InformationExtractor {
                     .filter(e -> e.getKind().getLiteral().equals(ENTRY_POINT)).
                     findFirst().ifPresent(
                             ps -> ps.getOutgoings().forEach(
-                                    outgoing -> followVertexForBlock(outgoing.getTarget(), 0, orderedBlocks)
+                                    outgoing -> vertexFollowGeneric(outgoing.getTarget(),
+                                            0,
+                                            orderedBlocks,
+                                            CONNECTION_STEREOTYPE_NAME,
+                                            STATE_MACHINE_STEREOTYPE_ATTRIBUTE,
+                                            object -> {
+                                                if (object instanceof ML) {
+                                                    return ((ML) object).getBase_Class();
+                                                }
+                                                return null;
+                                            })
                             )
                     );
         }
@@ -269,24 +281,29 @@ public class InformationExtractor {
     }
 
     /**
-     * Helper method that follows the outgoing connections of a vertex and adds the UML classes connected to the states via the ML metamodel to a list recursively
+     * Generic follow method that will execute a callable that extracts the connected Class
+     * from a vertex for the passed vertex and recursively to every outgoing vertex
      *
-     * @param state         The current state in the state diagram
-     * @param depth         How many states were visited before this one
-     * @param orderedBlocks The list to add the connected UML Class to
+     * @param state               The state to get the Class from
+     * @param depth               How deep the recursion currently is
+     * @param orderedBlocks       The list of Blocks(Classes) to add the extracted Class to
+     * @param stereotypeName      The name of the Stereotype to get the Class from
+     * @param stereotypeAttribute The attribute of the Stereotype to get the Class from
+     * @param callable            The callable to execute on the value of the Stereotype attribute to get the Class
      */
-    public static void followVertexForBlock(final Vertex state, final int depth, List<Class> orderedBlocks) {
-        // TODO: make generic
+    private static void vertexFollowGeneric(final Vertex state, final int depth,
+                                            List<Class> orderedBlocks, final String stereotypeName,
+                                            final String stereotypeAttribute, final Function<Object, Class> callable) {
         Stereotype stereotype = state.getAppliedStereotypes().stream()
-                .filter(s -> s.getName().equals(CONNECTION_STEREOTYPE_NAME)).findAny().orElse(null);
+                .filter(s -> s.getName().equals(stereotypeName)).findAny().orElse(null);
         if (stereotype != null) {
-            Object ml_block = state.getValue(stereotype, "ML_Block");
-            if (ml_block instanceof ML) {
-                Class clazz = ((ML) ml_block).getBase_Class();
-                orderedBlocks.add(clazz);
-            }
+            Object obj = state.getValue(stereotype, stereotypeAttribute);
+            Class clazz = callable.apply(obj);
+            if (clazz != null) orderedBlocks.add(clazz);
         }
-        state.getOutgoings().forEach(out -> followVertexForBlock(out.getTarget(), depth + 1, orderedBlocks));
+        state.getOutgoings().forEach(out -> vertexFollowGeneric(
+                out.getTarget(), depth + 1, orderedBlocks, stereotypeName, stereotypeAttribute, callable)
+        );
     }
 
     /**
