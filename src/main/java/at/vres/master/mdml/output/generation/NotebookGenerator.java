@@ -4,9 +4,7 @@ import at.vres.master.mdml.output.notebook.CellCategory;
 import at.vres.master.mdml.output.notebook.ICell;
 import at.vres.master.mdml.output.notebook.IMetadata;
 import at.vres.master.mdml.output.notebook.INotebook;
-import at.vres.master.mdml.output.notebook.impl.PythonCell;
-import at.vres.master.mdml.output.notebook.impl.PythonMetadata;
-import at.vres.master.mdml.output.notebook.impl.PythonNotebook;
+import at.vres.master.mdml.output.notebook.impl.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;
@@ -87,9 +85,17 @@ public class NotebookGenerator {
      * @return The created cell
      */
     public static ICell createPythonNotebookCell(List<String> source, CellCategory cellType) {
-        ICell cell = new PythonCell();
-        cell.setCell_type(cellType);
-        cell.addAllToSource(source);
-        return cell;
+        if (cellType.equals(CellCategory.CODE)) {
+            ICell cell = new PythonCodeCell();
+            cell.setCell_type(cellType);
+            cell.addAllToSource(source);
+            return cell;
+        } else if (cellType.equals(CellCategory.MARKDOWN)) {
+            ICell cell = new PythonMarkdownCell();
+            cell.setCell_type(cellType);
+            cell.addAllToSource(source);
+            return cell;
+        }
+        return null;
     }
 }

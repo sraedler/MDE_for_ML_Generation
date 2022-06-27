@@ -6,15 +6,14 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.*;
 
-/**
- * A specific implementation of the ICell interface for Python notebooks
- */
-public class PythonCell implements ICell {
+
+public class PythonMarkdownCell implements ICell{
 
     private String id = UUID.randomUUID().toString();
     private CellCategory cell_type;
     private Map<String, Object> metadata = new HashMap<>();
     private List<String> source = new LinkedList<>();
+
     @JsonIgnore
     private final List<String> variables = new LinkedList<>();
     @JsonIgnore
