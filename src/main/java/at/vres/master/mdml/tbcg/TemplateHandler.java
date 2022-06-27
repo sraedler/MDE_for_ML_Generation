@@ -178,6 +178,7 @@ public class TemplateHandler {
         try (BufferedReader br = new BufferedReader(new StringReader(mergedTemplate))) {
             String line;
             boolean inMultilineComment = false;
+            boolean isFirst = true;
             while ((line = br.readLine()) != null) {
                 if (line.contains(MULTILINE_COMMENT_START)) {
                     inMultilineComment = true;
@@ -193,10 +194,20 @@ public class TemplateHandler {
                 } else {
                     if (trimLines) {
                         if (!line.isEmpty() && !line.isBlank()) {
-                            sb.append(line).append("\n");
+                            if (isFirst) {
+                                sb.append(line);
+                                isFirst = false;
+                            } else {
+                                sb.append("\n").append(line);
+                            }
                         }
                     } else {
-                        sb.append(line).append("\n");
+                        if (isFirst) {
+                            sb.append(line);
+                            isFirst = false;
+                        } else {
+                            sb.append("\n").append(line);
+                        }
                     }
                 }
             }
