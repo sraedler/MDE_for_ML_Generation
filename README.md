@@ -1,22 +1,23 @@
-# Model-driven Machine Learning
-### with Template-based code generation and mapping configuration
-
-#### A Master thesis Proof-of-concept implementation
-
-# General information
+# Model-Driven Engineering (MDE) approach to generate Machine Learning Code based on SysML and Mapping Configuration
+## General information
 This repository contains code for the Proof-of-concept (PoC) implementation done for the Master of Science in Information 
 and Software Engineering at the [University of Applied Sciences Dornbirn](https://www.fhv.at/en/).
 
-This implementation was done at [V-Research](https://www.v-research.eu/).
+This work was supervised and conceptually elaborated at the [Chair of Information Systems and Business Process Management (i17), Department of Computer Science, Technical University of Munich](https://www.cs.cit.tum.de/bpm/chair/)
 
-# Description
-The
+## Description
+This Poc implementation is based on a recently published approach to machine learning modeling with SysML at INDIN 2022 (ref. follows as soon as proceedings are online).
 
 The goals of the PoC implementation are as follows:
- - Make use of a custom SysML profile for Machine Learning (ML) to model ML processes to execute on a system or data of a system
- - Develop a metamodel and model transformations to extract information from the SysML model to the intermediate model conforming to said metamodel
- - Generate executable ML code from a SysML model using the intermediate model and Template-based code generation (TBCG)
- - Write the templates for the stereotypes from the custom SysML profile
- - Offer a mapping configuration mechanism that allows the user to map SysML elements to template variables
+ - Use of an existing SysML profile for machine learning (ML) modeling, which can be used to describe data, interfaces, ML processing, and to define ML algorithms
+ - Develop a model transformation to extract information from the SysML model into the intermediate model. The intermediate model must be defined as a metamodel beforehand
+ - Generating executable ML code from a SysML model using the intermediate model and template-based code generation
+ - Definition of ML templates for specific stereotypes from the user-defined SysML profile, which are used as the basis for generation
+ - Provide a mapping configuration mechanism that allows the user to map SysML elements to template variables and exchange them dynamically
+ 
+ 
+ ## Cite this work
+ 
+TODO right after publication is done.
 
-The findings will then be transferred to the Master thesis.
+[Contact Us](mailto:simon.raedler@tum.de)
