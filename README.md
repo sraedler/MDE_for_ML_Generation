@@ -6,7 +6,7 @@ and Software Engineering at the [University of Applied Sciences Dornbirn](https:
 This work was supervised and conceptually elaborated at the [Chair of Information Systems and Business Process Management (i17), Department of Computer Science, Technical University of Munich](https://www.cs.cit.tum.de/bpm/chair/)
 
 ## Description
-This Poc implementation is based on a recently published approach to machine learning modeling with SysML at INDIN 2022 (ref. follows as soon as proceedings are online).
+This PoC implementation is based on a recently published approach to machine learning modeling with SysML at INDIN 2022 (Radler, S., Rigger, E., Mangler, J., Rinderle-Ma, S., 2022. Integration of Machine Learning Task Definition in Model-Based Systems Engineering using SysML, in: 2022 IEEE 20th International Conference on Industrial Informatics (INDIN). Presented at the 2022 IEEE 20th International Conference on Industrial Informatics (INDIN), IEEE, Perth, Australia, pp. 546–551. https://doi.org/10.1109/INDIN51773.2022.9976107).
 
 The goals of the PoC implementation are as follows:
  - Use of an existing SysML profile for machine learning (ML) modeling, which can be used to describe data, interfaces, ML processing, and to define ML algorithms
@@ -18,6 +18,6 @@ The goals of the PoC implementation are as follows:
  
  ## Cite this work
  
-TODO right after publication is done.
+MODELS 2023 TODO right after publication is done.
 
 [Contact Us](mailto:simon.raedler@tum.de)
