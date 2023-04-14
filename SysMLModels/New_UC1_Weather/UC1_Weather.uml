@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xmi:XMI xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Blocks="http://www.eclipse.org/papyrus/sysml/1.6/SysML/Blocks" xmlns:MLModel.AlgorithmWorkflow="http:///MLModel/AlgorithmWorkflow.ecore" xmlns:MLModel.Algorithms="http:///MLModel/Algorithms.ecore" xmlns:MLModel.Attributes="http:///MLModel/Attributes.ecore" xmlns:MLModel.DataStorage="http:///MLModel/DataStorage.ecore" xmlns:MLModel.NotebookOutput="http:///MLModel/NotebookOutput.ecore" xmlns:MLModel.PreProcessing="http:///MLModel/PreProcessing.ecore" xmlns:PortsAndFlows="http://www.eclipse.org/papyrus/sysml/1.6/SysML/PortsAndFlows" xmlns:Requirements="http://www.eclipse.org/papyrus/sysml/1.6/SysML/Requirements" xmlns:Variations="http:///schemas/Variations/_LlA6YK81Eey8G6m4MAbk9g/9" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xsi:schemaLocation="http://www.eclipse.org/papyrus/sysml/1.6/SysML/Blocks http://www.eclipse.org/papyrus/sysml/1.6/SysML#//blocks http:///MLModel/AlgorithmWorkflow.ecore /ML_Modelling/ML/ML.profile.uml#_iZNmFNp1EeyS58DCA-jigA http:///MLModel/Algorithms.ecore /ML_Modelling/ML/ML.profile.uml#_iZM-xtp1EeyS58DCA-jigA http:///MLModel/Attributes.ecore /ML_Modelling/ML/ML.profile.uml#_iZM-_9p1EeyS58DCA-jigA http:///MLModel/DataStorage.ecore /ML_Modelling/ML/ML.profile.uml#_iZM_fdp1EeyS58DCA-jigA http:///MLModel/NotebookOutput.ecore /ML_Modelling/ML/ML.profile.uml#_iZNl2Np1EeyS58DCA-jigA http:///MLModel/PreProcessing.ecore /ML_Modelling/ML/ML.profile.uml#_iZM_O9p1EeyS58DCA-jigA http://www.eclipse.org/papyrus/sysml/1.6/SysML/PortsAndFlows http://www.eclipse.org/papyrus/sysml/1.6/SysML#//portsandflows http://www.eclipse.org/papyrus/sysml/1.6/SysML/Requirements http://www.eclipse.org/papyrus/sysml/1.6/SysML#//requirements http:///schemas/Variations/_LlA6YK81Eey8G6m4MAbk9g/9 ../ML_Modelling/Variations/Variations.profile.uml">
+<xmi:XMI xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Blocks="http://www.eclipse.org/papyrus/sysml/1.6/SysML/Blocks" xmlns:MLModel.AlgorithmWorkflow="http:///MLModel/AlgorithmWorkflow.ecore" xmlns:MLModel.Algorithms="http:///MLModel/Algorithms.ecore" xmlns:MLModel.Attributes="http:///MLModel/Attributes.ecore" xmlns:MLModel.DataStorage="http:///MLModel/DataStorage.ecore" xmlns:MLModel.NotebookOutput="http:///MLModel/NotebookOutput.ecore" xmlns:MLModel.PreProcessing="http:///MLModel/PreProcessing.ecore" xmlns:PortsAndFlows="http://www.eclipse.org/papyrus/sysml/1.6/SysML/PortsAndFlows" xmlns:Requirements="http://www.eclipse.org/papyrus/sysml/1.6/SysML/Requirements" xmlns:Variations="http:///schemas/Variations/_LlA6YK81Eey8G6m4MAbk9g/9" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xsi:schemaLocation="http://www.eclipse.org/papyrus/sysml/1.6/SysML/Blocks http://www.eclipse.org/papyrus/sysml/1.6/SysML#//blocks http:///MLModel/AlgorithmWorkflow.ecore /ML_Modelling/ML/ML.profile.uml#_b8tnDrK8Ee2EQbZRkr6AGA http:///MLModel/Algorithms.ecore /ML_Modelling/ML/ML.profile.uml#_b8tls7K8Ee2EQbZRkr6AGA http:///MLModel/Attributes.ecore /ML_Modelling/ML/ML.profile.uml#_b8tl97K8Ee2EQbZRkr6AGA http:///MLModel/DataStorage.ecore /ML_Modelling/ML/ML.profile.uml#_b8tmiLK8Ee2EQbZRkr6AGA http:///MLModel/NotebookOutput.ecore /ML_Modelling/ML/ML.profile.uml#_b8tmzbK8Ee2EQbZRkr6AGA http:///MLModel/PreProcessing.ecore /ML_Modelling/ML/ML.profile.uml#_b8tmMbK8Ee2EQbZRkr6AGA http://www.eclipse.org/papyrus/sysml/1.6/SysML/PortsAndFlows http://www.eclipse.org/papyrus/sysml/1.6/SysML#//portsandflows http://www.eclipse.org/papyrus/sysml/1.6/SysML/Requirements http://www.eclipse.org/papyrus/sysml/1.6/SysML#//requirements http:///schemas/Variations/_LlA6YK81Eey8G6m4MAbk9g/9 ../ML_Modelling/Variations/Variations.profile.uml#_LlFL0K81Eey8G6m4MAbk9g">
   <uml:Model xmi:id="_xXes8K8oEeyY5NKIBFQ1SA" name="UC1_Weather">
     <packageImport xmi:type="uml:PackageImport" xmi:id="_xaYP8q8oEeyY5NKIBFQ1SA">
       <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#_0"/>
@@ -558,15 +558,15 @@
       <appliedProfile xmi:type="uml:Profile" href="pathmap://UML_PROFILES/Standard.profile.uml#_0"/>
     </profileApplication>
     <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_xc7NoK8oEeyY5NKIBFQ1SA">
-      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_vfGeANp1EeyS58DCA-jigA" source="PapyrusVersion">
-        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_vfGeAdp1EeyS58DCA-jigA" key="Version" value="0.0.34"/>
-        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_vfGeAtp1EeyS58DCA-jigA" key="Comment" value=""/>
-        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_vfGeA9p1EeyS58DCA-jigA" key="Copyright" value=""/>
-        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_vfGeBNp1EeyS58DCA-jigA" key="Date" value="2022-05-23"/>
-        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_vfGeBdp1EeyS58DCA-jigA" key="Author" value=""/>
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_bdsTENqrEe25K5DFZjr5OQ" source="PapyrusVersion">
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_bdsTEdqrEe25K5DFZjr5OQ" key="Version" value="0.0.48"/>
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_bdsTEtqrEe25K5DFZjr5OQ" key="Comment" value=""/>
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_bdsTE9qrEe25K5DFZjr5OQ" key="Copyright" value=""/>
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_bdsTFNqrEe25K5DFZjr5OQ" key="Date" value="2023-02-22"/>
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_bdsTFdqrEe25K5DFZjr5OQ" key="Author" value=""/>
       </eAnnotations>
       <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_xc7Noa8oEeyY5NKIBFQ1SA" source="http://www.eclipse.org/uml2/2.0.0/UML">
-        <references xmi:type="ecore:EPackage" href="/ML_Modelling/ML/ML.profile.uml#_iZM-wNp1EeyS58DCA-jigA"/>
+        <references xmi:type="ecore:EPackage" href="/ML_Modelling/ML/ML.profile.uml#_b8tlsLK8Ee2EQbZRkr6AGA"/>
       </eAnnotations>
       <appliedProfile xmi:type="uml:Profile" href="/ML_Modelling/ML/ML.profile.uml#_UIy-AGmUEeyUs7Tj71US2A"/>
     </profileApplication>
@@ -622,7 +622,7 @@
   <Blocks:NestedConnectorEnd xmi:id="_8F_fQK9CEey8G6m4MAbk9g" base_Element="_8F-RIK9CEey8G6m4MAbk9g" propertyPath="_uA8Hkq8rEeyYFZ2tHC7C7A" base_ConnectorEnd="_8F-RIK9CEey8G6m4MAbk9g"/>
   <Blocks:NestedConnectorEnd xmi:id="_8GAGUK9CEey8G6m4MAbk9g" base_Element="_8F-4MK9CEey8G6m4MAbk9g" propertyPath="_v5b6QK8rEeyYFZ2tHC7C7A" base_ConnectorEnd="_8F-4MK9CEey8G6m4MAbk9g"/>
   <Blocks:Block xmi:id="_QNg04K9IEey8G6m4MAbk9g" base_Class="_QNeYoK9IEey8G6m4MAbk9g"/>
-  <MLModel.Attributes:Datetime xmi:id="_qFMIEK9JEeyhNoRn0OlPgA" MappedToName="" base_Property="_mFiREK9IEey8G6m4MAbk9g" DatetimeFormat="%d-%m-%Y"/>
+  <MLModel.Attributes:Datetime xmi:id="_qFMIEK9JEeyhNoRn0OlPgA" base_Property="_mFiREK9IEey8G6m4MAbk9g" DatetimeFormat="%d-%m-%Y"/>
   <MLModel.Attributes:Datetime xmi:id="_s0_9QK9JEeyhNoRn0OlPgA" base_Property="_mxOSYK9IEey8G6m4MAbk9g" DatetimeFormat="%Y-%m-d"/>
   <MLModel.Attributes:Float xmi:id="_9xCnoK9JEeyhNoRn0OlPgA" base_Property="_nEt2IK9IEey8G6m4MAbk9g"/>
   <MLModel.Attributes:Float xmi:id="_-gknIK9JEeyhNoRn0OlPgA" base_Property="_o-dmAK9IEey8G6m4MAbk9g"/>
@@ -630,9 +630,9 @@
   <MLModel.Attributes:Float xmi:id="__xYuwK9JEeyhNoRn0OlPgA" base_Property="_x9iZ0K9IEey8G6m4MAbk9g"/>
   <MLModel.Attributes:String xmi:id="_AyHzAK9KEeyhNoRn0OlPgA" base_Property="_zdphsK9IEey8G6m4MAbk9g"/>
   <Blocks:Block xmi:id="_EJ6CoK9UEeyhNoRn0OlPgA" base_Class="_EJ1KIK9UEeyhNoRn0OlPgA"/>
-  <MLModel.DataStorage:CSV xmi:id="_SKZh4K9UEeyhNoRn0OlPgA" base_Class="_EJ1KIK9UEeyhNoRn0OlPgA" VariableName="df_one" Encoding="UTF-8" Path="weather_split_complex_one.csv" Delimiter=","/>
+  <MLModel.DataStorage:CSV xmi:id="_SKZh4K9UEeyhNoRn0OlPgA" base_Class="_EJ1KIK9UEeyhNoRn0OlPgA" Encoding="UTF-8" Delimiter=","/>
   <Blocks:Block xmi:id="_TYJucK9UEeyhNoRn0OlPgA" base_Class="_TX_WYK9UEeyhNoRn0OlPgA"/>
-  <MLModel.DataStorage:CSV xmi:id="_TYMKsK9UEeyhNoRn0OlPgA" base_Class="_TX_WYK9UEeyhNoRn0OlPgA" VariableName="df_two" Encoding="UTF-8" Path="weather_split_complex_two.csv" Delimiter=";"/>
+  <MLModel.DataStorage:CSV xmi:id="_TYMKsK9UEeyhNoRn0OlPgA" base_Class="_TX_WYK9UEeyhNoRn0OlPgA" Encoding="UTF-8" Delimiter=";"/>
   <PortsAndFlows:ItemFlow xmi:id="_yWjgUK9UEeyhNoRn0OlPgA" base_InformationFlow="_yWgdAK9UEeyhNoRn0OlPgA" itemProperty="_-_quAK81Eey8G6m4MAbk9g"/>
   <Blocks:Block xmi:id="_TmI_wK9XEeyNq4GIFFbv8w" base_Class="_TmCSEK9XEeyNq4GIFFbv8w"/>
   <MLModel.Algorithms:BlackBox_Algorithm xmi:id="_iE5IUK9XEeyNq4GIFFbv8w" base_Class="_TmCSEK9XEeyNq4GIFFbv8w"/>
@@ -666,14 +666,14 @@
   <MLModel.AlgorithmWorkflow:ML_Block_Connection xmi:id="_uvxF8K_7Eey1R5-2CjLPMg" base_State="_uvq_UK_7Eey1R5-2CjLPMg" ML_Block="_TYMKsK9UEeyhNoRn0OlPgA"/>
   <MLModel.AlgorithmWorkflow:ML_Block_Connection xmi:id="_-klpkK_7Eey1R5-2CjLPMg" base_State="_76ZUMK_7Eey1R5-2CjLPMg" ML_Block="_bt9lAK9jEeyMp6YloUW0pA"/>
   <MLModel.AlgorithmWorkflow:ML_Block_Connection xmi:id="_cOeDEK_9Eey1R5-2CjLPMg" base_State="_bg4kUK_9Eey1R5-2CjLPMg" ML_Block="_VyHHEK9iEeyMp6YloUW0pA"/>
-  <MLModel.AlgorithmWorkflow:ML_Block_Connection xmi:id="_gsIhMK_9Eey1R5-2CjLPMg" base_State="_euJKgK_9Eey1R5-2CjLPMg" ML_Block="_9vcyUK_wEeyP_5ArodVN4A"/>
+  <MLModel.AlgorithmWorkflow:ML_Block_Connection xmi:id="_gsIhMK_9Eey1R5-2CjLPMg" base_State="_euJKgK_9Eey1R5-2CjLPMg"/>
   <MLModel.AlgorithmWorkflow:ML_Block_Connection xmi:id="_07gkkK_9Eey1R5-2CjLPMg" base_State="_e_gAQK_9Eey1R5-2CjLPMg" ML_Block="_elC94LmKEeyIM-HDIDpVnQ"/>
   <MLModel.AlgorithmWorkflow:ML_Block_Connection xmi:id="_3NWrYK_9Eey1R5-2CjLPMg" base_State="_fNKo0K_9Eey1R5-2CjLPMg" ML_Block="_PaxMELmKEeyIM-HDIDpVnQ"/>
   <MLModel.AlgorithmWorkflow:ML_Block_Connection xmi:id="_-pS4gK_9Eey1R5-2CjLPMg" base_State="_9HYZ0K_9Eey1R5-2CjLPMg" ML_Block="_iEXyYK_wEeyP_5ArodVN4A"/>
-  <MLModel.AlgorithmWorkflow:ML_Block_Connection xmi:id="_DK8ewK_-Eey1R5-2CjLPMg" base_State="_8n4aYK_9Eey1R5-2CjLPMg" ML_Block="_K__vcK_-Eey1R5-2CjLPMg"/>
+  <MLModel.AlgorithmWorkflow:ML_Block_Connection xmi:id="_DK8ewK_-Eey1R5-2CjLPMg" base_State="_8n4aYK_9Eey1R5-2CjLPMg"/>
   <MLModel.Algorithms:Predict xmi:id="_K__vcK_-Eey1R5-2CjLPMg" base_Class="_0ztmYK_wEeyP_5ArodVN4A"/>
   <MLModel.Algorithms:Predict xmi:id="_MIMGkK_-Eey1R5-2CjLPMg" base_Class="_b6cxUK_xEeyP_5ArodVN4A"/>
-  <MLModel.AlgorithmWorkflow:ML_Block_Connection xmi:id="_OuMfgK_-Eey1R5-2CjLPMg" base_State="_IwX2MK_-Eey1R5-2CjLPMg" ML_Block="_MIMGkK_-Eey1R5-2CjLPMg"/>
+  <MLModel.AlgorithmWorkflow:ML_Block_Connection xmi:id="_OuMfgK_-Eey1R5-2CjLPMg" base_State="_IwX2MK_-Eey1R5-2CjLPMg"/>
   <MLModel.Algorithms:Regression xmi:id="_PaxMELmKEeyIM-HDIDpVnQ" base_Class="_uWGvYK9kEeyMp6YloUW0pA" Algorithm="RandomForestRegressor"/>
   <MLModel.Algorithms:Regression xmi:id="_elC94LmKEeyIM-HDIDpVnQ" base_Class="_aGZfYK9lEeyMp6YloUW0pA" Algorithm="DecisionTreeRegressor"/>
   <Blocks:Block xmi:id="_zEqbANprEeyS58DCA-jigA" base_Class="_zEajYNprEeyS58DCA-jigA"/>

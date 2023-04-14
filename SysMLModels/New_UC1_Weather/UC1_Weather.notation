@@ -594,13 +594,13 @@
       </children>
       <children xmi:type="notation:DecorationNode" xmi:id="_fU7JoK8sEeyYFZ2tHC7C7A" type="StereotypeLabel">
         <styles xmi:type="notation:StringValueStyle" xmi:id="_fU7Joa8sEeyYFZ2tHC7C7A" name="stereotype" stringValue="Variations::VariationPoint"/>
-        <element xmi:type="uml:Stereotype" href="../Variations/Variations.profile.uml#_VQQwQJ7lEey4wJVdeJmZLQ"/>
+        <element xmi:type="uml:Stereotype" href="platform:/resource/Variations/Variations.profile.uml#_VQQwQJ7lEey4wJVdeJmZLQ"/>
         <layoutConstraint xmi:type="notation:Bounds" xmi:id="_fU7Joq8sEeyYFZ2tHC7C7A"/>
       </children>
       <children xmi:type="notation:BasicCompartment" xmi:id="_fU7Jo68sEeyYFZ2tHC7C7A" type="StereotypeBrace">
         <styles xmi:type="notation:TitleStyle" xmi:id="_fU7JpK8sEeyYFZ2tHC7C7A"/>
         <styles xmi:type="notation:StringValueStyle" xmi:id="_fU7Jpa8sEeyYFZ2tHC7C7A" name="stereotype" stringValue="Variations::VariationPoint"/>
-        <element xmi:type="uml:Stereotype" href="../Variations/Variations.profile.uml#_VQQwQJ7lEey4wJVdeJmZLQ"/>
+        <element xmi:type="uml:Stereotype" href="platform:/resource/Variations/Variations.profile.uml#_VQQwQJ7lEey4wJVdeJmZLQ"/>
         <layoutConstraint xmi:type="notation:Bounds" xmi:id="_fU7Jpq8sEeyYFZ2tHC7C7A"/>
       </children>
       <children xmi:type="notation:Compartment" xmi:id="_fU7Jp68sEeyYFZ2tHC7C7A" type="Flow Ports"/>
@@ -1124,19 +1124,19 @@
       </children>
       <children xmi:type="notation:DecorationNode" xmi:id="_RAqY1q83Eey8G6m4MAbk9g" type="StereotypeLabel">
         <styles xmi:type="notation:StringValueStyle" xmi:id="_RAqY1683Eey8G6m4MAbk9g" name="stereotype" stringValue="Variations::Variation"/>
-        <element xmi:type="uml:Stereotype" href="../Variations/Variations.profile.uml#_b9AVEJ7lEey4wJVdeJmZLQ"/>
+        <element xmi:type="uml:Stereotype" href="platform:/resource/Variations/Variations.profile.uml#_b9AVEJ7lEey4wJVdeJmZLQ"/>
         <layoutConstraint xmi:type="notation:Bounds" xmi:id="_RAqY2K83Eey8G6m4MAbk9g"/>
       </children>
       <children xmi:type="notation:BasicCompartment" xmi:id="_RAsOAK83Eey8G6m4MAbk9g" type="StereotypeBrace">
         <styles xmi:type="notation:TitleStyle" xmi:id="_RAsOAa83Eey8G6m4MAbk9g"/>
         <styles xmi:type="notation:StringValueStyle" xmi:id="_RAsOAq83Eey8G6m4MAbk9g" name="stereotype" stringValue="Variations::Variation"/>
-        <element xmi:type="uml:Stereotype" href="../Variations/Variations.profile.uml#_b9AVEJ7lEey4wJVdeJmZLQ"/>
+        <element xmi:type="uml:Stereotype" href="platform:/resource/Variations/Variations.profile.uml#_b9AVEJ7lEey4wJVdeJmZLQ"/>
         <layoutConstraint xmi:type="notation:Bounds" xmi:id="_RAsOA683Eey8G6m4MAbk9g"/>
       </children>
       <children xmi:type="notation:BasicCompartment" xmi:id="_RAuDPK83Eey8G6m4MAbk9g" type="StereotypeCompartment">
         <styles xmi:type="notation:TitleStyle" xmi:id="_RAuDPa83Eey8G6m4MAbk9g"/>
         <styles xmi:type="notation:StringValueStyle" xmi:id="_RAuDPq83Eey8G6m4MAbk9g" name="stereotype" stringValue="Variations::Variation"/>
-        <element xmi:type="uml:Stereotype" href="../Variations/Variations.profile.uml#_b9AVEJ7lEey4wJVdeJmZLQ"/>
+        <element xmi:type="uml:Stereotype" href="platform:/resource/Variations/Variations.profile.uml#_b9AVEJ7lEey4wJVdeJmZLQ"/>
         <layoutConstraint xmi:type="notation:Bounds" xmi:id="_RAuDP683Eey8G6m4MAbk9g"/>
       </children>
       <element xmi:type="uml:Class" href="UC1_Weather.uml#_7MIZsK8vEeyYFZ2tHC7C7A"/>
@@ -1666,13 +1666,13 @@
       </children>
       <children xmi:type="notation:DecorationNode" xmi:id="_i-ug6a83Eey8G6m4MAbk9g" type="StereotypeLabel">
         <styles xmi:type="notation:StringValueStyle" xmi:id="_i-ug6q83Eey8G6m4MAbk9g" name="stereotype" stringValue="Variations::Variation"/>
-        <element xmi:type="uml:Stereotype" href="../Variations/Variations.profile.uml#_b9AVEJ7lEey4wJVdeJmZLQ"/>
+        <element xmi:type="uml:Stereotype" href="platform:/resource/Variations/Variations.profile.uml#_b9AVEJ7lEey4wJVdeJmZLQ"/>
         <layoutConstraint xmi:type="notation:Bounds" xmi:id="_i-ug6683Eey8G6m4MAbk9g"/>
       </children>
       <children xmi:type="notation:BasicCompartment" xmi:id="_i-ug7K83Eey8G6m4MAbk9g" type="StereotypeBrace">
         <styles xmi:type="notation:TitleStyle" xmi:id="_i-ug7a83Eey8G6m4MAbk9g"/>
         <styles xmi:type="notation:StringValueStyle" xmi:id="_i-ug7q83Eey8G6m4MAbk9g" name="stereotype" stringValue="Variations::Variation"/>
-        <element xmi:type="uml:Stereotype" href="../Variations/Variations.profile.uml#_b9AVEJ7lEey4wJVdeJmZLQ"/>
+        <element xmi:type="uml:Stereotype" href="platform:/resource/Variations/Variations.profile.uml#_b9AVEJ7lEey4wJVdeJmZLQ"/>
         <layoutConstraint xmi:type="notation:Bounds" xmi:id="_i-ug7683Eey8G6m4MAbk9g"/>
       </children>
       <children xmi:type="notation:Compartment" xmi:id="_i-vvAK83Eey8G6m4MAbk9g" type="Flow Ports"/>
@@ -1726,13 +1726,13 @@
       </children>
       <children xmi:type="notation:DecorationNode" xmi:id="_k7xcaa83Eey8G6m4MAbk9g" type="StereotypeLabel">
         <styles xmi:type="notation:StringValueStyle" xmi:id="_k7xcaq83Eey8G6m4MAbk9g" name="stereotype" stringValue="Variations::Variation"/>
-        <element xmi:type="uml:Stereotype" href="../Variations/Variations.profile.uml#_b9AVEJ7lEey4wJVdeJmZLQ"/>
+        <element xmi:type="uml:Stereotype" href="platform:/resource/Variations/Variations.profile.uml#_b9AVEJ7lEey4wJVdeJmZLQ"/>
         <layoutConstraint xmi:type="notation:Bounds" xmi:id="_k7xca683Eey8G6m4MAbk9g"/>
       </children>
       <children xmi:type="notation:BasicCompartment" xmi:id="_k7xcbK83Eey8G6m4MAbk9g" type="StereotypeBrace">
         <styles xmi:type="notation:TitleStyle" xmi:id="_k7xcba83Eey8G6m4MAbk9g"/>
         <styles xmi:type="notation:StringValueStyle" xmi:id="_k7xcbq83Eey8G6m4MAbk9g" name="stereotype" stringValue="Variations::Variation"/>
-        <element xmi:type="uml:Stereotype" href="../Variations/Variations.profile.uml#_b9AVEJ7lEey4wJVdeJmZLQ"/>
+        <element xmi:type="uml:Stereotype" href="platform:/resource/Variations/Variations.profile.uml#_b9AVEJ7lEey4wJVdeJmZLQ"/>
         <layoutConstraint xmi:type="notation:Bounds" xmi:id="_k7xcb683Eey8G6m4MAbk9g"/>
       </children>
       <children xmi:type="notation:Compartment" xmi:id="_k7yDcK83Eey8G6m4MAbk9g" type="Flow Ports"/>
@@ -1786,13 +1786,13 @@
       </children>
       <children xmi:type="notation:DecorationNode" xmi:id="_lRMSya83Eey8G6m4MAbk9g" type="StereotypeLabel">
         <styles xmi:type="notation:StringValueStyle" xmi:id="_lRMSyq83Eey8G6m4MAbk9g" name="stereotype" stringValue="Variations::Variation"/>
-        <element xmi:type="uml:Stereotype" href="../Variations/Variations.profile.uml#_b9AVEJ7lEey4wJVdeJmZLQ"/>
+        <element xmi:type="uml:Stereotype" href="platform:/resource/Variations/Variations.profile.uml#_b9AVEJ7lEey4wJVdeJmZLQ"/>
         <layoutConstraint xmi:type="notation:Bounds" xmi:id="_lRMSy683Eey8G6m4MAbk9g"/>
       </children>
       <children xmi:type="notation:BasicCompartment" xmi:id="_lRMSzK83Eey8G6m4MAbk9g" type="StereotypeBrace">
         <styles xmi:type="notation:TitleStyle" xmi:id="_lRMSza83Eey8G6m4MAbk9g"/>
         <styles xmi:type="notation:StringValueStyle" xmi:id="_lRMSzq83Eey8G6m4MAbk9g" name="stereotype" stringValue="Variations::Variation"/>
-        <element xmi:type="uml:Stereotype" href="../Variations/Variations.profile.uml#_b9AVEJ7lEey4wJVdeJmZLQ"/>
+        <element xmi:type="uml:Stereotype" href="platform:/resource/Variations/Variations.profile.uml#_b9AVEJ7lEey4wJVdeJmZLQ"/>
         <layoutConstraint xmi:type="notation:Bounds" xmi:id="_lRMSz683Eey8G6m4MAbk9g"/>
       </children>
       <children xmi:type="notation:Compartment" xmi:id="_lRM50K83Eey8G6m4MAbk9g" type="Flow Ports"/>
@@ -1854,13 +1854,13 @@
       </children>
       <children xmi:type="notation:DecorationNode" xmi:id="_l8ddVq83Eey8G6m4MAbk9g" type="StereotypeLabel">
         <styles xmi:type="notation:StringValueStyle" xmi:id="_l8ddV683Eey8G6m4MAbk9g" name="stereotype" stringValue="Variations::Variation"/>
-        <element xmi:type="uml:Stereotype" href="../Variations/Variations.profile.uml#_b9AVEJ7lEey4wJVdeJmZLQ"/>
+        <element xmi:type="uml:Stereotype" href="platform:/resource/Variations/Variations.profile.uml#_b9AVEJ7lEey4wJVdeJmZLQ"/>
         <layoutConstraint xmi:type="notation:Bounds" xmi:id="_l8ddWK83Eey8G6m4MAbk9g"/>
       </children>
       <children xmi:type="notation:BasicCompartment" xmi:id="_l8ddWa83Eey8G6m4MAbk9g" type="StereotypeBrace">
         <styles xmi:type="notation:TitleStyle" xmi:id="_l8ddWq83Eey8G6m4MAbk9g"/>
         <styles xmi:type="notation:StringValueStyle" xmi:id="_l8ddW683Eey8G6m4MAbk9g" name="stereotype" stringValue="Variations::Variation"/>
-        <element xmi:type="uml:Stereotype" href="../Variations/Variations.profile.uml#_b9AVEJ7lEey4wJVdeJmZLQ"/>
+        <element xmi:type="uml:Stereotype" href="platform:/resource/Variations/Variations.profile.uml#_b9AVEJ7lEey4wJVdeJmZLQ"/>
         <layoutConstraint xmi:type="notation:Bounds" xmi:id="_l8ddXK83Eey8G6m4MAbk9g"/>
       </children>
       <children xmi:type="notation:Compartment" xmi:id="_l8ddXa83Eey8G6m4MAbk9g" type="Flow Ports"/>
@@ -1914,13 +1914,13 @@
       </children>
       <children xmi:type="notation:DecorationNode" xmi:id="_mtf4ua83Eey8G6m4MAbk9g" type="StereotypeLabel">
         <styles xmi:type="notation:StringValueStyle" xmi:id="_mtf4uq83Eey8G6m4MAbk9g" name="stereotype" stringValue="Variations::Variation"/>
-        <element xmi:type="uml:Stereotype" href="../Variations/Variations.profile.uml#_b9AVEJ7lEey4wJVdeJmZLQ"/>
+        <element xmi:type="uml:Stereotype" href="platform:/resource/Variations/Variations.profile.uml#_b9AVEJ7lEey4wJVdeJmZLQ"/>
         <layoutConstraint xmi:type="notation:Bounds" xmi:id="_mtf4u683Eey8G6m4MAbk9g"/>
       </children>
       <children xmi:type="notation:BasicCompartment" xmi:id="_mtf4vK83Eey8G6m4MAbk9g" type="StereotypeBrace">
         <styles xmi:type="notation:TitleStyle" xmi:id="_mtf4va83Eey8G6m4MAbk9g"/>
         <styles xmi:type="notation:StringValueStyle" xmi:id="_mtf4vq83Eey8G6m4MAbk9g" name="stereotype" stringValue="Variations::Variation"/>
-        <element xmi:type="uml:Stereotype" href="../Variations/Variations.profile.uml#_b9AVEJ7lEey4wJVdeJmZLQ"/>
+        <element xmi:type="uml:Stereotype" href="platform:/resource/Variations/Variations.profile.uml#_b9AVEJ7lEey4wJVdeJmZLQ"/>
         <layoutConstraint xmi:type="notation:Bounds" xmi:id="_mtf4v683Eey8G6m4MAbk9g"/>
       </children>
       <children xmi:type="notation:Compartment" xmi:id="_mtf4wK83Eey8G6m4MAbk9g" type="Flow Ports"/>
